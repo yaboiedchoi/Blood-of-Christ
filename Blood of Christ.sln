@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blood of Christ", "Blood of Christ.csproj", "{A686E1F6-8698-4CDC-B6B1-BA789156811B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A686E1F6-8698-4CDC-B6B1-BA789156811B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A686E1F6-8698-4CDC-B6B1-BA789156811B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A686E1F6-8698-4CDC-B6B1-BA789156811B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A686E1F6-8698-4CDC-B6B1-BA789156811B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2A41852-47F4-4690-AFA9-B2E604EF82CA}
+	EndGlobalSection
+EndGlobal
