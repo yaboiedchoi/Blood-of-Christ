@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -35,20 +36,33 @@ namespace Blood_of_Christ
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-          
+
+            Movement(gameTime);
             //throw new NotImplementedException();
         }
 
         // I had to add this to priest to test player code without build errors. Feel free to get rid of it - Sean.
         public override void Draw(SpriteBatch sb)
         {
+            sb.Draw(asset,
+                    position,
+                    Color.White);
         }
 
         public void Movement(GameTime gametime)
         {
             //Ensures that priest moves at a constant velocity
-            time = gametime.ElapsedGameTime.TotalSeconds;
-            double distance = time * xVel;
+            int direction = -1;
+            int deltaX = 5;
+
+            position.X = direction * deltaX;
+            
+            if(position.X + position.Width > windowWidth ||
+                (position.X + position.Width < windowWidth / 2))
+            {
+                direction = direction * -1;
+            }
+            
             
         }
     }
