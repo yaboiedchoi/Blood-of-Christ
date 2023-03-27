@@ -23,14 +23,18 @@ namespace Blood_of_Christ
 
         //for priest
         private Texture2D tex_priest;
+        private Texture2D demo_texPriest;
         private Rectangle rect_priest;
         private Priest priest;
 
         // player
         private Player player;
+        //private Priest priest;
 
         // platforms
         List<Platform> platforms;
+        int windowWidth;
+        int windowHeight;
 
         public Game1()
         {
@@ -44,6 +48,10 @@ namespace Blood_of_Christ
             // TODO: Add your initialization logic here
             prevKey = Keyboard.GetState();
             platforms = new List<Platform>();
+            
+            //for screen 
+            windowWidth = GraphicsDevice.Viewport.Width;
+            windowHeight = GraphicsDevice.Viewport.Height;
 
             // using the fireball texture as a placeholder for player
             tex_fireball = Content.Load<Texture2D>("fireball");
@@ -67,6 +75,10 @@ namespace Blood_of_Christ
             platforms.Add(new Platform(tex_fireball, new Rectangle(0, 300, 300, 50)));
             platforms.Add(new Platform(tex_fireball, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_fireball, new Rectangle(500, 0, 50, 200)));
+
+            //Adding for priest
+            //demo_texPriest = Content.Load<Texture2D>("priest");
+            priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
 
             debugFont = Content.Load<SpriteFont>("debug font");
         }
