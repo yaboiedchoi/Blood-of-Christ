@@ -17,8 +17,17 @@ namespace Blood_of_Christ
         private float yVelocity;
         private float gravity;
         private bool isOnGround;
+        private int health;
+        private int resetX;
+        private int resetY;
+        private bool isDead;
 
         // Property
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
         public int X
         {
             get { return position.X; }
@@ -55,12 +64,26 @@ namespace Blood_of_Christ
             set { isOnGround = value; }
         }
 
+        public int ResetX
+        {
+            get { return resetX; }
+            set { resetX = value; }
+        }
+
+        public int ResetY
+        {
+            get { return resetY; }
+            set { resetY = value; }
+        }
+
         // Constructor
         public Player(Texture2D texture, Rectangle position)
             : base(texture, position)
         {
             yVelocity = 0f;
-            gravity = 0.5f;
+            gravity = .6f;
+            health = 100;
+            isDead = false;
         }
 
         // Methods
@@ -87,8 +110,32 @@ namespace Blood_of_Christ
             {
                     position.X += 5;
             }
+            if (kbstate.IsKeyDown(Keys.Up))
+            {
+                TakeDamage(1);
+            }
+            if (isDead)
+            {
+                Reset(ResetX, ResetY);
+            }
             yVelocity += gravity;
         }
+
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
+            if (health < 0)
+            {
+                isDead = true;
+            }
         }
+        public void Reset(float x, float y)
+        {
+            health = 100;
+            position.X = (int)x;
+            position.Y = (int)y;
+            isDead = false;
+        }
+    }
 }
 
