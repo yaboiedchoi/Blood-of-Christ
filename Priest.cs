@@ -69,6 +69,13 @@ namespace Blood_of_Christ
             position.X += (direction * deltaX);
         }
 
+        public void Attack(Rectangle playerRect)
+        {
+            if (position.Intersects(playerRect))
+            {
+
+            }
+        }
 
     }
 }
