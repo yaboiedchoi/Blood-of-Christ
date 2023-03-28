@@ -29,6 +29,8 @@ namespace Blood_of_Christ
 
         // player
         private Player player;
+        private Rectangle rect_health;
+        private Texture2D tex_bar;
         //private Priest priest;
 
         // platforms
@@ -48,10 +50,6 @@ namespace Blood_of_Christ
             // TODO: Add your initialization logic here
             prevKey = Keyboard.GetState();
             platforms = new List<Platform>();
-            
-            //for screen 
-            windowWidth = GraphicsDevice.Viewport.Width;
-            windowHeight = GraphicsDevice.Viewport.Height;
 
             // using the fireball texture as a placeholder for player
             tex_fireball = Content.Load<Texture2D>("fireball");
@@ -65,16 +63,18 @@ namespace Blood_of_Christ
             // TODO: use this.Content to load your game content here
             tex_fireball = Content.Load<Texture2D>("fireball");
             tex_priest = Content.Load<Texture2D>("back up priest");
+            tex_bar = Content.Load<Texture2D>("health_bar_placeholder");
 
             //TODO: Not sure about how to place the fireballs- probably from right to left
             rect_fireball = new Rectangle(0,0, tex_fireball.Width/5, tex_fireball.Height/5);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height/5);
-
+            
             // player
-            player = new Player(tex_priest, new Rectangle(100, 0, 50, 50));
+            player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
             platforms.Add(new Platform(tex_fireball, new Rectangle(0, 300, 300, 50)));
             platforms.Add(new Platform(tex_fireball, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_fireball, new Rectangle(500, 0, 50, 200)));
+            rect_health = new Rectangle(10, 10, 100, 20);
 
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
@@ -89,12 +89,18 @@ namespace Blood_of_Christ
                 Exit();
 
             // TODO: Add your update logic here
+            player.ResetX = 100;
+            player.ResetY = 100;
             player.Update(gameTime);
+
+            priest.Update(gameTime);
+            rect_health.Width = (int)(player.Health * 2.5);
             foreach (Platform platform in platforms)
             {
                 platform.Collision(player, _graphics);
             }
             player.PrevPos = player.Position;
+            
             base.Update(gameTime);
         }
 
@@ -103,13 +109,22 @@ namespace Blood_of_Christ
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            _spriteBatch.Begin();            
+            _spriteBatch.Draw(
+                tex_bar, 
+                rect_health, 
+                Color.White);
             player.Draw(_spriteBatch);
+
+            //enemy
+            priest.Draw(_spriteBatch);
 
             foreach (Platform platform in platforms)
             {
                 platform.Draw(_spriteBatch);
             }
+
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
