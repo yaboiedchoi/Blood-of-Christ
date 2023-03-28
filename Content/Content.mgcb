@@ -44,8 +44,3 @@
 /processorParam:TextureFormat=Color
 /build:fireball.png
 
-#begin priest.avif
-/importer:
-/processor:
-/build:priest.avif
-

@@ -90,6 +90,8 @@ namespace Blood_of_Christ
 
             // TODO: Add your update logic here
             player.Update(gameTime);
+
+            priest.Update(gameTime);
             foreach (Platform platform in platforms)
             {
                 platform.Collision(player, _graphics);
@@ -105,6 +107,9 @@ namespace Blood_of_Christ
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             player.Draw(_spriteBatch);
+
+            //enemy
+            priest.Draw(_spriteBatch);
 
             foreach (Platform platform in platforms)
             {

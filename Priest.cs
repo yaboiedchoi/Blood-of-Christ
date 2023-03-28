@@ -20,7 +20,7 @@ namespace Blood_of_Christ
         //To ensure it moves back and forth
         private double xVel = 5;
         private double time;
-
+        private int direction = 1;
         public Priest(int windowWidth, int windowHeight, Texture2D texture, Rectangle position):
             base(texture, position)
         {
@@ -49,21 +49,26 @@ namespace Blood_of_Christ
                     Color.White);
         }
 
+        /// <summary>
+        /// To ensure priest bounces back in forth the screen
+        /// </summary>
+        /// <param name="gametime">Time param</param>
         public void Movement(GameTime gametime)
         {
-            //Ensures that priest moves at a constant velocity
-            int direction = -1;
             int deltaX = 5;
 
-            position.X = direction * deltaX;
-            
-            if(position.X + position.Width > windowWidth ||
-                (position.X + position.Width < windowWidth / 2))
+            //If priest reaches the edge of the window, he bounces back
+            if(position.X + position.Width > windowWidth)
             {
-                direction = direction * -1;
+                direction = -1; 
             }
-            
-            
+            else if(position.X  < 0)
+            {
+                direction = 1;
+            }
+            position.X += (direction * deltaX);
         }
+
+
     }
 }
