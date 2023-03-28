@@ -114,6 +114,5 @@ namespace Blood_of_Christ
             this.textXValue = textXValue;
             this.textYValue = textYValue;
         }
-
     }
 }
