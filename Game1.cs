@@ -97,7 +97,7 @@ namespace Blood_of_Christ
             rect_health.Width = (int)(player.Health * 2.5);
             foreach (Platform platform in platforms)
             {
-                platform.Collision(player, _graphics);
+                player.Physics(platform.Position, _graphics);
             }
             player.PrevPos = player.Position;
             

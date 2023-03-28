@@ -121,7 +121,61 @@ namespace Blood_of_Christ
             yVelocity += gravity;
         }
 
-        public void TakeDamage(int damage)
+        public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
+        {
+            while ((prevPos.X + prevPos.Width <= platform.X &&                                 // If player was left from the wall
+                    position.Intersects(platform)) ||                                          // and now intersects the wall
+                    position.X + position.Width >= _graphics.GraphicsDevice.Viewport.Width)    // Or, when player is getting out of screen
+            {
+                position.X--;
+                if (xVelocity > 0)
+                {
+                    xVelocity = 0;
+                }
+            }
+
+            while ((prevPos.X >= platform.X + platform.Width &&    // If player was right from the wall
+                    position.Intersects(platform)) ||              // and now intersects the wall
+                    position.X <= 0)                               // Or, when player is getting out of screen
+            {
+                position.X++;
+                if (xVelocity < 0)
+                {
+                    xVelocity = 0;
+                }
+            }
+
+            while ((prevPos.Y + prevPos.Height <= platform.Y &&                                  // If player was up from the wall
+                    position.Intersects(platform)) ||                                            // and now intersects the wall
+                    position.Y + position.Height >= _graphics.GraphicsDevice.Viewport.Height)    // Or, when player is getting out of screen
+            {
+                position.Y--;
+                if (yVelocity > 0)
+                {
+                    yVelocity = 0;
+                }
+                // The player can jump only if they are on the ground
+                KeyboardState kbstate = Keyboard.GetState();
+                if (kbstate.IsKeyDown(Keys.Space) &&
+                    yVelocity == 0)
+                {
+                    yVelocity = -15;
+                }
+            }
+
+            while ((prevPos.Y >= platform.Y + platform.Height &&    // If player was down from the wall
+                    position.Intersects(platform)) ||               // and now intersects the wall
+                    position.Y <= 0)                                // Or, when player is getting out of screen
+            {
+                position.Y++;
+                if (yVelocity < 0)
+                {
+                    yVelocity = 0;
+                }
+            }
+        }
+
+            public void TakeDamage(int damage)
         {
             health -= damage;
             if (health < 0)
