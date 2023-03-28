@@ -72,6 +72,9 @@ namespace Blood_of_Christ
                 textYValue += differenceInYValues;
             }
         }
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Button()
         {
             xValue = 0;
@@ -85,5 +88,32 @@ namespace Blood_of_Christ
             textXValue = 0;
             textYValue = 0;
         }
+        /// <summary>
+        /// Perameterized constructor
+        /// </summary>
+        /// <param name="xValue">x coordinate of the button</param>
+        /// <param name="yValue">y coordinate of the button</param>
+        /// <param name="buttonColor">color of the button</param>
+        /// <param name="hoveredColor">color of the button when hovered with mouse</param>
+        /// <param name="pressedColor">color of the button when pressed</param>
+        /// <param name="text">text over the button</param>
+        /// <param name="font">font of the text</param>
+        /// <param name="textColor">color of the text</param>
+        /// <param name="textXValue">text x value</param>
+        /// <param name="textYValue">text y value</param>
+        public Button(float xValue, float yValue, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor, float textXValue, float textYValue, float x, float y)
+        {
+            this.xValue = xValue;
+            this.yValue = yValue;
+            this.buttonColor = buttonColor;
+            this.hoveredColor = hoveredColor;
+            this.pressedColor = pressedColor;
+            this.text = text;
+            this.font = font;
+            this.textColor = textColor;
+            this.textXValue = textXValue;
+            this.textYValue = textYValue;
+        }
+
     }
 }

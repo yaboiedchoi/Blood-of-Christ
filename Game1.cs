@@ -23,6 +23,7 @@ namespace Blood_of_Christ
 
         //for priest
         private Texture2D tex_priest;
+        private Texture2D demo_texPriest;
         private Rectangle rect_priest;
         private Priest priest;
 
@@ -30,9 +31,12 @@ namespace Blood_of_Christ
         private Player player;
         private Rectangle rect_health;
         private Texture2D tex_bar;
+        //private Priest priest;
 
         // platforms
         List<Platform> platforms;
+        int windowWidth;
+        int windowHeight;
 
         public Game1()
         {
@@ -47,6 +51,8 @@ namespace Blood_of_Christ
             prevKey = Keyboard.GetState();
             platforms = new List<Platform>();
 
+            // using the fireball texture as a placeholder for player
+            tex_fireball = Content.Load<Texture2D>("fireball");
             base.Initialize();
         }
 
@@ -69,6 +75,11 @@ namespace Blood_of_Christ
             platforms.Add(new Platform(tex_fireball, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_fireball, new Rectangle(500, 0, 50, 200)));
             rect_health = new Rectangle(10, 10, 100, 20);
+
+            //Adding for priest
+            //demo_texPriest = Content.Load<Texture2D>("priest");
+            priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
+
             debugFont = Content.Load<SpriteFont>("debug font");
         }
 
@@ -81,6 +92,8 @@ namespace Blood_of_Christ
             player.ResetX = 100;
             player.ResetY = 100;
             player.Update(gameTime);
+
+            priest.Update(gameTime);
             rect_health.Width = (int)(player.Health * 2.5);
             foreach (Platform platform in platforms)
             {
@@ -102,6 +115,9 @@ namespace Blood_of_Christ
                 rect_health, 
                 Color.White);
             player.Draw(_spriteBatch);
+
+            //enemy
+            priest.Draw(_spriteBatch);
 
             foreach (Platform platform in platforms)
             {
