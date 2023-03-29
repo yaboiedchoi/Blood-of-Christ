@@ -170,6 +170,12 @@ namespace Blood_of_Christ
             yVelocity += gravity;
         }
 
+        #region Player Physics
+        /// <summary>
+        /// Player physics to move on ground and collide to wall
+        /// </summary>
+        /// <param name="platform">Platform or door as obstacles</param>
+        /// <param name="_graphics">GraphicDeviceManager</param>
         public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
         {
             while ((prevPos.X + prevPos.Width <= platform.X &&                                 // If player was left from the wall
@@ -224,7 +230,9 @@ namespace Blood_of_Christ
                 }
             }
         }
+        #endregion
 
+        public void TakeDamage(int damage)
         /// <summary>
         /// Written by Sean
         /// Allows the player to take a given amount of damage
