@@ -232,7 +232,6 @@ namespace Blood_of_Christ
         }
         #endregion
 
-        public void TakeDamage(int damage)
         /// <summary>
         /// Written by Sean
         /// Allows the player to take a given amount of damage
