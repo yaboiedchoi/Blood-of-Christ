@@ -12,15 +12,18 @@ namespace Blood_of_Christ
     internal class Player : GameObject
     {
         // Field
-        private Rectangle prevPos;
-        private float xVelocity;
-        private float yVelocity;
-        private float gravity;
-        private bool isOnGround;
-        private int health;
-        private int resetX;
-        private int resetY;
-        private bool isDead;
+        private Rectangle prevPos;  // record's the players position for collision purposes
+        private int playerSize;     // record's the players default (vampire) size for transformation purposes
+        private float xVelocity;    // player's current horizontal speed
+        private float yVelocity;    // player's current vertical speed
+        private float gravity;      // how fast the player will begin to fall.
+        private int health;         // total player health. Starts at 100.
+        private int resetX;         // X coordinate for the current level start
+        private int resetY;         // Y coordinate for the current level start
+        private bool isDead;        // if the player is currently dead (health is less than 0)
+        private bool isBat;         // if the player is in a bat form
+        private float batTime       // timer for how long bat can stay a bat
+        KeyboardState prevKbState;
 
         // Property
         public int Health
@@ -58,12 +61,6 @@ namespace Blood_of_Christ
             set { yVelocity = value; }
         }
 
-        public bool IsOnGround
-        {
-            get { return isOnGround; }
-            set { isOnGround = value; }
-        }
-
         public int ResetX
         {
             get { return resetX; }
@@ -81,9 +78,11 @@ namespace Blood_of_Christ
             : base(texture, position)
         {
             yVelocity = 0f;
-            gravity = .6f;
+            gravity = .61f;
             health = 100;
             isDead = false;
+            isBat = false;
+            playerSize = position.Width;
         }
 
         // Methods
@@ -98,27 +97,58 @@ namespace Blood_of_Christ
         public override void Update(GameTime gameTime)
         {
             KeyboardState kbstate = Keyboard.GetState();
-
-            position.Y += (int)yVelocity;
-
-            // player movement
-            if (kbstate.IsKeyDown(Keys.Left))
-            {
-                    position.X -= 5;
-            }
-            if (kbstate.IsKeyDown(Keys.Right))
-            {
-                    position.X += 5;
-            }
-            if (kbstate.IsKeyDown(Keys.Up))
-            {
-                TakeDamage(1);
-            }
+           // If player is dead, calls Reset
             if (isDead)
             {
                 Reset(ResetX, ResetY);
             }
+
+            //if player is vampire
+            if (!isBat)
+            {
+                position.Y += (int)yVelocity;
+                // transforming to bat
+                if (kbstate.IsKeyDown(Keys.E))
+                {
+                    position.Width /= 2;    // bat width is half the size of human
+                    position.Height /= 2;   // bat form hitbox is a perfect square
+                    isBat = true;
+                }
+            }
+
+            // bat form has additional vertical movement
+            if (isBat)
+            {
+                if (kbstate.IsKeyDown(Keys.Up))
+                {
+                    position.Y -= 5;
+                }
+                if (kbstate.IsKeyDown(Keys.Down))
+                {
+                    position.Y += 5;
+                }
+
+                //transforming back to player
+                if (kbstate.IsKeyDown(Keys.E))
+                {
+                    position.Width *= 2;
+                    position.Height *= 2;
+                    isBat = false;
+                }
+                yVelocity = 1;
+            }
+            // basic player movement
+            if (kbstate.IsKeyDown(Keys.Left))
+            {
+                position.X -= 5;
+            }
+            if (kbstate.IsKeyDown(Keys.Right))
+            {
+                position.X += 5;
+            }
+   
             yVelocity += gravity;
+            prevKbState = kbstate;
         }
 
         public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
@@ -154,7 +184,8 @@ namespace Blood_of_Christ
                 {
                     yVelocity = 0;
                 }
-                // The player can jump only if they are on the ground
+
+                // The player can jump only if they are on the ground as a vampire
                 KeyboardState kbstate = Keyboard.GetState();
                 if (kbstate.IsKeyDown(Keys.Space) &&
                     yVelocity == 0)
@@ -175,20 +206,35 @@ namespace Blood_of_Christ
             }
         }
 
-            public void TakeDamage(int damage)
+        /// <summary>
+        /// Written by Sean
+        /// Allows the player to take a given amount of damage
+        /// Checks
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDamage(int damage)
         {
             health -= damage;
-            if (health < 0)
+            if (health <= 0)
             {
                 isDead = true;
             }
         }
+
+        /// <summary>
+        /// Written by Sean
+        /// Resets the players health to 100 and the isDead bool to false
+        /// Then returns the player to the level's start
+        /// </summary>
+        /// <param name="x"> x coordinate for the player's starting point </param>
+        /// <param name="y"> y coordinate for the player's starting point </param>
         public void Reset(float x, float y)
         {
             health = 100;
             position.X = (int)x;
             position.Y = (int)y;
             isDead = false;
+            isBat = false;
         }
     }
 }

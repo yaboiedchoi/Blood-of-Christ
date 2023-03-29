@@ -71,9 +71,9 @@ namespace Blood_of_Christ
             
             // player
             player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(0, 300, 300, 50)));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(400, 300, 500, 50)));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(500, 0, 50, 200)));
+            platforms.Add(new Platform(tex_bar, new Rectangle(0, 300, 300, 50)));
+            platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
+            platforms.Add(new Platform(tex_bar, new Rectangle(500, 0, 50, 225)));
             rect_health = new Rectangle(10, 10, 100, 20);
 
             //Adding for priest
@@ -124,10 +124,9 @@ namespace Blood_of_Christ
                 platform.Draw(_spriteBatch);
             }
 
-
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
     }
-}
+} 
