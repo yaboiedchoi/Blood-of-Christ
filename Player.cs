@@ -121,6 +121,7 @@ namespace Blood_of_Christ
             yVelocity += gravity;
         }
 
+        #region Player Physics
         /// <summary>
         /// Player physics to move on ground and collide to wall
         /// </summary>
@@ -179,8 +180,9 @@ namespace Blood_of_Christ
                 }
             }
         }
+        #endregion
 
-            public void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             health -= damage;
             if (health < 0)
