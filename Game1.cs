@@ -19,14 +19,17 @@ namespace Blood_of_Christ
         private KeyboardState prevKey;
         private KeyboardState currentKey;
 
-        //for debug
+        //for debug ONLY
         private SpriteFont debugFont;
+        private double playerHealth;
+        private Rectangle rect_player;
 
-        //for priest
+        //for priest and attack
         private Texture2D tex_priest;
         private Texture2D demo_texPriest;
         private Rectangle rect_priest;
         private Priest priest;
+        Rectangle priestPrevPosition;
 
         // player
         private Player player;
@@ -59,6 +62,8 @@ namespace Blood_of_Christ
             platforms = new List<Platform>();
             doors = new List<Door>();
             keys = new List<Key>();
+            windowWidth = GraphicsDevice.Viewport.Width;
+            windowHeight = GraphicsDevice.Viewport.Height;
 
             // using the fireball texture as a placeholder for player
             tex_fireball = Content.Load<Texture2D>("fireball");
@@ -104,7 +109,9 @@ namespace Blood_of_Christ
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
             priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
-
+            priestPrevPosition = priest.Position;
+            //DEBUG PURPOSES
+            rect_player = new Rectangle(100, 0, 50, 50);
             debugFont = Content.Load<SpriteFont>("debug font");
         }
 
@@ -118,7 +125,25 @@ namespace Blood_of_Christ
             player.ResetY = 100;
             player.Update(gameTime);
 
+            
             priest.Update(gameTime);
+
+            //DEBUG ONLY
+            playerHealth = player.Health;
+            //to update rect values
+            rect_player = player.Position;
+
+            //To make sure that damage is taken only when player touches the priest ONCE
+            Rectangle priestCurrentPos = priest.Position;
+
+            //If player comes in contact with the priest, he loses health
+            if (rect_player.Intersects(priestPrevPosition) &&
+                !player.Position.Intersects(priestCurrentPos))
+            {
+                double healthLost = player.Health * 0.5;
+                player.Health -= (int)healthLost;
+            }
+
             rect_health.Width = (int)(player.Health * 2.5);
             foreach (Platform platform in platforms)
             {
@@ -138,8 +163,10 @@ namespace Blood_of_Christ
                 }
             }
             player.PrevPos = player.Position;
-            
+
+            //priestPrevPosition = priestCurrentPos;
             base.Update(gameTime);
+            priestPrevPosition = priestCurrentPos;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -153,6 +180,13 @@ namespace Blood_of_Christ
                 rect_health, 
                 Color.White);
             player.Draw(_spriteBatch);
+
+            //health levels in nums for testing
+            _spriteBatch.DrawString(debugFont,
+                                    $"",
+                                    new Vector2(windowWidth - 100, 0),
+                                    Color.Black);
+            
 
             //enemy
             priest.Draw(_spriteBatch);
