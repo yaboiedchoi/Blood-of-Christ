@@ -15,23 +15,24 @@ namespace Blood_of_Christ
     public delegate void OnButtonClickDelegate();
     internal class Button
     {
-        // Button position
-        private float xValue;
-        private float yValue;
+        // Button position / texture
+        private Rectangle rect;
 
         // Button color
         private Color buttonColor;
         private Color hoveredColor;
         private Color pressedColor;
 
-        // Text content
+        private Color currentColor;
+
+        // Text content / position
         private string text;
         private SpriteFont font;
         private Color textColor;
+        private Vector2 textLocation;
 
-        // Text position
-        private float textXValue;
-        private float textYValue;
+        // Input
+        private MouseState prevMState;
 
         /// <summary>
         /// On button click event
@@ -39,80 +40,82 @@ namespace Blood_of_Christ
         public event OnButtonClickDelegate OnButtonClick;
 
         /// <summary>
-        /// returns the x value of the button, setting the value moves the button, and moves the text in relation
+        /// returns the x value of the button, setting the value moves the button
         /// </summary>
-        public float X
+        public int X
         {
             get
             {
-                return xValue;
+                return rect.X;
             }
             set
             {
-                float previousXValue = xValue;
-                xValue = value;
-                float differenceInXValues = xValue - previousXValue;
-                textXValue += differenceInXValues;
+                rect.X = value;
             }
         }
         /// <summary>
-        /// returns the y value of the button, setting the value moves the button, and moves the text in relation
+        /// returns the y value of the button, setting the value moves the button
         /// </summary>
-        public float Y
+        public int Y
         {
             get
             {
-                return yValue;
+                return rect.Y;
             }
             set
             {
-                float previousYValue = yValue;
-                yValue = value;
-                float differenceInYValues = yValue - previousYValue;
-                textYValue += differenceInYValues;
+                rect.Y = value;
             }
         }
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public Button()
+        public Button(GraphicsDevice gd, Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
         {
-            xValue = 0;
-            yValue = 0;
-            buttonColor = Color.Pink;
-            hoveredColor = Color.White;
-            pressedColor = Color.Red;
-            text = null;
-            font = null;
-            textColor = Color.White;
-            textXValue = 0;
-            textYValue = 0;
-        }
-        /// <summary>
-        /// Perameterized constructor
-        /// </summary>
-        /// <param name="xValue">x coordinate of the button</param>
-        /// <param name="yValue">y coordinate of the button</param>
-        /// <param name="buttonColor">color of the button</param>
-        /// <param name="hoveredColor">color of the button when hovered with mouse</param>
-        /// <param name="pressedColor">color of the button when pressed</param>
-        /// <param name="text">text over the button</param>
-        /// <param name="font">font of the text</param>
-        /// <param name="textColor">color of the text</param>
-        /// <param name="textXValue">text x value</param>
-        /// <param name="textYValue">text y value</param>
-        public Button(float xValue, float yValue, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor, float textXValue, float textYValue, float x, float y)
-        {
-            this.xValue = xValue;
-            this.yValue = yValue;
+            this.rect = rect;
             this.buttonColor = buttonColor;
             this.hoveredColor = hoveredColor;
             this.pressedColor = pressedColor;
             this.text = text;
             this.font = font;
             this.textColor = textColor;
-            this.textXValue = textXValue;
-            this.textYValue = textYValue;
+
+            currentColor = buttonColor;
+
+            Vector2 textSize = font.MeasureString(text);
+            textLocation = new Vector2(
+                                      (rect.X + rect.Width / 2) - textSize.X / 2,
+                                      (rect.Y + rect.Height / 2) - textSize.Y / 2
+                                      );
+        }
+        public void Update()
+        {
+            // grabs mouse current state
+            MouseState mState = Mouse.GetState();
+
+            if (((mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed) || // if button is pressed via right or left click
+                 (mState.RightButton == ButtonState.Released && prevMState.RightButton == ButtonState.Pressed)) &&
+                  rect.Contains(mState.Position))
+            {
+                currentColor = pressedColor;
+                if(OnButtonClick != null)
+                {
+                    OnButtonClick();
+                }
+            }
+            else if (rect.Contains(mState.Position)) // if the mouse is on top of the button
+            {
+                currentColor = hoveredColor;
+            }
+            else if (currentColor != buttonColor)// resets the color back to original color
+            {
+                currentColor = buttonColor;
+            }
+            
+            // grabs previous mouse state
+            prevMState = mState;
+        }
+        public void Draw(SpriteBatch sb)
+        {
+            sb.Draw(null, rect, currentColor);
+            sb.DrawString(font, text, textLocation, textColor);
         }
     }
 }
