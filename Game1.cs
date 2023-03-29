@@ -204,9 +204,8 @@ namespace Blood_of_Christ
                         //double healthLost = player.Health * 0.5;
                         player.Health -= (int)healthLost;
                     }
+                    
                     //To make sure that damage is taken only when player touches the priest ONCE
-                    //Rectangle priestCurrentPos = priest.Position;
-
                     //If player comes in contact with the priest, he loses health
                     if (rect_player.Intersects(priestPrevPosition) &&
                         !player.Position.Intersects(priestCurrentPos))
@@ -279,6 +278,7 @@ namespace Blood_of_Christ
                     //enemy
                     priest.Draw(_spriteBatch);
 
+                    //DETECTOR ISSUE!!!!!
                     _spriteBatch.Draw(tex_detector,
                                        new Vector2(300, windowHeight / 2),
                                        Color.Black);
