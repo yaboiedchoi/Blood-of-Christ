@@ -67,7 +67,17 @@ namespace Blood_of_Christ
                 rect.Y = value;
             }
         }
-        public Button(GraphicsDevice gd, Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
+        /// <summary>
+        /// Button perameterized constructor
+        /// </summary>
+        /// <param name="rect">rectangle location of button</param>
+        /// <param name="buttonColor">default color of the button</param>
+        /// <param name="hoveredColor">button color when mouse hovered</param>
+        /// <param name="pressedColor">button color when pressed</param>
+        /// <param name="text">text on button</param>
+        /// <param name="font">font of button</param>
+        /// <param name="textColor">color of text</param>
+        public Button(Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
         {
             this.rect = rect;
             this.buttonColor = buttonColor;
@@ -85,6 +95,9 @@ namespace Blood_of_Christ
                                       (rect.Y + rect.Height / 2) - textSize.Y / 2
                                       );
         }
+        /// <summary>
+        /// Updates the button depending on its state
+        /// </summary>
         public void Update()
         {
             // grabs mouse current state
@@ -112,6 +125,10 @@ namespace Blood_of_Christ
             // grabs previous mouse state
             prevMState = mState;
         }
+        /// <summary>
+        /// Draws the buttons
+        /// </summary>
+        /// <param name="sb">spritebatch</param>
         public void Draw(SpriteBatch sb)
         {
             sb.Draw(null, rect, currentColor);
