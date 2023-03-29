@@ -23,7 +23,6 @@ namespace Blood_of_Christ
         private bool isDead;        // if the player is currently dead (health is less than 0)
         private bool isBat;         // if the player is in a bat form
         private double batTime;      // timer for how long bat can stay a bat
-        private int timeElapsed;    // time for how long the player has been a bat
 
         // Property
         public int Health
@@ -86,7 +85,7 @@ namespace Blood_of_Christ
             health = 100;
             isDead = false;
             isBat = false;
-            batTime = 7;
+            batTime = 5;
             playerSize = position.Width;
         }
 
@@ -114,7 +113,7 @@ namespace Blood_of_Christ
                 position.Width = playerSize;
                 position.Height = playerSize;
 
-                if (batTime < 7)
+                if (batTime < 5)
                 {
                     batTime += gameTime.ElapsedGameTime.TotalSeconds;
                 }
@@ -261,7 +260,7 @@ namespace Blood_of_Christ
             position.Y = (int)y;
             isDead = false;
             isBat = false;
-            batTime = 7;
+            batTime = 5;
         }
     }
 }

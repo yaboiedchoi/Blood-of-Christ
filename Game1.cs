@@ -34,8 +34,8 @@ namespace Blood_of_Christ
         // player
         private Player player;
         private Rectangle rect_health;
+        private Rectangle rect_batTimer;
         private Texture2D tex_bar;
-        //private Priest priest;
 
         // platforms
         private List<Platform> platforms;
@@ -69,8 +69,6 @@ namespace Blood_of_Christ
             windowWidth = GraphicsDevice.Viewport.Width;
             windowHeight = GraphicsDevice.Viewport.Height;
 
-            // using the fireball texture as a placeholder for player
-            tex_fireball = Content.Load<Texture2D>("fireball");
             base.Initialize();
         }
 
@@ -109,6 +107,7 @@ namespace Blood_of_Christ
             platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_bar, new Rectangle(500, 0, 50, 225)));
             rect_health = new Rectangle(10, 10, 100, 20);
+            rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
@@ -133,10 +132,10 @@ namespace Blood_of_Christ
             player.ResetX = 100;
             player.ResetY = 100;
             player.Update(gameTime);
+           
             // button test
             button.Update(gameTime);
 
-            
             priest.Update(gameTime);
 
             //DEBUG ONLY
@@ -156,6 +155,8 @@ namespace Blood_of_Christ
             }
 
             rect_health.Width = (int)(player.Health * 2.5);
+            rect_batTimer.Width = (int)(player.BatTime * 50);
+
             foreach (Platform platform in platforms)
             {
                 player.Physics(platform.Position, _graphics);
@@ -190,6 +191,10 @@ namespace Blood_of_Christ
                 tex_bar, 
                 rect_health, 
                 Color.White);
+            _spriteBatch.Draw(
+                tex_bar,
+                rect_batTimer,
+                Color.AliceBlue);
             player.Draw(_spriteBatch);
 
             //health levels in nums for testing
