@@ -7,6 +7,7 @@ namespace Blood_of_Christ
 {
     public class Game1 : Game
     {
+        // NOTE: we should probably move all of these to manager classes later
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
