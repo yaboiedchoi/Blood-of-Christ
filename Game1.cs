@@ -34,9 +34,15 @@ namespace Blood_of_Christ
         //private Priest priest;
 
         // platforms
-        List<Platform> platforms;
-        int windowWidth;
-        int windowHeight;
+        private List<Platform> platforms;
+        private List<Door> doors;
+        private Texture2D tex_platform;
+        private int windowWidth;
+        private int windowHeight;
+
+        // collectibles
+        private List<Key> keys;
+        private Texture2D tex_key;
 
         public Game1()
         {
@@ -50,6 +56,8 @@ namespace Blood_of_Christ
             // TODO: Add your initialization logic here
             prevKey = Keyboard.GetState();
             platforms = new List<Platform>();
+            doors = new List<Door>();
+            keys = new List<Key>();
 
             // using the fireball texture as a placeholder for player
             tex_fireball = Content.Load<Texture2D>("fireball");
@@ -64,16 +72,28 @@ namespace Blood_of_Christ
             tex_fireball = Content.Load<Texture2D>("fireball");
             tex_priest = Content.Load<Texture2D>("back up priest");
             tex_bar = Content.Load<Texture2D>("health_bar_placeholder");
+            tex_platform = Content.Load<Texture2D>("platform");
+            tex_key = Content.Load<Texture2D>("key");
 
             //TODO: Not sure about how to place the fireballs- probably from right to left
             rect_fireball = new Rectangle(0,0, tex_fireball.Width/5, tex_fireball.Height/5);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height/5);
             
             // player
-            player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(0, 300, 300, 50)));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(400, 300, 500, 50)));
-            platforms.Add(new Platform(tex_fireball, new Rectangle(500, 0, 50, 200)));
+            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
+
+            // platforms
+            platforms.Add(new Platform(tex_platform, new Rectangle(0, 300, 300, 50)));
+            platforms.Add(new Platform(tex_platform, new Rectangle(400, 300, 500, 50)));
+            platforms.Add(new Platform(tex_platform, new Rectangle(500, 0, 50, 200)));
+
+            // doors[i] corresponds to keys[i]
+            // Ex) keys[3] will be used to open doors[3]
+            doors.Add(new Door(tex_platform, new Rectangle(300, 300, 100, 50)));
+            doors.Add(new Door(tex_platform, new Rectangle(500, 200, 50, 100)));
+            keys.Add(new Key(tex_key, new Rectangle(700, 400, 50, 50)));
+            keys.Add(new Key(tex_key, new Rectangle(0, 100, 50, 50)));
+
             rect_health = new Rectangle(10, 10, 100, 20);
 
             //Adding for priest
@@ -99,6 +119,19 @@ namespace Blood_of_Christ
             {
                 player.Physics(platform.Position, _graphics);
             }
+            foreach (Door door in doors)
+            {
+                player.Physics(door.Position, _graphics);
+            }
+            for (int i = 0; i < keys.Count; i++)
+            {
+                if (keys[i].CheckCollision(player))
+                {
+                    keys.Remove(keys[i]);
+                    doors.Remove(doors[i]);
+                    i--;
+                }
+            }
             player.PrevPos = player.Position;
             
             base.Update(gameTime);
@@ -122,6 +155,14 @@ namespace Blood_of_Christ
             foreach (Platform platform in platforms)
             {
                 platform.Draw(_spriteBatch);
+            }
+            foreach (Door door in doors)
+            {
+                door.Draw(_spriteBatch);
+            }
+            foreach (Key key in keys)
+            {
+                key.Draw(_spriteBatch);
             }
 
 
