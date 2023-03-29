@@ -121,6 +121,11 @@ namespace Blood_of_Christ
             yVelocity += gravity;
         }
 
+        /// <summary>
+        /// Player physics to move on ground and collide to wall
+        /// </summary>
+        /// <param name="platform">Platform or door as obstacles</param>
+        /// <param name="_graphics">GraphicDeviceManager</param>
         public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
         {
             while ((prevPos.X + prevPos.Width <= platform.X &&                                 // If player was left from the wall
