@@ -45,6 +45,10 @@ namespace Blood_of_Christ
         private List<Key> keys;
         private Texture2D tex_key;
 
+        // button example
+        private Button button;
+        private Texture2D debugButtonTexture;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -101,7 +105,10 @@ namespace Blood_of_Christ
             //demo_texPriest = Content.Load<Texture2D>("priest");
             priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
 
-            debugFont = Content.Load<SpriteFont>("debug font");
+            debugFont = Content.Load<SpriteFont>("debugFont2");
+            debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
+            // button test
+            button = new Button(new Rectangle(50, 150, 50, 20), debugButtonTexture, Color.Red, Color.Orange, Color.DarkRed, "test", debugFont, Color.Black);
         }
 
         protected override void Update(GameTime gameTime)
@@ -113,6 +120,8 @@ namespace Blood_of_Christ
             player.ResetX = 100;
             player.ResetY = 100;
             player.Update(gameTime);
+            // button test
+            button.Update(gameTime);
 
             priest.Update(gameTime);
             rect_health.Width = (int)(player.Health * 2.5);
@@ -149,6 +158,9 @@ namespace Blood_of_Christ
                 rect_health, 
                 Color.White);
             player.Draw(_spriteBatch);
+
+            //button test
+            button.Draw(_spriteBatch);
 
             //enemy
             priest.Draw(_spriteBatch);

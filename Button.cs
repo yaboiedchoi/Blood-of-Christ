@@ -17,6 +17,7 @@ namespace Blood_of_Christ
     {
         // Button position / texture
         private Rectangle rect;
+        private Texture2D texture;
 
         // Button color
         private Color buttonColor;
@@ -77,8 +78,9 @@ namespace Blood_of_Christ
         /// <param name="text">text on button</param>
         /// <param name="font">font of button</param>
         /// <param name="textColor">color of text</param>
-        public Button(Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
+        public Button(Rectangle rect, Texture2D texture, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
         {
+            this.texture = texture;
             this.rect = rect;
             this.buttonColor = buttonColor;
             this.hoveredColor = hoveredColor;
@@ -89,35 +91,44 @@ namespace Blood_of_Christ
 
             currentColor = buttonColor;
 
-            Vector2 textSize = font.MeasureString(text);
-            textLocation = new Vector2(
-                                      (rect.X + rect.Width / 2) - textSize.X / 2,
-                                      (rect.Y + rect.Height / 2) - textSize.Y / 2
-                                      );
+            if(text != null)
+            {
+                Vector2 textSize = font.MeasureString(text);
+                textLocation = new Vector2(
+                                          (rect.X + rect.Width / 2) - textSize.X / 2,
+                                          (rect.Y + rect.Height / 2) - textSize.Y / 2
+                                          );
+            }
         }
         /// <summary>
         /// Updates the button depending on its state
         /// </summary>
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             // grabs mouse current state
             MouseState mState = Mouse.GetState();
 
-            if (((mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed) || // if button is pressed via right or left click
-                 (mState.RightButton == ButtonState.Released && prevMState.RightButton == ButtonState.Pressed)) &&
-                  rect.Contains(mState.Position))
+            if (rect.Contains(mState.Position))
             {
-                currentColor = pressedColor;
-                if(OnButtonClick != null)
+                if ((mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed) || // if button is released after being pressed
+                    (mState.RightButton == ButtonState.Released && prevMState.RightButton == ButtonState.Pressed))
                 {
-                    OnButtonClick();
+                    if (OnButtonClick != null)
+                    {
+                        OnButtonClick();
+                    }
+                }
+                else if ((mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Pressed) || // if button is being held
+                         (mState.RightButton == ButtonState.Pressed && prevMState.RightButton == ButtonState.Pressed))
+                {
+                    currentColor = pressedColor;
+                }
+                else // if the mouse is on top of the button
+                {
+                    currentColor = hoveredColor;
                 }
             }
-            else if (rect.Contains(mState.Position)) // if the mouse is on top of the button
-            {
-                currentColor = hoveredColor;
-            }
-            else if (currentColor != buttonColor)// resets the color back to original color
+            else // resets the color back to original color
             {
                 currentColor = buttonColor;
             }
@@ -131,7 +142,7 @@ namespace Blood_of_Christ
         /// <param name="sb">spritebatch</param>
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(null, rect, currentColor);
+            sb.Draw(texture, rect, currentColor);
             sb.DrawString(font, text, textLocation, textColor);
         }
     }
