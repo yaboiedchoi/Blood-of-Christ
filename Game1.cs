@@ -44,6 +44,8 @@ namespace Blood_of_Christ
         private Rectangle rect_health;
         private Rectangle rect_batTimer;
         private Texture2D tex_bar;
+        private Rectangle rect_playerPrevPos; //For detectors to set off the fireballs
+        //private Priest priest;
 
         // platforms
         private List<Platform> platforms;
@@ -56,6 +58,10 @@ namespace Blood_of_Christ
         private List<Key> keys;
         private Texture2D tex_key;
 
+        //attack system
+        private Texture2D tex_detector;
+        private Rectangle rect_detector;
+        private Rectangle rect_checksForDetection;
         // button example
         private Button button;
         private Texture2D debugButtonTexture;
@@ -91,11 +97,23 @@ namespace Blood_of_Christ
             tex_bar = Content.Load<Texture2D>("health_bar_placeholder");
             tex_platform = Content.Load<Texture2D>("platform");
             tex_key = Content.Load<Texture2D>("key");
+            tex_detector = Content.Load<Texture2D>("detector");
 
-            //TODO: Not sure about how to place the fireballs- probably from right to left
+            //Attack system
             rect_fireball = new Rectangle(0,0, tex_fireball.Width/5, tex_fireball.Height/5);
+            rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
+            rect_checksForDetection = new Rectangle(10, 
+                                                    0,
+                                                    //width of how much it can detect
+                                                    tex_detector.Width,
+                                                    //covers the whole length of screen
+                                                    windowHeight);                         
+
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height/5);
             
+            // player
+            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
+            rect_playerPrevPos = rect_player;                               //for fireballs detection
 
             // doors[i] corresponds to keys[i]
             // Ex) keys[3] will be used to open doors[3]
@@ -122,6 +140,8 @@ namespace Blood_of_Christ
             //DEBUG PURPOSES
             rect_player = new Rectangle(100, 0, 50, 50);
             debugFont = Content.Load<SpriteFont>("debug font");
+
+            
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
@@ -153,11 +173,26 @@ namespace Blood_of_Christ
 
                     priest.Update(gameTime);
 
+            //For fireballs
+            Rectangle playerCurrentPos = player.Position;
+
                     //DEBUG ONLY
                     playerHealth = player.Health;
                     //to update rect values
                     rect_player = player.Position;
 
+            //To make sure that damage is taken only when player touches the priest ONCE
+            Rectangle priestCurrentPos = priest.Position;
+            //If player comes in contact with the priest, he loses health
+            //AS OF NOW:: PRIEST CAN ATTACK FOR 20 points ONLY
+            //IF WE CHANGE PLAYER HEALTH AS A DOUBLE, THEN IT WILL GO TO 0
+            if (rect_player.Intersects(priestPrevPosition) &&
+                !player.Position.Intersects(priestCurrentPos))
+            {
+                double healthLost = 20;
+                //double healthLost = player.Health * 0.5;
+                player.Health -= (int)healthLost;
+            }
                     //To make sure that damage is taken only when player touches the priest ONCE
                     Rectangle priestCurrentPos = priest.Position;
 
