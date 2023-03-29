@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Blood_of_Christ
 {
+    //delegate
+    public delegate void Attack();
     public class Priest: GameObject
     {
         private int windowWidth;
@@ -27,7 +29,8 @@ namespace Blood_of_Christ
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.texture = texture;
-            this.position = position;
+            //Position = position;
+            this.position = Position;
         }
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace Blood_of_Christ
         {
             int deltaX = 5;
 
+
             //If priest reaches the edge of the window, he bounces back
             if(position.X + position.Width > windowWidth)
             {
@@ -67,13 +71,18 @@ namespace Blood_of_Christ
                 direction = 1;
             }
             position.X += (direction * deltaX);
+            Position = position;
+            //position.X = Position.X;
         }
 
-        public void Attack(Rectangle playerRect)
+        /// <summary>
+        /// Reduces player health by 50 percent
+        /// </summary>
+        public void Attack(GameObject player)
         {
-            if (position.Intersects(playerRect))
+            if (position.Intersects(player.Position))
             {
-
+               
             }
         }
 
