@@ -5,11 +5,19 @@ using System.Collections.Generic;
 
 namespace Blood_of_Christ
 {
+    public enum GameState
+    {
+        Title,
+        Game
+    }
     public class Game1 : Game
     {
         // NOTE: we should probably move all of these to manager classes later
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        // Game State
+        private GameState gs;
 
         //for fireballs
         private Texture2D tex_fireball;
@@ -69,6 +77,7 @@ namespace Blood_of_Christ
             windowWidth = GraphicsDevice.Viewport.Width;
             windowHeight = GraphicsDevice.Viewport.Height;
 
+            gs = GameState.Title;
             base.Initialize();
         }
 
@@ -120,7 +129,11 @@ namespace Blood_of_Christ
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
             // button test
-            button = new Button(new Rectangle(50, 150, 50, 20), debugButtonTexture, Color.Red, Color.Orange, Color.DarkRed, "test", debugFont, Color.Black);
+            button = new Button(new Rectangle(50, 150, 50, 20), debugButtonTexture, Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
+
+            // hooking up
+
+            button.OnButtonClick += this.SetGameState;
         }
 
         protected override void Update(GameTime gameTime)
@@ -129,103 +142,126 @@ namespace Blood_of_Christ
                 Exit();
 
             // TODO: Add your update logic here
-            player.ResetX = 100;
-            player.ResetY = 100;
-            player.Update(gameTime);
-           
-            // button test
-            button.Update(gameTime);
-
-            priest.Update(gameTime);
-
-            //DEBUG ONLY
-            playerHealth = player.Health;
-            //to update rect values
-            rect_player = player.Position;
-
-            //To make sure that damage is taken only when player touches the priest ONCE
-            Rectangle priestCurrentPos = priest.Position;
-
-            //If player comes in contact with the priest, he loses health
-            if (rect_player.Intersects(priestPrevPosition) &&
-                !player.Position.Intersects(priestCurrentPos))
+            switch (gs)
             {
-                double healthLost = player.Health * 0.5;
-                player.Health -= (int)healthLost;
-            }
+                case GameState.Title: // title
+                    // button test
+                    button.Update(gameTime);
+                    break;
+                case GameState.Game: // game
+                    player.ResetX = 100;
+                    player.ResetY = 100;
+                    player.Update(gameTime);
 
-            rect_health.Width = (int)(player.Health * 2.5);
-            rect_batTimer.Width = (int)(player.BatTime * 50);
 
-            foreach (Platform platform in platforms)
-            {
-                player.Physics(platform.Position, _graphics);
-            }
-            foreach (Door door in doors)
-            {
-                player.Physics(door.Position, _graphics);
-            }
-            for (int i = 0; i < keys.Count; i++)
-            {
-                if (keys[i].CheckCollision(player))
-                {
-                    keys.Remove(keys[i]);
-                    doors.Remove(doors[i]);
-                    i--;
-                }
-            }
-            player.PrevPos = player.Position;
+                    priest.Update(gameTime);
 
-            //priestPrevPosition = priestCurrentPos;
-            base.Update(gameTime);
-            priestPrevPosition = priestCurrentPos;
+                    //DEBUG ONLY
+                    playerHealth = player.Health;
+                    //to update rect values
+                    rect_player = player.Position;
+
+                    //To make sure that damage is taken only when player touches the priest ONCE
+                    Rectangle priestCurrentPos = priest.Position;
+
+                    //If player comes in contact with the priest, he loses health
+                    if (rect_player.Intersects(priestPrevPosition) &&
+                        !player.Position.Intersects(priestCurrentPos))
+                    {
+                        double healthLost = player.Health * 0.5;
+                        player.Health -= (int)healthLost;
+                    }
+
+                    rect_health.Width = (int)(player.Health * 2.5);
+                    rect_batTimer.Width = (int)(player.BatTime * 50);
+
+                    foreach (Platform platform in platforms)
+                    {
+                        player.Physics(platform.Position, _graphics);
+                    }
+                    foreach (Door door in doors)
+                    {
+                        player.Physics(door.Position, _graphics);
+                    }
+                    for (int i = 0; i < keys.Count; i++)
+                    {
+                        if (keys[i].CheckCollision(player))
+                        {
+                            keys.Remove(keys[i]);
+                            doors.Remove(doors[i]);
+                            i--;
+                        }
+                    }
+                    player.PrevPos = player.Position;
+
+                    //priestPrevPosition = priestCurrentPos;
+                    base.Update(gameTime);
+                    priestPrevPosition = priestCurrentPos;
+                    break;
+            }
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin();            
-            _spriteBatch.Draw(
-                tex_bar, 
-                rect_health, 
-                Color.White);
-            _spriteBatch.Draw(
-                tex_bar,
-                rect_batTimer,
-                Color.AliceBlue);
-            player.Draw(_spriteBatch);
+            switch (gs)
+            {
+                case GameState.Title: // title
 
-            //health levels in nums for testing
-            _spriteBatch.DrawString(debugFont,
-                                    $"",
-                                    new Vector2(windowWidth - 100, 0),
-                                    Color.Black);
+                    //button test
+                    button.Draw(_spriteBatch);
+                    break;
+                case GameState.Game: // game
+                    _spriteBatch.Draw(
+                        tex_bar,
+                        rect_health,
+                        Color.White);
+                    _spriteBatch.Draw(
+                        tex_bar,
+                        rect_batTimer,
+                        Color.AliceBlue);
+                    player.Draw(_spriteBatch);
+
+                    //health levels in nums for testing
+                    _spriteBatch.DrawString(debugFont,
+                                            $"",
+                                            new Vector2(windowWidth - 100, 0),
+                                            Color.Black);
+
+
+
+                    //enemy
+                    priest.Draw(_spriteBatch);
+
+                    foreach (Platform platform in platforms)
+                    {
+                        platform.Draw(_spriteBatch);
+                    }
+                    foreach (Door door in doors)
+                    {
+                        door.Draw(_spriteBatch);
+                    }
+                    foreach (Key key in keys)
+                    {
+                        key.Draw(_spriteBatch);
+                    }
+
+                    break;
+            }
             
-
-            //button test
-            button.Draw(_spriteBatch);
-
-            //enemy
-            priest.Draw(_spriteBatch);
-
-            foreach (Platform platform in platforms)
-            {
-                platform.Draw(_spriteBatch);
-            }
-            foreach (Door door in doors)
-            {
-                door.Draw(_spriteBatch);
-            }
-            foreach (Key key in keys)
-            {
-                key.Draw(_spriteBatch);
-            }
-
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        /// <summary>
+        /// simple event method (will be changed later
+        /// </summary>
+        protected void SetGameState()
+        {
+            gs = GameState.Game;
         }
     }
 } 
