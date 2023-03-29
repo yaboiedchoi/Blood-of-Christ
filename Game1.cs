@@ -87,27 +87,24 @@ namespace Blood_of_Christ
             rect_fireball = new Rectangle(0,0, tex_fireball.Width/5, tex_fireball.Height/5);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height/5);
             
-            // player
-            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
-
-            // platforms
-            platforms.Add(new Platform(tex_platform, new Rectangle(0, 300, 300, 50)));
-            platforms.Add(new Platform(tex_platform, new Rectangle(400, 300, 500, 50)));
-            platforms.Add(new Platform(tex_platform, new Rectangle(500, 0, 50, 200)));
 
             // doors[i] corresponds to keys[i]
             // Ex) keys[3] will be used to open doors[3]
             doors.Add(new Door(tex_platform, new Rectangle(300, 300, 100, 50)));
             doors.Add(new Door(tex_platform, new Rectangle(500, 200, 50, 100)));
             keys.Add(new Key(tex_key, new Rectangle(700, 400, 50, 50)));
-            keys.Add(new Key(tex_key, new Rectangle(0, 100, 50, 50)));
+            keys.Add(new Key(tex_key, new Rectangle(600, 100, 50, 50)));
 
+            // player
             player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
-            platforms.Add(new Platform(tex_bar, new Rectangle(0, 300, 300, 50)));
-            platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
-            platforms.Add(new Platform(tex_bar, new Rectangle(500, 0, 50, 225)));
             rect_health = new Rectangle(10, 10, 100, 20);
             rect_batTimer = new Rectangle(10, 40, 100, 20);
+
+            //platforms
+            platforms.Add(new Platform(tex_bar, new Rectangle(0, 300, 300, 50)));
+            platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
+            platforms.Add(new Platform(tex_bar, new Rectangle(500, 27, 50, 173)));
+
 
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
