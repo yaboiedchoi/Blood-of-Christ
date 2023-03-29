@@ -22,6 +22,7 @@ namespace Blood_of_Christ
         //for fireballs
         private Texture2D tex_fireball;
         private Rectangle rect_fireball;
+        private Fireballs fireballs;
 
         //Keys
         private KeyboardState prevKey;
@@ -100,17 +101,17 @@ namespace Blood_of_Christ
             tex_detector = Content.Load<Texture2D>("detector");
 
             //Attack system
-            rect_fireball = new Rectangle(0,0, tex_fireball.Width/5, tex_fireball.Height/5);
+            rect_fireball = new Rectangle(0, 0, tex_fireball.Width / 5, tex_fireball.Height / 5);
             rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
-            rect_checksForDetection = new Rectangle(10, 
+            rect_checksForDetection = new Rectangle(10,
                                                     0,
                                                     //width of how much it can detect
                                                     tex_detector.Width,
                                                     //covers the whole length of screen
-                                                    windowHeight);                         
+                                                    windowHeight);
 
-            rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height/5);
-            
+            rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
+
             // player
             player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
             rect_playerPrevPos = rect_player;                               //for fireballs detection
@@ -132,6 +133,10 @@ namespace Blood_of_Christ
             platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_bar, new Rectangle(500, 27, 50, 173)));
 
+            //fireball
+            fireballs = new Fireballs(tex_fireball,
+                                      new Rectangle(windowWidth, windowHeight, tex_fireball.Width, tex_fireball.Height));
+                                      
 
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
@@ -141,7 +146,7 @@ namespace Blood_of_Christ
             rect_player = new Rectangle(100, 0, 50, 50);
             debugFont = Content.Load<SpriteFont>("debug font");
 
-            
+
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
@@ -173,28 +178,34 @@ namespace Blood_of_Christ
 
                     priest.Update(gameTime);
 
-            //For fireballs
-            Rectangle playerCurrentPos = player.Position;
+                    //IF player crosses through the detectors; fireballs are activated
+                    Rectangle playerCurrentPos = player.Position;
+                    if(rect_checksForDetection.Intersects(player.PrevPos) &&
+                        !rect_checksForDetection.Intersects(playerCurrentPos))
+                    {
+                        fireballs.Update(gameTime);
+                    }
+
 
                     //DEBUG ONLY
                     playerHealth = player.Health;
                     //to update rect values
                     rect_player = player.Position;
 
-            //To make sure that damage is taken only when player touches the priest ONCE
-            Rectangle priestCurrentPos = priest.Position;
-            //If player comes in contact with the priest, he loses health
-            //AS OF NOW:: PRIEST CAN ATTACK FOR 20 points ONLY
-            //IF WE CHANGE PLAYER HEALTH AS A DOUBLE, THEN IT WILL GO TO 0
-            if (rect_player.Intersects(priestPrevPosition) &&
-                !player.Position.Intersects(priestCurrentPos))
-            {
-                double healthLost = 20;
-                //double healthLost = player.Health * 0.5;
-                player.Health -= (int)healthLost;
-            }
                     //To make sure that damage is taken only when player touches the priest ONCE
                     Rectangle priestCurrentPos = priest.Position;
+                    //If player comes in contact with the priest, he loses health
+                    //AS OF NOW:: PRIEST CAN ATTACK FOR 20 points ONLY
+                    //IF WE CHANGE PLAYER HEALTH AS A DOUBLE, THEN IT WILL GO TO 0
+                    if (rect_player.Intersects(priestPrevPosition) &&
+                        !player.Position.Intersects(priestCurrentPos))
+                    {
+                        double healthLost = 20;
+                        //double healthLost = player.Health * 0.5;
+                        player.Health -= (int)healthLost;
+                    }
+                    //To make sure that damage is taken only when player touches the priest ONCE
+                    //Rectangle priestCurrentPos = priest.Position;
 
                     //If player comes in contact with the priest, he loses health
                     if (rect_player.Intersects(priestPrevPosition) &&
@@ -231,7 +242,7 @@ namespace Blood_of_Christ
                     priestPrevPosition = priestCurrentPos;
                     break;
             }
-            
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -268,6 +279,18 @@ namespace Blood_of_Christ
                     //enemy
                     priest.Draw(_spriteBatch);
 
+                    _spriteBatch.Draw(tex_detector,
+                                       new Vector2(300, windowHeight / 2),
+                                       Color.Black);
+
+                    //IF player crosses through the detectors; fireballs are activated
+                    Rectangle playerCurrentPos = player.Position;
+                    if (rect_checksForDetection.Intersects(player.PrevPos) &&
+                        !rect_checksForDetection.Intersects(playerCurrentPos))
+                    {
+                        fireballs.Update(gameTime);
+                    }
+
                     foreach (Platform platform in platforms)
                     {
                         platform.Draw(_spriteBatch);
@@ -283,7 +306,7 @@ namespace Blood_of_Christ
 
                     break;
             }
-            
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -296,4 +319,4 @@ namespace Blood_of_Christ
             gs = GameState.Game;
         }
     }
-} 
+}
