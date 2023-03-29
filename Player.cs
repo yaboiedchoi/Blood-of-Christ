@@ -22,14 +22,18 @@ namespace Blood_of_Christ
         private int resetY;         // Y coordinate for the current level start
         private bool isDead;        // if the player is currently dead (health is less than 0)
         private bool isBat;         // if the player is in a bat form
-        private float batTime       // timer for how long bat can stay a bat
-        KeyboardState prevKbState;
+        private double batTime;      // timer for how long bat can stay a bat
+        private int timeElapsed;    // time for how long the player has been a bat
 
         // Property
         public int Health
         {
             get { return health; }
             set { health = value; }
+        }
+        public double BatTime
+        {
+            get { return batTime; }
         }
         public int X
         {
@@ -82,6 +86,7 @@ namespace Blood_of_Christ
             health = 100;
             isDead = false;
             isBat = false;
+            batTime = 7;
             playerSize = position.Width;
         }
 
@@ -106,6 +111,14 @@ namespace Blood_of_Christ
             //if player is vampire
             if (!isBat)
             {
+                position.Width = playerSize;
+                position.Height = playerSize;
+
+                if (batTime < 7)
+                {
+                    batTime += gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                // changes the player position by the Y velocity
                 position.Y += (int)yVelocity;
                 // transforming to bat
                 if (kbstate.IsKeyDown(Keys.E))
@@ -119,6 +132,12 @@ namespace Blood_of_Christ
             // bat form has additional vertical movement
             if (isBat)
             {
+                batTime -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (batTime <= 0)
+                {
+                    isBat = false;
+                }
+
                 if (kbstate.IsKeyDown(Keys.Up))
                 {
                     position.Y -= 5;
@@ -128,13 +147,13 @@ namespace Blood_of_Christ
                     position.Y += 5;
                 }
 
-                //transforming back to player
-                if (kbstate.IsKeyDown(Keys.E))
+                if (kbstate.IsKeyDown(Keys.W))
                 {
                     position.Width *= 2;
                     position.Height *= 2;
                     isBat = false;
                 }
+
                 yVelocity = 1;
             }
             // basic player movement
@@ -146,9 +165,9 @@ namespace Blood_of_Christ
             {
                 position.X += 5;
             }
-   
+            
+            // adds gravity to the y velocity
             yVelocity += gravity;
-            prevKbState = kbstate;
         }
 
         public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
@@ -235,6 +254,7 @@ namespace Blood_of_Christ
             position.Y = (int)y;
             isDead = false;
             isBat = false;
+            batTime = 7;
         }
     }
 }
