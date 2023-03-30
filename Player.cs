@@ -128,13 +128,15 @@ namespace Blood_of_Christ
                 position.Width = playerSize;
                 position.Height = playerSize;
 
+                // Bat Meter recharges when not in bat form
                 if (batTime < 3)
                 {
-                    batTime += gameTime.ElapsedGameTime.TotalSeconds;
+                    batTime += gameTime.ElapsedGameTime.TotalSeconds/2;
                 }
                 // changes the player position by the Y velocity
                 position.Y += (int)yVelocity;
-                // transforming to bat
+               
+                // transforming into bat
                 if (kbstate.IsKeyDown(Keys.E))
                 {
                     position.Width /= 2;    // bat width is half the size of human
@@ -161,14 +163,15 @@ namespace Blood_of_Christ
                     position.Y += 5;
                 }
 
-                if (kbstate.IsKeyDown(Keys.W))
+                // transforming back into a player
+                if (kbstate.IsKeyDown(Keys.W) && kbstate.IsKeyUp(Keys.E))
                 {
                     position.Width *= 2;
                     position.Height *= 2;
                     isBat = false;
                 }
 
-                yVelocity = 1;
+                yVelocity = -5;
             }
             // basic player movement
             if (kbstate.IsKeyDown(Keys.Left))
@@ -259,7 +262,7 @@ namespace Blood_of_Christ
             {
                 isDead = true;
             }
-            hitTime = 1.5;
+            hitTime = 1;
         }
 
         /// <summary>
@@ -276,7 +279,7 @@ namespace Blood_of_Christ
             position.Y = (int)y;
             isDead = false;
             isBat = false;
-            batTime = 5;
+            batTime = 3;
         }
     }
 }

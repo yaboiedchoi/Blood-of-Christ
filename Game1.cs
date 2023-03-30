@@ -222,7 +222,7 @@ namespace Blood_of_Christ
                     */
 
                     rect_health.Width = (int)(player.Health * 2.5);
-                    rect_batTimer.Width = (int)(player.BatTime * 50);
+                    rect_batTimer.Width = (int)(player.BatTime * 83.3);
 
                     foreach (Platform platform in platforms)
                     {
