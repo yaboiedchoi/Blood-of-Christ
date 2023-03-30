@@ -22,7 +22,8 @@ namespace Blood_of_Christ
         private int resetY;         // Y coordinate for the current level start
         private bool isDead;        // if the player is currently dead (health is less than 0)
         private bool isBat;         // if the player is in a bat form
-        private double batTime;      // timer for how long bat can stay a bat
+        private double batTime;     // timer for how long bat can stay a bat
+        private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
 
         // Property
         public int Health
@@ -76,6 +77,16 @@ namespace Blood_of_Christ
             set { resetY = value; }
         }
 
+        public bool IsDead
+        {
+            get { return isDead; }
+        }
+
+        public double HitTime
+        {
+            get { return hitTime; }
+        }
+
         // Constructor
         public Player(Texture2D texture, Rectangle position)
             : base(texture, position)
@@ -85,8 +96,9 @@ namespace Blood_of_Christ
             health = 100;
             isDead = false;
             isBat = false;
-            batTime = 5;
+            batTime = 3;
             playerSize = position.Width;
+            hitTime = 0;
         }
 
         // Methods
@@ -101,6 +113,9 @@ namespace Blood_of_Christ
         public override void Update(GameTime gameTime)
         {
             KeyboardState kbstate = Keyboard.GetState();
+            // player can only take damage when hitTime = 0.
+            hitTime -= gameTime.ElapsedGameTime.TotalSeconds;
+
            // If player is dead, calls Reset
             if (isDead)
             {
@@ -113,7 +128,7 @@ namespace Blood_of_Christ
                 position.Width = playerSize;
                 position.Height = playerSize;
 
-                if (batTime < 5)
+                if (batTime < 3)
                 {
                     batTime += gameTime.ElapsedGameTime.TotalSeconds;
                 }
@@ -244,6 +259,7 @@ namespace Blood_of_Christ
             {
                 isDead = true;
             }
+            hitTime = 1.5;
         }
 
         /// <summary>

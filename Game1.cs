@@ -181,7 +181,7 @@ namespace Blood_of_Christ
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
                     if(rect_checksForDetection.Intersects(player.PrevPos) &&
-                        !rect_checksForDetection.Intersects(playerCurrentPos))
+                        !rect_checksForDetection.Intersects(player.Position))
                     {
                         fireballs.Update(gameTime);
                     }
@@ -197,14 +197,20 @@ namespace Blood_of_Christ
                     //If player comes in contact with the priest, he loses health
                     //AS OF NOW:: PRIEST CAN ATTACK FOR 20 points ONLY
                     //IF WE CHANGE PLAYER HEALTH AS A DOUBLE, THEN IT WILL GO TO 0
-                    if (rect_player.Intersects(priestPrevPosition) &&
-                        !player.Position.Intersects(priestCurrentPos))
+
+                    // I made some slight changes based on an idea I had
+                    // player now has a timer that gives them 1 second of invulnerability when they're hit
+                    // this means they won't immediately lose all their health
+                    // - Sean
+                    if (player.Position.Intersects(priest.Position) &&
+                        player.HitTime <= 0)
                     {
                         double healthLost = 20;
                         //double healthLost = player.Health * 0.5;
-                        player.Health -= (int)healthLost;
+                        player.TakeDamage((int)healthLost);
                     }
                     
+                    /*
                     //To make sure that damage is taken only when player touches the priest ONCE
                     //If player comes in contact with the priest, he loses health
                     if (rect_player.Intersects(priestPrevPosition) &&
@@ -213,6 +219,7 @@ namespace Blood_of_Christ
                         double healthLost = player.Health * 0.5;
                         player.Health -= (int)healthLost;
                     }
+                    */
 
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 50);
