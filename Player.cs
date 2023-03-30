@@ -31,20 +31,10 @@ namespace Blood_of_Christ
             get { return health; }
             set { health = value; }
         }
+
         public double BatTime
         {
             get { return batTime; }
-        }
-        public int X
-        {
-            get { return position.X; }
-            set { position.X = value; }
-        }
-
-        public int Y
-        {
-            get { return position.Y; }
-            set { position.Y = value; }
         }
 
         public Rectangle PrevPos
@@ -75,11 +65,6 @@ namespace Blood_of_Christ
         {
             get { return resetY; }
             set { resetY = value; }
-        }
-
-        public bool IsDead
-        {
-            get { return isDead; }
         }
 
         public double HitTime
