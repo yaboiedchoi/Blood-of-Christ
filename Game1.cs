@@ -210,16 +210,16 @@ namespace Blood_of_Christ
                         player.TakeDamage((int)healthLost);
                     }
                     
-                    /*
+                    
                     //To make sure that damage is taken only when player touches the priest ONCE
                     //If player comes in contact with the priest, he loses health
-                    if (rect_player.Intersects(priestPrevPosition) &&
+                    /*if (rect_player.Intersects(priestPrevPosition) &&
                         !player.Position.Intersects(priestCurrentPos))
                     {
                         double healthLost = player.Health * 0.5;
                         player.Health -= (int)healthLost;
-                    }
-                    */
+                    }*/
+                    
 
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
