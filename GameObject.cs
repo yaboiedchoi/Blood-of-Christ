@@ -10,7 +10,7 @@ namespace Blood_of_Christ
 {
     public abstract class GameObject
     {
-        protected Texture2D asset;
+        protected Texture2D texture;
         protected Rectangle position;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Blood_of_Christ
 
         public GameObject(Texture2D texture, Rectangle position)
         {
-            this.asset = texture;
+            this.texture = texture;
             this.position = position;
         }
 
