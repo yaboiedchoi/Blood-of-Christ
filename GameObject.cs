@@ -22,9 +22,9 @@ namespace Blood_of_Christ
             set { position = value; }
         }
 
-        public GameObject(Texture2D asset, Rectangle position)
+        public GameObject(Texture2D texture, Rectangle position)
         {
-            this.asset = asset;
+            this.asset = texture;
             this.position = position;
         }
 

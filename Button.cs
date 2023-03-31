@@ -13,12 +13,8 @@ namespace Blood_of_Christ
     /// If button is clicked, use buttons "on button click" event
     /// </summary>
     public delegate void OnButtonClickDelegate();
-    internal class Button
+    internal class Button : GameObject
     {
-        // Button position / texture
-        private Rectangle rect;
-        private Texture2D texture;
-
         // Button color
         private Color buttonColor;
         private Color hoveredColor;
@@ -41,34 +37,6 @@ namespace Blood_of_Christ
         public event OnButtonClickDelegate OnButtonClick;
 
         /// <summary>
-        /// returns the x value of the button, setting the value moves the button
-        /// </summary>
-        public int X
-        {
-            get
-            {
-                return rect.X;
-            }
-            set
-            {
-                rect.X = value;
-            }
-        }
-        /// <summary>
-        /// returns the y value of the button, setting the value moves the button
-        /// </summary>
-        public int Y
-        {
-            get
-            {
-                return rect.Y;
-            }
-            set
-            {
-                rect.Y = value;
-            }
-        }
-        /// <summary>
         /// Button perameterized constructor
         /// </summary>
         /// <param name="rect">rectangle location of button</param>
@@ -79,9 +47,10 @@ namespace Blood_of_Christ
         /// <param name="font">font of button</param>
         /// <param name="textColor">color of text</param>
         public Button(Rectangle rect, Texture2D texture, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
+            : base (texture, rect)
         {
-            this.texture = texture;
-            this.rect = rect;
+            texture = texture;
+            rect = rect;
             this.buttonColor = buttonColor;
             this.hoveredColor = hoveredColor;
             this.pressedColor = pressedColor;
@@ -103,12 +72,12 @@ namespace Blood_of_Christ
         /// <summary>
         /// Updates the button depending on its state
         /// </summary>
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             // grabs mouse current state
             MouseState mState = Mouse.GetState();
 
-            if (rect.Contains(mState.Position))
+            if (Position.Contains(mState.Position))
             {
                 if ((mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed) || // if button is released after being pressed
                     (mState.RightButton == ButtonState.Released && prevMState.RightButton == ButtonState.Pressed))
@@ -140,9 +109,9 @@ namespace Blood_of_Christ
         /// Draws the buttons
         /// </summary>
         /// <param name="sb">spritebatch</param>
-        public void Draw(SpriteBatch sb)
+        public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, rect, currentColor);
+            sb.Draw(asset, Position, currentColor);
             sb.DrawString(font, text, textLocation, textColor);
         }
     }

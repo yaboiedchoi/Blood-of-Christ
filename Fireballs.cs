@@ -11,15 +11,15 @@ namespace Blood_of_Christ
 {
     public class Fireballs: GameObject
     {
-        private double xVel;
+        private double xVelocity;
         private double time;
         private double distance;
 
-        public Fireballs(Texture2D asset, Rectangle position):
-            base(asset, position)
+        public Fireballs(Texture2D texture, Rectangle position):
+            base(texture, position)
         {
-            xVel = 5;
-            this.asset = asset;
+            xVelocity = 5;
+            this.texture = texture;
             this.position = position;
         }
 
@@ -31,7 +31,7 @@ namespace Blood_of_Christ
         {
             double deltaX;
             time = gameTime.ElapsedGameTime.TotalSeconds;
-            deltaX = xVel * time;
+            deltaX = xVelocity * time;
             position.X += (int)deltaX;
             Position = position;
         }
@@ -42,7 +42,7 @@ namespace Blood_of_Christ
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(asset,
+            sb.Draw(texture,
                     Position,
                     Color.White);
         }

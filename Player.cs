@@ -87,13 +87,6 @@ namespace Blood_of_Christ
         }
 
         // Methods
-        public override void Draw(SpriteBatch sb)
-        {
-            sb.Draw(
-                base.asset,
-                position,
-                Color.White);
-        }
 
         public override void Update(GameTime gameTime)
         {
@@ -170,6 +163,14 @@ namespace Blood_of_Christ
             
             // adds gravity to the y velocity
             yVelocity += gravity;
+        }
+
+        public override void Draw(SpriteBatch sb)
+        {
+            sb.Draw(
+                base.texture,
+                position,
+                Color.White);
         }
 
         #region Player Physics

@@ -41,7 +41,7 @@ namespace Blood_of_Christ
         /// <param name="sb">SpriteBatch</param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(asset,
+            sb.Draw(texture,
                     Position,
                     Color.White);
         }

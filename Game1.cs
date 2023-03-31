@@ -151,7 +151,7 @@ namespace Blood_of_Christ
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
             // button test
-            button = new Button(new Rectangle(50, 150, 50, 20), debugButtonTexture, Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
+            button = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
 
             // hooking up
 

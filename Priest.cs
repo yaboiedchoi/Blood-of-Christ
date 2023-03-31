@@ -16,11 +16,9 @@ namespace Blood_of_Christ
     {
         private int windowWidth;
         private int windowHeight;
-        private Texture2D texture;
-        private Rectangle position;
 
         //To ensure it moves back and forth
-        private double xVel = 5;
+        private double xVelocity = 5;
         private double time;
         private int direction = 1;
         public Priest(int windowWidth, int windowHeight, Texture2D texture, Rectangle position):
@@ -28,9 +26,7 @@ namespace Blood_of_Christ
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.texture = texture;
             //Position = position;
-            this.position = Position;
         }
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace Blood_of_Christ
         // I had to add this to priest to test player code without build errors. Feel free to get rid of it - Sean.
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(asset,
+            sb.Draw(texture,
                     position,
                     Color.White);
         }
