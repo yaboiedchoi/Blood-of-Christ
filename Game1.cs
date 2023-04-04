@@ -35,7 +35,6 @@ namespace Blood_of_Christ
 
         //for priest and attack
         private Texture2D tex_priest;
-        private Texture2D demo_texPriest;
         private Rectangle rect_priest;
         private Priest priest;
         Rectangle priestPrevPosition;
@@ -180,13 +179,18 @@ namespace Blood_of_Christ
 
 
                     /* TODO: Fireballs and being activated when player crosses a certain path
-                     * Goal 1: See if fireball works and takes damage
+                     * Goal 1: See if fireball works and takes damage -- works
                      * Goal 2: Make a fireballs manager which sees when to remove fireballs  from its own list
                      * Goal 3: Finally connect it with detector by checking if it passes through a certain path-- maybe using boolean
                      * 
                      */
 
-                    //Takes damage for 5 points
+                    //Now the detector should detect it:: another idea make a detector class which calls the 
+                    // detection method and if it is positive calls the fireball manager
+                    // checks when to remove the object and when to add
+
+
+                    //Takes damage for 5 points- So the issue is takes damage twice instead of once
                     fireballs.Update(gameTime);
                     if (player.Position.Intersects(fireballs.Position) &&
                         player.HitTime <= 0)
@@ -195,11 +199,6 @@ namespace Blood_of_Christ
                         //double healthLost = player.Health * 0.5;
                         player.TakeDamage((int)healthLost);
                     }
-
-
-
-
-
 
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
@@ -217,10 +216,7 @@ namespace Blood_of_Christ
 
                     //To make sure that damage is taken only when player touches the priest ONCE
                     Rectangle priestCurrentPos = priest.Position;
-                    //If player comes in contact with the priest, he loses health
-                    //AS OF NOW:: PRIEST CAN ATTACK FOR 20 points ONLY
-                    //IF WE CHANGE PLAYER HEALTH AS A DOUBLE, THEN IT WILL GO TO 0
-
+                    
                     // I made some slight changes based on an idea I had
                     // player now has a timer that gives them 1 second of invulnerability when they're hit
                     // this means they won't immediately lose all their health
@@ -297,9 +293,13 @@ namespace Blood_of_Christ
                     //enemy
                     priest.Draw(_spriteBatch);
 
-                    //DETECTOR ISSUE!!!!!
+                    //DETECTOR ISSUE!!
                     _spriteBatch.Draw(tex_detector,
-                                       new Vector2(300, windowHeight / 2),
+                                       new Vector2(300, 0),
+                                       Color.Black);
+                    //Printing out the detector rect
+                    _spriteBatch.Draw(tex_detector,
+                                       rect_checksForDetection,
                                        Color.Black);
 
                     //Printing out coordinates to debug this thing
@@ -309,14 +309,6 @@ namespace Blood_of_Christ
                                             Color.Black);
 
                     fireballs.Draw(_spriteBatch);
-
-                    //ISSUE::: HAVE TO TAKE DAMAGE ONCE SO, IT SHOULD REGISTER ONLY ONCE
-                    /*if (fireballs.Position.Intersects(player.Position) && player.Health >5)
-                    {
-                        player.Health -= 5;
-                    }*/
-
-
 
 
 
