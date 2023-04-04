@@ -33,7 +33,6 @@ namespace Blood_of_Christ
             //Without time, it moves at constant speed
 
             double deltaX;
-            //Issue with timer ????
             //time = gameTime.TotalGameTime.TotalSeconds;
             time += gameTime.ElapsedGameTime.TotalSeconds;
             deltaX = xVelocity;
@@ -51,5 +50,7 @@ namespace Blood_of_Christ
                     Position,
                     Color.White);
         }
+
+
     }
 }

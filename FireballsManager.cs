@@ -8,7 +8,31 @@ namespace Blood_of_Christ
 {
     public class FireballsManager
     {
+        //Pesducode
+        //Fireball is added when it's called into by detector
+        //How to do that??
+
         //Holds fireball objects and removes them when they're offscreen from the list
+        private Fireballs fireballs;
+        private List<Fireballs> fireballsManager;
+        private double windowWidth;
+
+        private FireballsManager(Fireballs fireballs)
+        {
+            this.fireballs = fireballs;
+            fireballsManager.Add(fireballs);
+        }
+
+        public void Remove()
+        {
+            if(fireballs.Position.X < 0)
+            {
+                fireballsManager.Remove(fireballs);
+            }
+        }
+        
+
+
 
     }
 }
