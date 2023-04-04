@@ -30,7 +30,7 @@ namespace Blood_of_Christ
         public override void Update(GameTime gameTime)
         {
             double deltaX;
-            time = gameTime.ElapsedGameTime.TotalSeconds;
+            time -= gameTime.ElapsedGameTime.TotalSeconds;
             deltaX = xVelocity * time;
             position.X += (int)deltaX;
             Position = position;

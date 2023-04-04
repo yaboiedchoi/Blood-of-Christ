@@ -178,6 +178,24 @@ namespace Blood_of_Christ
 
                     priest.Update(gameTime);
 
+
+                    /* TODO: Fireballs and being activated when player crosses a certain path
+                     * Goal 1: See if fireball works and takes damage
+                     * Goal 2: Make a fireballs manager which sees when to remove fireballs  from its own list
+                     * Goal 3: Finally connect it with detector by checking if it passes through a certain path-- maybe using boolean
+                     * 
+                     */
+
+                    //ISSUE FIREBALL ISN'T PRINTING EVEN THOUGH THE COORDINATES ARE RIGHT ARGH
+                    //FireballMove(gameTime);
+                    fireballs.Update(gameTime);
+
+
+
+
+
+
+
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
                     if(rect_checksForDetection.Intersects(player.PrevPos) &&
@@ -208,18 +226,7 @@ namespace Blood_of_Christ
                         double healthLost = 20;
                         //double healthLost = player.Health * 0.5;
                         player.TakeDamage((int)healthLost);
-                    }
-                    
-                    
-                    //To make sure that damage is taken only when player touches the priest ONCE
-                    //If player comes in contact with the priest, he loses health
-                    /*if (rect_player.Intersects(priestPrevPosition) &&
-                        !player.Position.Intersects(priestCurrentPos))
-                    {
-                        double healthLost = player.Health * 0.5;
-                        player.Health -= (int)healthLost;
-                    }*/
-                    
+                    }                    
 
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
@@ -290,6 +297,18 @@ namespace Blood_of_Christ
                                        new Vector2(300, windowHeight / 2),
                                        Color.Black);
 
+                    //Why is it not printing????????
+                    //Fireballs don't work as intended
+                    fireballs.Draw(_spriteBatch);
+                    if (fireballs.Position.Intersects(player.Position) && player.Health >5)
+                    {
+                        player.Health -= 5;
+                    }
+
+
+
+
+
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
                     if (rect_checksForDetection.Intersects(player.PrevPos) &&
@@ -325,5 +344,16 @@ namespace Blood_of_Christ
         {
             gs = GameState.Game;
         }
+
+
+        /*private void FireballMove(GameTime gameTime)
+        {
+            double timer = 0;
+            timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            double xVel = 5;
+            double distance = 0;
+            distance += (int)timer * xVel;
+            rect_fireball.X += (int)distance;
+        }*/
     }
 }
