@@ -290,20 +290,10 @@ namespace Blood_of_Christ
                         Color.AliceBlue);
                     player.Draw(_spriteBatch);
 
-                    //health levels in nums for testing
-                    _spriteBatch.DrawString(debugFont,
-                                            $"",
-                                            new Vector2(windowWidth - 100, 0),
-                                            Color.Black);
-
-
-
                     //enemy
                     priest.Draw(_spriteBatch);
-
-                    //Okay, so there's a new issue the fireball is released if the user is at the detector but if he leaves the
-                    // detector, the fireball goes
                     detector.Draw(_spriteBatch);
+
                     if (detector.Detection.Intersects(player.Position))
                     {
                         isMoving = true;
