@@ -297,8 +297,6 @@ namespace Blood_of_Christ
                                        new Vector2(300, windowHeight / 2),
                                        Color.Black);
 
-                    //Fireballs don't work as intended
-
                     //Printing out coordinates to debug this thing
                     _spriteBatch.DrawString(debugFont,
                                             $"{fireballs.Position}",
@@ -306,10 +304,12 @@ namespace Blood_of_Christ
                                             Color.Black);
 
                     fireballs.Draw(_spriteBatch);
-                    if (fireballs.Position.Intersects(player.Position) && player.Health >5)
+
+                    //ISSUE::: HAVE TO TAKE DAMAGE ONCE SO, IT SHOULD REGISTER ONLY ONCE
+                    /*if (fireballs.Position.Intersects(player.Position) && player.Health >5)
                     {
                         player.Health -= 5;
-                    }
+                    }*/
 
 
 
