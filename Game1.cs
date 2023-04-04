@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Blood_of_Christ.Content;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Blood_of_Christ
         private Texture2D tex_fireball;
         private Rectangle rect_fireball;
         private Fireballs fireballs;
+        private Detector detector;
 
         //Keys
         private KeyboardState prevKey;
@@ -102,13 +104,14 @@ namespace Blood_of_Christ
             //Attack system
             rect_fireball = new Rectangle(800, windowHeight/2, tex_fireball.Width / 5, tex_fireball.Height / 5);
             rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
-            rect_checksForDetection = new Rectangle(10,
+            /*rect_checksForDetection = new Rectangle(10,
                                                     0,
                                                     //width of how much it can detect
                                                     tex_detector.Width,
                                                     //covers the whole length of screen
-                                                    windowHeight);
+                                                    windowHeight);*/
 
+            detector = new Detector(tex_detector, rect_detector, windowHeight);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
 
             // player
@@ -153,7 +156,6 @@ namespace Blood_of_Christ
             button = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
 
             // hooking up
-
             button.OnButtonClick += this.SetGameState;
         }
 
@@ -191,19 +193,24 @@ namespace Blood_of_Christ
 
 
                     //Takes damage for 5 points- So the issue is takes damage twice instead of once
-                    fireballs.Update(gameTime);
+                    //FOR THE TIME BEING
+                    /*fireballs.Update(gameTime);
                     if (player.Position.Intersects(fireballs.Position) &&
                         player.HitTime <= 0)
                     {
                         double healthLost = 5;
                         //double healthLost = player.Health * 0.5;
                         player.TakeDamage((int)healthLost);
-                    }
+                    }*/
 
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
-                    if(rect_checksForDetection.Intersects(player.PrevPos) &&
+                    /*if(rect_checksForDetection.Intersects(player.PrevPos) &&
                         !rect_checksForDetection.Intersects(player.Position))
+                    {
+                        fireballs.Update(gameTime);
+                    }*/
+                    if (detector.Detection.Intersects(player.Position))
                     {
                         fireballs.Update(gameTime);
                     }
@@ -293,14 +300,13 @@ namespace Blood_of_Christ
                     //enemy
                     priest.Draw(_spriteBatch);
 
-                    //DETECTOR ISSUE!!
-                    _spriteBatch.Draw(tex_detector,
-                                       new Vector2(300, 0),
-                                       Color.Black);
-                    //Printing out the detector rect
-                    _spriteBatch.Draw(tex_detector,
-                                       rect_checksForDetection,
-                                       Color.Black);
+                    //Okay, so there's a new issue the fireball is released if the user is at the detector but if he leaves the
+                    // detector, the fireball goes
+                    detector.Draw(_spriteBatch);
+                    if (detector.Detection.Intersects(player.Position))
+                    {
+                        fireballs.Draw(_spriteBatch);
+                    }
 
                     //Printing out coordinates to debug this thing
                     _spriteBatch.DrawString(debugFont,
@@ -308,7 +314,7 @@ namespace Blood_of_Christ
                                             new Vector2(windowWidth / 2, 0),
                                             Color.Black);
 
-                    fireballs.Draw(_spriteBatch);
+                    //fireballs.Draw(_spriteBatch);
 
 
 
