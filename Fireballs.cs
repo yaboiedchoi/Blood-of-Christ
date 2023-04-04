@@ -13,12 +13,12 @@ namespace Blood_of_Christ
     {
         private double xVelocity;
         private double time;
-        private double distance;
+        private double totalTime;
 
         public Fireballs(Texture2D texture, Rectangle position):
             base(texture, position)
         {
-            xVelocity = 5;
+            xVelocity = 1;
             this.texture = texture;
             this.position = position;
         }
@@ -30,9 +30,11 @@ namespace Blood_of_Christ
         public override void Update(GameTime gameTime)
         {
             double deltaX;
+            //Issue with timer ????
+            time = gameTime.TotalGameTime.TotalSeconds;
             time -= gameTime.ElapsedGameTime.TotalSeconds;
             deltaX = xVelocity * time;
-            position.X += (int)deltaX;
+            position.X -= (int)deltaX;
             Position = position;
         }
 

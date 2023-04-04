@@ -101,7 +101,7 @@ namespace Blood_of_Christ
             tex_detector = Content.Load<Texture2D>("detector");
 
             //Attack system
-            rect_fireball = new Rectangle(0, 0, tex_fireball.Width / 5, tex_fireball.Height / 5);
+            rect_fireball = new Rectangle(800, windowHeight/2, tex_fireball.Width / 5, tex_fireball.Height / 5);
             rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
             rect_checksForDetection = new Rectangle(10,
                                                     0,
@@ -135,7 +135,7 @@ namespace Blood_of_Christ
 
             //fireball
             fireballs = new Fireballs(tex_fireball,
-                                      new Rectangle(windowWidth, windowHeight, tex_fireball.Width, tex_fireball.Height));
+                                      rect_fireball);
                                       
 
             //Adding for priest
@@ -299,6 +299,13 @@ namespace Blood_of_Christ
 
                     //Why is it not printing????????
                     //Fireballs don't work as intended
+
+                    //Printing out coordinates to debug this thing
+                    _spriteBatch.DrawString(debugFont,
+                                            $"{fireballs.Position}",
+                                            new Vector2(windowWidth / 2, 0),
+                                            Color.Black);
+
                     fireballs.Draw(_spriteBatch);
                     if (fireballs.Position.Intersects(player.Position) && player.Health >5)
                     {
