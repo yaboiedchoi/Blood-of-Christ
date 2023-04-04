@@ -40,6 +40,7 @@ namespace Blood_of_Christ
         private Rectangle rect_priest;
         private Priest priest;
         Rectangle priestPrevPosition;
+        private bool isMoving = false;
 
         // player
         private Player player;
@@ -193,28 +194,28 @@ namespace Blood_of_Christ
 
 
                     //Takes damage for 5 points- So the issue is takes damage twice instead of once
-                    //FOR THE TIME BEING
-                    /*fireballs.Update(gameTime);
+
                     if (player.Position.Intersects(fireballs.Position) &&
                         player.HitTime <= 0)
                     {
                         double healthLost = 5;
                         //double healthLost = player.Health * 0.5;
                         player.TakeDamage((int)healthLost);
-                    }*/
+                    }
 
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
-                    /*if(rect_checksForDetection.Intersects(player.PrevPos) &&
-                        !rect_checksForDetection.Intersects(player.Position))
-                    {
-                        fireballs.Update(gameTime);
-                    }*/
+                    
+                    //Okay, for now it moves if player is detected although find a way to
+                    //add it in the class Detection
                     if (detector.Detection.Intersects(player.Position))
+                    {
+                        isMoving = true;
+                    }
+                    if (isMoving)
                     {
                         fireballs.Update(gameTime);
                     }
-
 
                     //DEBUG ONLY
                     playerHealth = player.Health;
@@ -305,9 +306,12 @@ namespace Blood_of_Christ
                     detector.Draw(_spriteBatch);
                     if (detector.Detection.Intersects(player.Position))
                     {
+                        isMoving = true;
+                    }
+                    if (isMoving)
+                    {
                         fireballs.Draw(_spriteBatch);
                     }
-
                     //Printing out coordinates to debug this thing
                     _spriteBatch.DrawString(debugFont,
                                             $"{fireballs.Position}",
