@@ -186,10 +186,15 @@ namespace Blood_of_Christ
                      * 
                      */
 
-                    //ISSUE FIREBALL ISN'T PRINTING EVEN THOUGH THE COORDINATES ARE RIGHT ARGH
-                    //FireballMove(gameTime);
+                    //Takes damage for 5 points
                     fireballs.Update(gameTime);
-
+                    if (player.Position.Intersects(fireballs.Position) &&
+                        player.HitTime <= 0)
+                    {
+                        double healthLost = 5;
+                        //double healthLost = player.Health * 0.5;
+                        player.TakeDamage((int)healthLost);
+                    }
 
 
 
