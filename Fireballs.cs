@@ -24,16 +24,19 @@ namespace Blood_of_Christ
         }
 
         /// <summary>
-        /// Ensures bullets move from right to left at constant speed
+        /// Bullets movve at an accelerated speed
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            //So, if I use time it will move at an accelerated speed
+            //Without time, it moves at constant speed
+
             double deltaX;
             //Issue with timer ????
-            time = gameTime.TotalGameTime.TotalSeconds;
-            time -= gameTime.ElapsedGameTime.TotalSeconds;
-            deltaX = xVelocity * time;
+            //time = gameTime.TotalGameTime.TotalSeconds;
+            time += gameTime.ElapsedGameTime.TotalSeconds;
+            deltaX = xVelocity;
             position.X -= (int)deltaX;
             Position = position;
         }

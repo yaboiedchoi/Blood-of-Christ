@@ -297,7 +297,6 @@ namespace Blood_of_Christ
                                        new Vector2(300, windowHeight / 2),
                                        Color.Black);
 
-                    //Why is it not printing????????
                     //Fireballs don't work as intended
 
                     //Printing out coordinates to debug this thing
