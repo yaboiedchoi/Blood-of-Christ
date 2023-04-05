@@ -24,6 +24,7 @@ namespace Blood_of_Christ
         private bool isBat;         // if the player is in a bat form
         private double batTime;     // timer for how long bat can stay a bat
         private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
+        private bool godMode;       // Whether or not the player takes damage
 
         // Property
         public int Health
@@ -70,6 +71,12 @@ namespace Blood_of_Christ
         public double HitTime
         {
             get { return hitTime; }
+        }
+
+        public bool GodMode
+        {
+            get { return godMode; }
+            set { godMode = value; }
         }
 
         // Constructor
@@ -243,12 +250,15 @@ namespace Blood_of_Christ
         /// <param name="damage"></param>
         public void TakeDamage(int damage)
         {
-            health -= damage;
-            if (health <= 0)
+            if (!godMode)
             {
-                isDead = true;
+                health -= damage;
+                if (health <= 0)
+                {
+                    isDead = true;
+                }
+                hitTime = 1;
             }
-            hitTime = 1;
         }
 
         /// <summary>
@@ -266,6 +276,7 @@ namespace Blood_of_Christ
             isDead = false;
             isBat = false;
             batTime = 3;
+            godMode = false;
         }
     }
 }
