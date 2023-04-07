@@ -9,7 +9,10 @@ namespace Blood_of_Christ
     public enum GameState
     {
         Title,
-        Game
+        Game,
+        GameOver,
+        Controls, 
+        Settings
     }
     public class Game1 : Game
     {
@@ -65,9 +68,20 @@ namespace Blood_of_Christ
         private Texture2D tex_detector;
         private Rectangle rect_detector;
         private Rectangle rect_checksForDetection;
-        // button example
-        private Button button;
+
+        // Play Game button in main menu
+        private Button startButton;
         private Texture2D debugButtonTexture;
+
+        // Settings button in main menu
+        private Button settingsButton;
+
+        // Back button, goes back to the main menu
+        private Button backButton;
+
+        // Controls button in main menu
+        private Button controlsButton;
+
 
         public Game1()
         {
@@ -153,11 +167,16 @@ namespace Blood_of_Christ
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
-            // button test
-            button = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
-
+            // All buttons
+            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
+            settingsButton = new Button(debugButtonTexture, new Rectangle(150, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "settings", debugFont, Color.Black);
+            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
+            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
             // hooking up
-            button.OnButtonClick += this.SetGameState;
+            startButton.OnButtonClick += this.StartGame;
+            settingsButton.OnButtonClick += this.SettingsMenu;
+            backButton.OnButtonClick += this.StartGame;
+            controlsButton.OnButtonClick += this.ControlsMenu;
         }
 
         protected override void Update(GameTime gameTime)
@@ -170,7 +189,7 @@ namespace Blood_of_Christ
             {
                 case GameState.Title: // title
                     // button test
-                    button.Update(gameTime);
+                    startButton.Update(gameTime);
                     break;
                 case GameState.Game: // game
                     player.ResetX = 100;
@@ -262,7 +281,7 @@ namespace Blood_of_Christ
                     //priestPrevPosition = priestCurrentPos;
                     base.Update(gameTime);
                     priestPrevPosition = priestCurrentPos;
-                    break;
+                    break;  
             }
 
         }
@@ -277,7 +296,7 @@ namespace Blood_of_Christ
                 case GameState.Title: // title
 
                     //button test
-                    button.Draw(_spriteBatch);
+                    startButton.Draw(_spriteBatch);
                     break;
                 case GameState.Game: // game
                     _spriteBatch.Draw(
@@ -343,9 +362,17 @@ namespace Blood_of_Christ
         /// <summary>
         /// simple event method (will be changed later
         /// </summary>
-        protected void SetGameState()
+        protected void StartGame()
         {
             gs = GameState.Game;
+        }
+        protected void SettingsMenu()
+        {
+            gs = GameState.Settings;
+        }
+        protected void ControlsMenu()
+        {
+            gs = GameState.Controls;    
         }
 
 
