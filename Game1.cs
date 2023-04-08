@@ -16,6 +16,9 @@ namespace Blood_of_Christ
     }
     public class Game1 : Game
     {
+        // KNOWN BUGS:
+        // fireball does not reset location when restarting game
+        // TODO: Add a pause menu
         // NOTE: we should probably move all of these to manager classes later
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -241,7 +244,6 @@ namespace Blood_of_Christ
                     // IF player dies, change state to game over screen
                     if (player.IsDead)
                     {
-                        player.Reset(player.ResetX, player.ResetY);
                         gs = GameState.GameOver;
                     }
 
@@ -394,6 +396,7 @@ namespace Blood_of_Christ
         /// </summary>
         protected void StartGame()
         {
+            player.Reset(player.ResetX, player.ResetY);
             gs = GameState.Game;
         }
         protected void TitleScreen()
