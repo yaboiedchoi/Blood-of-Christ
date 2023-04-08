@@ -25,13 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:back up priest.png
 
-#begin debug font.spritefont
-/importer:FontDescriptionImporter
-/processor:LocalizedFontProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:debug font.spritefont
-
 #begin debugFont2.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

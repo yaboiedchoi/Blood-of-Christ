@@ -161,7 +161,6 @@ namespace Blood_of_Christ
             priestPrevPosition = priest.Position;
             //DEBUG PURPOSES
             rect_player = new Rectangle(100, 0, 50, 50);
-            debugFont = Content.Load<SpriteFont>("debug font");
 
 
 
@@ -171,11 +170,11 @@ namespace Blood_of_Christ
             startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
             settingsButton = new Button(debugButtonTexture, new Rectangle(150, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "settings", debugFont, Color.Black);
             backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
-            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
+            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "controls", debugFont, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
-            backButton.OnButtonClick += this.StartGame;
+            backButton.OnButtonClick += this.TitleScreen;
             controlsButton.OnButtonClick += this.ControlsMenu;
         }
 
@@ -190,6 +189,9 @@ namespace Blood_of_Christ
                 case GameState.Title: // title
                     // button test
                     startButton.Update(gameTime);
+                    controlsButton.Update(gameTime);
+                    settingsButton.Update(gameTime);
+
                     break;
                 case GameState.Game: // game
                     player.ResetX = 100;
@@ -234,6 +236,13 @@ namespace Blood_of_Christ
                     if (isMoving)
                     {
                         fireballs.Update(gameTime);
+                    }
+
+                    // IF player dies, change state to game over screen
+                    if (player.IsDead)
+                    {
+                        player.Reset(player.ResetX, player.ResetY);
+                        gs = GameState.GameOver;
                     }
 
                     //DEBUG ONLY
@@ -281,7 +290,16 @@ namespace Blood_of_Christ
                     //priestPrevPosition = priestCurrentPos;
                     base.Update(gameTime);
                     priestPrevPosition = priestCurrentPos;
-                    break;  
+                    break;
+                case GameState.GameOver:
+                    backButton.Update(gameTime);
+                    break;
+                case GameState.Settings:
+                    backButton.Update(gameTime);
+                    break;
+                case GameState.Controls:
+                    backButton.Update(gameTime);
+                    break;
             }
 
         }
@@ -297,6 +315,8 @@ namespace Blood_of_Christ
 
                     //button test
                     startButton.Draw(_spriteBatch);
+                    controlsButton.Draw(_spriteBatch);
+                    settingsButton.Draw(_spriteBatch);
                     break;
                 case GameState.Game: // game
                     _spriteBatch.Draw(
@@ -353,6 +373,16 @@ namespace Blood_of_Christ
                     }
 
                     break;
+                case GameState.Settings:
+                    backButton.Draw(_spriteBatch);
+                    break;
+                case GameState.Controls:
+                    backButton.Draw(_spriteBatch);
+                    break;
+                case GameState.GameOver:
+                    _spriteBatch.DrawString(debugFont, "game over", new Vector2(20, 50), Color.Black);
+                    backButton.Draw(_spriteBatch);
+                    break;
             }
 
             _spriteBatch.End();
@@ -365,6 +395,10 @@ namespace Blood_of_Christ
         protected void StartGame()
         {
             gs = GameState.Game;
+        }
+        protected void TitleScreen()
+        {
+            gs = GameState.Title;
         }
         protected void SettingsMenu()
         {

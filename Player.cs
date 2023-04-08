@@ -20,7 +20,6 @@ namespace Blood_of_Christ
         private int health;         // total player health. Starts at 100.
         private int resetX;         // X coordinate for the current level start
         private int resetY;         // Y coordinate for the current level start
-        private bool isDead;        // if the player is currently dead (health is less than 0)
         private bool isBat;         // if the player is in a bat form
         private double batTime;     // timer for how long bat can stay a bat
         private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
@@ -31,6 +30,14 @@ namespace Blood_of_Christ
         {
             get { return health; }
             set { health = value; }
+        }
+        public bool IsDead
+        {
+            get
+            {
+                if (health <= 0) return true;
+                else return false;
+            }
         }
 
         public double BatTime
@@ -86,7 +93,6 @@ namespace Blood_of_Christ
             yVelocity = 0f;
             gravity = .61f;
             health = 100;
-            isDead = false;
             isBat = false;
             batTime = 3;
             playerSize = position.Width;
@@ -102,10 +108,11 @@ namespace Blood_of_Christ
             hitTime -= gameTime.ElapsedGameTime.TotalSeconds;
 
            // If player is dead, calls Reset
-            if (isDead)
-            {
-                Reset(ResetX, ResetY);
-            }
+           // now no need, since there is a game over screen
+            //if (isDead)
+            //{
+            //    Reset(ResetX, ResetY);
+            //}
 
             //if player is vampire
             if (!isBat)
@@ -253,17 +260,13 @@ namespace Blood_of_Christ
             if (!godMode)
             {
                 health -= damage;
-                if (health <= 0)
-                {
-                    isDead = true;
-                }
                 hitTime = 1;
             }
         }
 
         /// <summary>
         /// Written by Sean
-        /// Resets the players health to 100 and the isDead bool to false
+        /// Resets the players health to 100
         /// Then returns the player to the level's start
         /// </summary>
         /// <param name="x"> x coordinate for the player's starting point </param>
@@ -273,7 +276,6 @@ namespace Blood_of_Christ
             health = 100;
             position.X = (int)x;
             position.Y = (int)y;
-            isDead = false;
             isBat = false;
             batTime = 3;
             godMode = false;
