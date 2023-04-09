@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Blood_of_Christ
 {
@@ -85,6 +87,9 @@ namespace Blood_of_Christ
         // Controls button in main menu
         private Button controlsButton;
 
+        // Tiling system
+        private Platform[,] platformTiles;
+
 
         public Game1()
         {
@@ -102,6 +107,7 @@ namespace Blood_of_Christ
             keys = new List<Key>();
             windowWidth = GraphicsDevice.Viewport.Width;
             windowHeight = GraphicsDevice.Viewport.Height;
+            platformTiles = new Platform[12, 20];
 
             gs = GameState.Title;
             base.Initialize();
@@ -149,9 +155,12 @@ namespace Blood_of_Christ
             rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //platforms
+            /*
             platforms.Add(new Platform(tex_bar, new Rectangle(0, 300, 300, 50)));
             platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
             platforms.Add(new Platform(tex_bar, new Rectangle(500, 27, 50, 173)));
+            */
+            LoadStage();
 
             //fireball
             fireballs = new Fireballs(tex_fireball,
@@ -270,6 +279,7 @@ namespace Blood_of_Christ
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
 
+                    /*
                     foreach (Platform platform in platforms)
                     {
                         player.Physics(platform.Position, _graphics);
@@ -287,6 +297,17 @@ namespace Blood_of_Christ
                             i--;
                         }
                     }
+                    */
+
+                    // Make collision between player and platform tiles
+                    for (int i = 0; i < platformTiles.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < platformTiles.GetLength(1); j++)
+                        {
+                            player.Physics(platformTiles[i, j].Position, _graphics);
+                        }
+                    }
+
                     player.PrevPos = player.Position;
 
                     //priestPrevPosition = priestCurrentPos;
@@ -361,6 +382,7 @@ namespace Blood_of_Christ
                         fireballs.Update(gameTime);
                     }
 
+                    /*
                     foreach (Platform platform in platforms)
                     {
                         platform.Draw(_spriteBatch);
@@ -372,6 +394,16 @@ namespace Blood_of_Christ
                     foreach (Key key in keys)
                     {
                         key.Draw(_spriteBatch);
+                    }
+                    */
+
+                    // Draw platform tiles
+                    for (int i = 0; i < platformTiles.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < platformTiles.GetLength(1); j++)
+                        {
+                            platformTiles[i, j].Draw(_spriteBatch);
+                        }
                     }
 
                     break;
@@ -422,5 +454,54 @@ namespace Blood_of_Christ
             distance += (int)timer * xVel;
             rect_fireball.X += (int)distance;
         }*/
+
+        /// <summary>
+        /// Load Stage from text file
+        /// </summary>
+        public void LoadStage()
+        {
+            StreamReader reader = null;
+            try
+            {
+                reader = new StreamReader("../../../Stage1.txt");
+
+                string line = "";
+
+                int row = 0;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    List<string> tilesData = new List<string>();
+                    foreach (char ch in line)
+                    {
+                        tilesData.Add(ch.ToString());
+                    }
+
+                    for (int c = 0; c < tilesData.Count; c++)
+                    {
+                        if (tilesData[c] == ".")
+                        {
+                            platformTiles[row, c] = new Platform(tex_platform, new Rectangle());
+                        }
+                        else if (tilesData[c] == "X")
+                        {
+                            platformTiles[row, c] = new Platform(tex_platform, new Rectangle(c * 40, row * 40, 40, 40));
+                        }
+                    }
+
+                    row++;
+                }
+            }
+            catch (Exception fileError)
+            {
+                System.Diagnostics.Debug.WriteLine(fileError.Message);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+        }
     }
 }
