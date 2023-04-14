@@ -11,6 +11,17 @@ namespace Blood_of_Christ
 {
     internal class Player : GameObject
     {
+        // animation enumerator
+        private enum animState
+        {
+            standingRight,
+            standingLeft,
+            walkingRight,
+            walkingLeft,
+            jumpingRight,
+            jumpingLeft,
+        }
+
         // Field
         private Rectangle prevPos;  // record's the players position for collision purposes
         private int playerSize;     // record's the players default (vampire) size for transformation purposes
@@ -24,6 +35,7 @@ namespace Blood_of_Christ
         private double batTime;     // timer for how long bat can stay a bat
         private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
         private bool godMode;       // Whether or not the player takes damage
+        private animState anim;
 
         // Property
         public int Health
@@ -125,16 +137,16 @@ namespace Blood_of_Christ
                 {
                     batTime += gameTime.ElapsedGameTime.TotalSeconds/2;
                 }
-                // changes the player position by the Y velocity
-                position.Y += (int)yVelocity;
-               
+
                 // transforming into bat
                 if (kbstate.IsKeyDown(Keys.E))
                 {
                     position.Width /= 2;    // bat width is half the size of human
                     position.Height /= 2;   // bat form hitbox is a perfect square
                     isBat = true;
-                }
+                }            
+                // changes the player position by the Y velocity
+                position.Y += (int)yVelocity;
             }
 
             // bat form has additional vertical movement
@@ -165,7 +177,7 @@ namespace Blood_of_Christ
 
                 yVelocity = -5;
             }
-            // basic player movement
+            // basic bat movement
             if (kbstate.IsKeyDown(Keys.Left))
             {
                 position.X -= 5;
@@ -176,7 +188,10 @@ namespace Blood_of_Christ
             }
             
             // adds gravity to the y velocity
-            yVelocity += gravity;
+            yVelocity += gravity;  
+            
+
+               
         }
 
         public override void Draw(SpriteBatch sb)
