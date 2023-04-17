@@ -14,20 +14,20 @@ namespace Blood_of_Christ
 
         //Holds fireball objects and removes them when they're offscreen from the list
         private Fireballs fireballs;
-        private List<Fireballs> fireballsManager;
+        private Queue<Fireballs> fireballsManager;
         private double windowWidth;
 
         private FireballsManager(Fireballs fireballs)
         {
             this.fireballs = fireballs;
-            fireballsManager.Add(fireballs);
+            fireballsManager.Enqueue(fireballs);
         }
 
         public void Remove()
         {
             if(fireballs.Position.X < 0)
             {
-                fireballsManager.Remove(fireballs);
+                fireballsManager.Dequeue();
             }
         }
         
