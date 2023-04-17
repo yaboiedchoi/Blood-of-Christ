@@ -20,6 +20,8 @@ namespace Blood_of_Christ
             walkingLeft,
             jumpingRight,
             jumpingLeft,
+            fallingLeft,
+            fallingRight,
         }
 
         // Field
@@ -35,7 +37,7 @@ namespace Blood_of_Christ
         private double batTime;     // timer for how long bat can stay a bat
         private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
         private bool godMode;       // Whether or not the player takes damage
-        private animState anim;
+        private animState anim;     
 
         // Property
         public int Health
@@ -109,6 +111,7 @@ namespace Blood_of_Christ
             batTime = 3;
             playerSize = position.Width;
             hitTime = 0;
+            anim = animState.standingRight;
         }
 
         // Methods
@@ -144,8 +147,159 @@ namespace Blood_of_Christ
                     position.Width /= 2;    // bat width is half the size of human
                     position.Height /= 2;   // bat form hitbox is a perfect square
                     isBat = true;
-                }            
+                }
                 // changes the player position by the Y velocity
+                switch (anim)
+                {
+                    case animState.standingRight:
+                        {
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.walkingLeft;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.walkingRight;
+                            }
+                            break;
+                        }
+                    case animState.standingLeft:
+                        {
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.walkingLeft;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.walkingRight;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Space))
+                            {
+                                anim = animState.jumpingLeft;
+                            }
+                            break;
+                        }
+
+                    case animState.walkingLeft:
+                        {
+
+                            if (kbstate.IsKeyUp(Keys.Left))
+                            {
+                                anim = animState.standingLeft;
+                            }
+
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.walkingRight;
+                            }
+
+                            if (kbstate.IsKeyDown(Keys.Space))
+                            {
+                                anim = animState.jumpingLeft;
+                            }
+                            position.X -= 5;
+                            break;
+
+                        }
+                    case animState.walkingRight:
+                        {
+
+                            if (!kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.standingRight;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.walkingLeft;
+                            }
+
+                            if (kbstate.IsKeyDown(Keys.Space))
+                            {
+                                anim = animState.jumpingRight;
+                            }
+                            position.X += 5;
+                            break;
+                        }
+                    case animState.jumpingLeft:
+                        {
+
+                            if (kbstate.IsKeyUp(Keys.Left))
+                            {
+                                anim = animState.fallingLeft;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.jumpingRight;
+                            }
+                            if (yVelocity == 0 && kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.walkingRight;
+                            }
+                            if (yVelocity == 0)
+                            {
+                                anim = animState.standingLeft;
+                            }
+                            position.X -= 5;
+                            break;
+
+                        }
+                    case animState.jumpingRight:
+                        {
+
+                            if (kbstate.IsKeyUp(Keys.Right))
+                            {
+                                anim = animState.fallingRight;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.jumpingLeft;
+                            }
+                            if (yVelocity == 0 && kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.walkingLeft;
+                            }
+                            if (yVelocity == 0)
+                            {
+                                anim = animState.standingRight;
+                            }
+                            position.X += 5;
+                            break;                            
+
+
+                        }
+                    case animState.fallingRight:
+                        {
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.jumpingRight;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.jumpingLeft;
+                            }
+                            if (yVelocity >= 0)
+                            {
+                                anim = animState.standingRight;
+                            }
+                            break;
+                        }
+                    case animState.fallingLeft:
+                        {
+                            if (kbstate.IsKeyDown(Keys.Right))
+                            {
+                                anim = animState.jumpingRight;
+                            }
+                            if (kbstate.IsKeyDown(Keys.Left))
+                            {
+                                anim = animState.jumpingLeft;
+                            }
+                            if (yVelocity >= 0)
+                            {
+                                anim = animState.standingLeft;
+                            }
+                            break;
+                        }
+                }
                 position.Y += (int)yVelocity;
             }
 
@@ -177,29 +331,88 @@ namespace Blood_of_Christ
 
                 yVelocity = -5;
             }
-            // basic bat movement
+            /*
+            // basic
             if (kbstate.IsKeyDown(Keys.Left))
             {
                 position.X -= 5;
+                anim = animState.walkingLeft;
             }
             if (kbstate.IsKeyDown(Keys.Right))
             {
                 position.X += 5;
+                anim = animState.walkingRight;
             }
+            */
+
+
             
             // adds gravity to the y velocity
             yVelocity += gravity;  
-            
 
-               
         }
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(
-                base.texture,
-                position,
-                Color.White);
+            switch(anim)
+            {
+                case animState.jumpingLeft:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.Black);
+                        break;
+                    }
+                case animState.walkingLeft: 
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position, 
+                            Color.White); 
+                        break;
+                    }
+                case animState.walkingRight:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.Black);
+                        break;
+                    }
+                case animState.jumpingRight:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.White);
+                        break;
+                    }
+                case animState.standingLeft:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.White);
+                        break;
+                    }
+                case animState.standingRight:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.Black);
+                        break;
+                    }
+                case animState.fallingRight:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.Black);
+                        break;
+                    }
+            }
         }
 
         #region Player Physics
