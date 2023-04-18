@@ -82,10 +82,11 @@ namespace Blood_of_Christ
         {
             foreach(Fireballs fireball in fireballsManager)
             {
-                //How to make it single frame??
-                if (fireball.Position.Intersects(rect))
+                if (fireball.Position.Intersects(rect) )
+                    //fireball.Position.Intersects(rectPrev))
                 {
-                    //int 0;
+                    fireballsManager.Remove(fireball);
+                    return 5;
                 }
             }
 

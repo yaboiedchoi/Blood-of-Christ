@@ -214,20 +214,10 @@ namespace Blood_of_Christ
                     
                     //Takes damage for 5 points- So the issue is takes damage twice instead of once
 
-                    if (player.Position.Intersects(fireballs.Position) &&
-                        player.HitTime <= 0)
-                    {
-                        double healthLost = 5;
-                        //double healthLost = player.Health * 0.5;
-                        player.TakeDamage((int)healthLost);
-                        //Debug.WriteLine(player.Health);
-                    }
-
                     //Make this an event
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
                     {
-                        //Debug.WriteLine("attack");
                         isMoving = true;
                         fireballManager.Add();
                     }
@@ -237,9 +227,8 @@ namespace Blood_of_Christ
                     if (isMoving)
                     {
                         fireballManager.Update(gameTime);
-
-
-                        //Debug.WriteLine(fireballManager.Count);
+                        int damage = fireballManager.TakeDamage(player.Position);
+                        player.TakeDamage(damage);
                     }
 
                     // IF player dies, change state to game over screen
@@ -249,11 +238,7 @@ namespace Blood_of_Christ
                         gs = GameState.GameOver;
                     }
 
-                    //DEBUG ONLY
-                    playerHealth = player.Health;
-                    //to update rect values
-                    rect_player = player.Position;
-
+                    
                     //To make sure that damage is taken only when player touches the priest ONCE
                     Rectangle priestCurrentPos = priest.Position;
                     
@@ -340,13 +325,11 @@ namespace Blood_of_Christ
                         fireballManager.Draw(_spriteBatch);
                     }
                     //Printing out coordinates to debug this thing
-                    _spriteBatch.DrawString(debugFont,
+                    /*_spriteBatch.DrawString(debugFont,
                                             $"{player.Health} xp",
                                             new Vector2(windowWidth / 2, 0),
                                             Color.Black);
-
-                    //fireballs.Draw(_spriteBatch);
-                    
+                    */
                     // Draw platform tiles
                     for (int i = 0; i < platformTiles.GetLength(0); i++)
                     {
