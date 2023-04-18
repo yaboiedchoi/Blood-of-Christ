@@ -209,11 +209,7 @@ namespace Blood_of_Christ
                     player.ResetY = 100;
                     player.Update(gameTime);
 
-
                     priest.Update(gameTime);
-                    
-                    //Takes damage for 5 points- So the issue is takes damage twice instead of once
-
                     //Make this an event
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
@@ -223,7 +219,6 @@ namespace Blood_of_Christ
                     }
 
                     //Checks if fireball is moving and then check for player collision
-                    //call delegate if you collide
                     if (isMoving)
                     {
                         fireballManager.Update(gameTime);
