@@ -74,7 +74,7 @@ namespace Blood_of_Christ
         //attack system
         private Texture2D tex_detector;
         private Rectangle rect_detector;
-        //private Rectangle rect_checksForDetection;
+        private Texture2D tex_light;
 
         // Play Game button in main menu
         private Button startButton;
@@ -126,13 +126,14 @@ namespace Blood_of_Christ
             tex_platform = Content.Load<Texture2D>("platform");
             tex_key = Content.Load<Texture2D>("key");
             tex_detector = Content.Load<Texture2D>("detector");
+            tex_light = Content.Load<Texture2D>("light");
 
             //Attack system and Manager class for firballs
             rect_fireball = new Rectangle(800, windowHeight/2, tex_fireball.Width / 5, tex_fireball.Height / 5);
             rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
             fireballManager = new FireballsManager(tex_fireball, rect_fireball);
 
-            detector = new Detector(tex_detector, rect_detector, windowHeight);
+            detector = new Detector(tex_detector, rect_detector, windowHeight, tex_light);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
 
             // player
@@ -218,13 +219,7 @@ namespace Blood_of_Christ
                         player.TakeDamage((int)healthLost);
                     }
 
-                    //IF player crosses through the detectors; fireballs are activated
-                    //Rectangle playerCurrentPos = player.Position;
-
-                    //Debug.WriteLine("Prev: " + player.PrevPos);
-                    //Debug.WriteLine("Current: " + player.Position);
-                    //Calls fireball manager if it detects player
-
+                    //Make this an event
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
                     {

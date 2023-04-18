@@ -9,10 +9,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Blood_of_Christ.Content
 {
+    public delegate void DetectionCheck();
     public class Detector: GameObject
     {
         //calls the fireballs manager and and checks if anyone has entered or not.
         private Texture2D asset;
+        private Texture2D lightAsset;
         private Rectangle position;
         private Rectangle rect_detection;
         private int windowHeight;
@@ -24,11 +26,12 @@ namespace Blood_of_Christ.Content
         /// <param name="asset"></param>
         /// <param name="position"></param>
         /// <param name="windowHeight"></param>
-        public Detector(Texture2D asset, Rectangle position, int windowHeight) : base(asset, position)
+        public Detector(Texture2D asset, Rectangle position,int windowHeight, Texture2D lightAsset) : base(asset, position)
         {
             this.asset = asset;
             this.position = position;
             rect_detection = new Rectangle(position.X, position.Y, position.Width, windowHeight);
+            this.lightAsset = lightAsset;
         }
 
         /// <summary>
@@ -59,7 +62,9 @@ namespace Blood_of_Christ.Content
             sb.Draw(asset,
                     position,
                     Color.White);
-            //throw new NotImplementedException();
+            sb.Draw(lightAsset,
+                    Detection,
+                    Color.White);
         }
     }
 }
