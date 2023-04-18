@@ -221,20 +221,25 @@ namespace Blood_of_Christ
                     //IF player crosses through the detectors; fireballs are activated
                     //Rectangle playerCurrentPos = player.Position;
 
-                    Debug.WriteLine("Prev: " + player.PrevPos);
-                    Debug.WriteLine("Current: " + player.Position);
+                    //Debug.WriteLine("Prev: " + player.PrevPos);
+                    //Debug.WriteLine("Current: " + player.Position);
                     //Calls fireball manager if it detects player
 
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
                     {
-                        Debug.WriteLine("attack");
+                        //Debug.WriteLine("attack");
                         isMoving = true;
                         fireballManager.Add();
                     }
+
+                    //Checks if fireball is moving and then check for player collision
+                    //call delegate if you collide
                     if (isMoving)
                     {
                         fireballManager.Update(gameTime);
+
+
                         Debug.WriteLine(fireballManager.Count);
                     }
 
@@ -433,17 +438,6 @@ namespace Blood_of_Christ
         {
             gs = GameState.Controls;    
         }
-
-
-        /*private void FireballMove(GameTime gameTime)
-        {
-            double timer = 0;
-            timer -= gameTime.ElapsedGameTime.TotalSeconds;
-            double xVel = 5;
-            double distance = 0;
-            distance += (int)timer * xVel;
-            rect_fireball.X += (int)distance;
-        }*/
 
         /// <summary>
         /// Load Stage from text file

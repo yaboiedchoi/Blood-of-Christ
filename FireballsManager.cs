@@ -13,7 +13,7 @@ namespace Blood_of_Christ
     {
         //Holds fireball objects and removes them when they're offscreen from the list
         //private Fireballs fireballs;
-        private Queue<Fireballs> fireballsManager;
+        private List<Fireballs> fireballsManager;
         private double windowWidth;
         private Texture2D asset;
         private Rectangle rect;
@@ -23,7 +23,7 @@ namespace Blood_of_Christ
         {
             this.asset = asset;
             this.rect = rectangle;
-            fireballsManager = new Queue<Fireballs>();
+            fireballsManager = new List<Fireballs>();
         }
 
         public void Update(GameTime gametime)
@@ -56,7 +56,7 @@ namespace Blood_of_Christ
         /// </summary>
         public void Add()
         {
-            fireballsManager.Enqueue(new Fireballs(asset, rect));
+            fireballsManager.Add(new Fireballs(asset, rect));
         }
 
         /// <summary>
@@ -66,13 +66,32 @@ namespace Blood_of_Christ
         {
             if(fireballsManager.Count >0)
             {
-                if (fireballsManager.Peek().Position.X < -asset.Width)
+                if (fireballsManager[0].Position.X < -asset.Width)
                 {
-                    fireballsManager.Dequeue();
+                    fireballsManager.RemoveAt(0);
                 }
             }
             
         }
+
+        /// <summary>
+        /// If player collides with the fireball, he takes damage and fireball is removed
+        /// </summary>
+        /// <param name="rect"></param>
+        public int TakeDamage(Rectangle rect)
+        {
+            foreach(Fireballs fireball in fireballsManager)
+            {
+                //How to make it single frame??
+                if (fireball.Position.Intersects(rect))
+                {
+                    //int 0;
+                }
+            }
+
+            return 0;
+        }
+
         
         /// <summary>
         /// Clears everything
