@@ -60,13 +60,13 @@ namespace Blood_of_Christ
         }
 
         /// <summary>
-        /// Removes the top most fireball if it goes offscreen
+        /// Removes the top most fireball if it goes offscreen 
         /// </summary>
         public void Remove()
         {
             if(fireballsManager.Count >0)
             {
-                if (fireballsManager.Peek().Position.X < 0)
+                if (fireballsManager.Peek().Position.X < -asset.Width)
                 {
                     fireballsManager.Dequeue();
                 }
