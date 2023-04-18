@@ -20,6 +20,7 @@ namespace Blood_of_Christ
     {
         // KNOWN BUGS:
         // fireball does not reset location when restarting game
+        // player buffers at some point
         // TODO: Add a pause menu
         // NOTE: we should probably move all of these to manager classes later
         private GraphicsDeviceManager _graphics;
