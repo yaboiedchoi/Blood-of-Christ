@@ -210,7 +210,6 @@ namespace Blood_of_Christ
                     player.Update(gameTime);
 
                     priest.Update(gameTime);
-                    //Make this an event
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
                     {
@@ -219,24 +218,20 @@ namespace Blood_of_Christ
                     }
 
                     //Checks if fireball is moving and then check for player collision
-                    if (isMoving)
+                    //if (isMoving)
                     {
                         fireballManager.Update(gameTime);
                         int damage = fireballManager.TakeDamage(player.Position);
                         player.TakeDamage(damage);
                     }
 
-                    // IF player dies, change state to game over screen
+                    // IF player dies, change state to game over screen and removes fireballs
                     if (player.IsDead)
                     {
                         fireballManager.Clear();
                         gs = GameState.GameOver;
                     }
 
-                    
-                    //To make sure that damage is taken only when player touches the priest ONCE
-                    Rectangle priestCurrentPos = priest.Position;
-                    
                     // I made some slight changes based on an idea I had
                     // player now has a timer that gives them 1 second of invulnerability when they're hit
                     // this means they won't immediately lose all their health
@@ -261,11 +256,9 @@ namespace Blood_of_Christ
                         }
                     }
 
-                    player.PrevPos = player.Position;
-
-                    //priestPrevPosition = priestCurrentPos;
+                    //player.PrevPos = player.Position;
                     base.Update(gameTime);
-                    priestPrevPosition = priestCurrentPos;
+                    //priestPrevPosition = priestCurrentPos;
                     player.PrevPos = player.Position;
                     break;
                 case GameState.GameOver:
@@ -309,22 +302,9 @@ namespace Blood_of_Christ
 
                     //enemy
                     priest.Draw(_spriteBatch);
-                    detector.Draw(_spriteBatch);
-
-                    if (detector.Detection.Intersects(player.Position))
-                    {
-                        isMoving = true;
-                    }
-                    if (isMoving)
-                    {
-                        fireballManager.Draw(_spriteBatch);
-                    }
-                    //Printing out coordinates to debug this thing
-                    /*_spriteBatch.DrawString(debugFont,
-                                            $"{player.Health} xp",
-                                            new Vector2(windowWidth / 2, 0),
-                                            Color.Black);
-                    */
+                    detector.Draw(_spriteBatch);                    
+                    fireballManager.Draw(_spriteBatch);
+                                        
                     // Draw platform tiles
                     for (int i = 0; i < platformTiles.GetLength(0); i++)
                     {
@@ -338,9 +318,11 @@ namespace Blood_of_Christ
                 case GameState.Settings:
                     backButton.Draw(_spriteBatch);
                     break;
+
                 case GameState.Controls:
                     backButton.Draw(_spriteBatch);
                     break;
+
                 case GameState.GameOver:
                     _spriteBatch.DrawString(debugFont, "game over", new Vector2(20, 50), Color.Black);
                     backButton.Draw(_spriteBatch);
