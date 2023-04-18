@@ -164,7 +164,6 @@ namespace Blood_of_Christ
             fireballs = new Fireballs(tex_fireball,
                                       rect_fireball);
                                       
-
             //Adding for priest
             //demo_texPriest = Content.Load<Texture2D>("priest");
             priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
@@ -175,10 +174,14 @@ namespace Blood_of_Christ
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
             // All buttons
-            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
-            settingsButton = new Button(debugButtonTexture, new Rectangle(150, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "settings", debugFont, Color.Black);
-            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
-            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), Color.Red, Color.Orange, Color.DarkRed, "controls", debugFont, Color.Black);
+            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
+            settingsButton = new Button(debugButtonTexture, new Rectangle(150, 150, 50, 20), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "settings", debugFont, Color.Black);
+            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 50, 20), Color.Red, 
+                                     Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
+            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "controls", debugFont, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
@@ -217,6 +220,7 @@ namespace Blood_of_Christ
                         double healthLost = 5;
                         //double healthLost = player.Health * 0.5;
                         player.TakeDamage((int)healthLost);
+                        //Debug.WriteLine(player.Health);
                     }
 
                     //Make this an event
@@ -235,7 +239,7 @@ namespace Blood_of_Christ
                         fireballManager.Update(gameTime);
 
 
-                        Debug.WriteLine(fireballManager.Count);
+                        //Debug.WriteLine(fireballManager.Count);
                     }
 
                     // IF player dies, change state to game over screen
@@ -267,26 +271,6 @@ namespace Blood_of_Christ
 
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
-
-                    /*
-                    foreach (Platform platform in platforms)
-                    {
-                        player.Physics(platform.Position, _graphics);
-                    }
-                    foreach (Door door in doors)
-                    {
-                        player.Physics(door.Position, _graphics);
-                    }
-                    for (int i = 0; i < keys.Count; i++)
-                    {
-                        if (keys[i].CheckCollision(player))
-                        {
-                            keys.Remove(keys[i]);
-                            doors.Remove(doors[i]);
-                            i--;
-                        }
-                    }
-                    */
 
                     // Make collision between player and platform tiles
                     for (int i = 0; i < platformTiles.GetLength(0); i++)
@@ -331,6 +315,7 @@ namespace Blood_of_Christ
                     controlsButton.Draw(_spriteBatch);
                     settingsButton.Draw(_spriteBatch);
                     break;
+
                 case GameState.Game: // game
                     _spriteBatch.Draw(
                         tex_bar,
@@ -356,37 +341,12 @@ namespace Blood_of_Christ
                     }
                     //Printing out coordinates to debug this thing
                     _spriteBatch.DrawString(debugFont,
-                                            $"{fireballs.Position}",
+                                            $"{player.Health} xp",
                                             new Vector2(windowWidth / 2, 0),
                                             Color.Black);
 
                     //fireballs.Draw(_spriteBatch);
-
-
-
-                    //IF player crosses through the detectors; fireballs are activated
-                    Rectangle playerCurrentPos = player.Position;
-                    /*f (rect_checksForDetection.Intersects(player.PrevPos) &&
-                        !rect_checksForDetection.Intersects(playerCurrentPos))
-                    {
-                        fireballs.Update(gameTime);
-                    }*/
-
-                    /*
-                    foreach (Platform platform in platforms)
-                    {
-                        platform.Draw(_spriteBatch);
-                    }
-                    foreach (Door door in doors)
-                    {
-                        door.Draw(_spriteBatch);
-                    }
-                    foreach (Key key in keys)
-                    {
-                        key.Draw(_spriteBatch);
-                    }
-                    */
-
+                    
                     // Draw platform tiles
                     for (int i = 0; i < platformTiles.GetLength(0); i++)
                     {
