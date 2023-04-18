@@ -16,6 +16,7 @@ namespace Blood_of_Christ.Content
         private Rectangle position;
         private Rectangle rect_detection;
         private int windowHeight;
+        private Rectangle prevPos;
 
         /// <summary>
         /// Based on the data given it makes a new rectangle which will check if user crosses through it
@@ -37,6 +38,7 @@ namespace Blood_of_Christ.Content
         {
             get { return rect_detection; }
         }
+
 
         /// <summary>
         /// No purpose as of now

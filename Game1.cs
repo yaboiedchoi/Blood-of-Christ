@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Blood_of_Christ
@@ -218,25 +219,30 @@ namespace Blood_of_Christ
                     }
 
                     //IF player crosses through the detectors; fireballs are activated
-                    Rectangle playerCurrentPos = player.Position;
-                    
-                    //Okay, for now it moves if player is detected although find a way to
-                    //add it in the class Detection
-                    if (detector.Detection.Intersects(player.Position))
+                    //Rectangle playerCurrentPos = player.Position;
+
+                    Debug.WriteLine("Prev: " + player.PrevPos);
+                    Debug.WriteLine("Current: " + player.Position);
+                    //Calls fireball manager if it detects player
+
+                    if (detector.Detection.Intersects(player.PrevPos) &&
+                        !detector.Detection.Intersects(player.Position))
                     {
+                        Debug.WriteLine("attack");
                         isMoving = true;
                         fireballManager.Add();
                     }
                     if (isMoving)
                     {
                         fireballManager.Update(gameTime);
+                        Debug.WriteLine(fireballManager.Count);
                     }
 
                     // IF player dies, change state to game over screen
                     if (player.IsDead)
                     {
+                        fireballManager.Clear();
                         gs = GameState.GameOver;
-
                     }
 
                     //DEBUG ONLY
@@ -296,6 +302,7 @@ namespace Blood_of_Christ
                     //priestPrevPosition = priestCurrentPos;
                     base.Update(gameTime);
                     priestPrevPosition = priestCurrentPos;
+                    player.PrevPos = player.Position;
                     break;
                 case GameState.GameOver:
                     backButton.Update(gameTime);

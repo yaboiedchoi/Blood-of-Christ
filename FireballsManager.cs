@@ -11,16 +11,13 @@ namespace Blood_of_Christ
 {
     public class FireballsManager
     {
-        //Pesducode
-        //Fireball is added when it's called into by detector
-        //How to do that??
-
         //Holds fireball objects and removes them when they're offscreen from the list
         //private Fireballs fireballs;
         private Queue<Fireballs> fireballsManager;
         private double windowWidth;
         private Texture2D asset;
         private Rectangle rect;
+        private int count;
 
         public FireballsManager(Texture2D asset, Rectangle rectangle)
         {
@@ -35,6 +32,7 @@ namespace Blood_of_Christ
             {
                 fireball.Update(gametime);
             }
+            Remove();
         }
 
         public void Draw(SpriteBatch sb)
@@ -43,6 +41,14 @@ namespace Blood_of_Christ
             {
                 fireball.Draw(sb);
             }
+        }
+
+        /// <summary>
+        /// Counts amount of fireballs
+        /// </summary>
+        public int Count
+        {
+            get { return fireballsManager.Count; }
         }
 
         /// <summary>
@@ -58,10 +64,14 @@ namespace Blood_of_Christ
         /// </summary>
         public void Remove()
         {
-            if(fireballsManager.Peek().Position.X < 0)
+            if(fireballsManager.Count >0)
             {
-                fireballsManager.Dequeue();
+                if (fireballsManager.Peek().Position.X < 0)
+                {
+                    fireballsManager.Dequeue();
+                }
             }
+            
         }
         
         /// <summary>

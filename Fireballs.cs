@@ -9,12 +9,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blood_of_Christ
 {
-    public class Fireballs: GameObject
+    public class Fireballs : GameObject
     {
         private double xVelocity;
         private double time;
         private double totalTime;
-
+        
         public Fireballs(Texture2D texture, Rectangle position):
             base(texture, position)
         {
