@@ -33,6 +33,7 @@ namespace Blood_of_Christ
         private Rectangle rect_fireball;
         private Fireballs fireballs;
         private Detector detector;
+        private FireballsManager fireballManager;
 
         //Keys
         private KeyboardState prevKey;
@@ -72,7 +73,7 @@ namespace Blood_of_Christ
         //attack system
         private Texture2D tex_detector;
         private Rectangle rect_detector;
-        private Rectangle rect_checksForDetection;
+        //private Rectangle rect_checksForDetection;
 
         // Play Game button in main menu
         private Button startButton;
@@ -108,7 +109,7 @@ namespace Blood_of_Christ
             windowWidth = GraphicsDevice.Viewport.Width;
             windowHeight = GraphicsDevice.Viewport.Height;
             platformTiles = new Platform[12, 20];
-
+            
             gs = GameState.Title;
             base.Initialize();
         }
@@ -125,15 +126,10 @@ namespace Blood_of_Christ
             tex_key = Content.Load<Texture2D>("key");
             tex_detector = Content.Load<Texture2D>("detector");
 
-            //Attack system
+            //Attack system and Manager class for firballs
             rect_fireball = new Rectangle(800, windowHeight/2, tex_fireball.Width / 5, tex_fireball.Height / 5);
             rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
-            /*rect_checksForDetection = new Rectangle(10,
-                                                    0,
-                                                    //width of how much it can detect
-                                                    tex_detector.Width,
-                                                    //covers the whole length of screen
-                                                    windowHeight);*/
+            fireballManager = new FireballsManager(tex_fireball, rect_fireball);
 
             detector = new Detector(tex_detector, rect_detector, windowHeight);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
@@ -174,8 +170,6 @@ namespace Blood_of_Christ
             //DEBUG PURPOSES
             rect_player = new Rectangle(100, 0, 50, 50);
 
-
-
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
             // All buttons
@@ -212,20 +206,7 @@ namespace Blood_of_Christ
 
 
                     priest.Update(gameTime);
-
-
-                    /* TODO: Fireballs and being activated when player crosses a certain path
-                     * Goal 1: See if fireball works and takes damage -- works
-                     * Goal 2: Make a fireballs manager which sees when to remove fireballs  from its own list
-                     * Goal 3: Finally connect it with detector by checking if it passes through a certain path-- maybe using boolean
-                     * 
-                     */
-
-                    //Now the detector should detect it:: another idea make a detector class which calls the 
-                    // detection method and if it is positive calls the fireball manager
-                    // checks when to remove the object and when to add
-
-
+                    
                     //Takes damage for 5 points- So the issue is takes damage twice instead of once
 
                     if (player.Position.Intersects(fireballs.Position) &&
@@ -244,16 +225,18 @@ namespace Blood_of_Christ
                     if (detector.Detection.Intersects(player.Position))
                     {
                         isMoving = true;
+                        fireballManager.Add();
                     }
                     if (isMoving)
                     {
-                        fireballs.Update(gameTime);
+                        fireballManager.Update(gameTime);
                     }
 
                     // IF player dies, change state to game over screen
                     if (player.IsDead)
                     {
                         gs = GameState.GameOver;
+
                     }
 
                     //DEBUG ONLY
@@ -362,7 +345,7 @@ namespace Blood_of_Christ
                     }
                     if (isMoving)
                     {
-                        fireballs.Draw(_spriteBatch);
+                        fireballManager.Draw(_spriteBatch);
                     }
                     //Printing out coordinates to debug this thing
                     _spriteBatch.DrawString(debugFont,
@@ -376,11 +359,11 @@ namespace Blood_of_Christ
 
                     //IF player crosses through the detectors; fireballs are activated
                     Rectangle playerCurrentPos = player.Position;
-                    if (rect_checksForDetection.Intersects(player.PrevPos) &&
+                    /*f (rect_checksForDetection.Intersects(player.PrevPos) &&
                         !rect_checksForDetection.Intersects(playerCurrentPos))
                     {
                         fireballs.Update(gameTime);
-                    }
+                    }*/
 
                     /*
                     foreach (Platform platform in platforms)

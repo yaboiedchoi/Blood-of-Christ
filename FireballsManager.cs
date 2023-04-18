@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,25 +16,61 @@ namespace Blood_of_Christ
         //How to do that??
 
         //Holds fireball objects and removes them when they're offscreen from the list
-        private Fireballs fireballs;
+        //private Fireballs fireballs;
         private Queue<Fireballs> fireballsManager;
         private double windowWidth;
+        private Texture2D asset;
+        private Rectangle rect;
 
-        private FireballsManager(Fireballs fireballs)
+        public FireballsManager(Texture2D asset, Rectangle rectangle)
         {
-            this.fireballs = fireballs;
-            fireballsManager.Enqueue(fireballs);
+            this.asset = asset;
+            this.rect = rectangle;
+            fireballsManager = new Queue<Fireballs>();
         }
 
+        public void Update(GameTime gametime)
+        {
+            foreach(Fireballs fireball in fireballsManager)
+            {
+                fireball.Update(gametime);
+            }
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            foreach(Fireballs fireball in fireballsManager)
+            {
+                fireball.Draw(sb);
+            }
+        }
+
+        /// <summary>
+        /// Adds a fireball
+        /// </summary>
+        public void Add()
+        {
+            fireballsManager.Enqueue(new Fireballs(asset, rect));
+        }
+
+        /// <summary>
+        /// Removes the top most fireball if it goes offscreen
+        /// </summary>
         public void Remove()
         {
-            if(fireballs.Position.X < 0)
+            if(fireballsManager.Peek().Position.X < 0)
             {
                 fireballsManager.Dequeue();
             }
         }
         
-
+        /// <summary>
+        /// Clears everything
+        /// </summary>
+        public void Clear()
+        {
+            fireballsManager.Clear();
+        }
 
 
     }
