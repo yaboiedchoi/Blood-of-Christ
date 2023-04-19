@@ -17,6 +17,7 @@ namespace Blood_of_Christ
         // Fields
         private Texture2D tex_tiles;
         private Texture2D tex_key;
+        private Texture2D tex_goal;
         private Player player;
         private Platform[,] windowTiles;
         private Platform[,] platformTiles;
@@ -37,14 +38,21 @@ namespace Blood_of_Christ
         Dictionary<Key, List<Door>> keyDoorPairs;
         private Key key1;
         private Key key2;
+        private List<Goal> goal;
         private List<Door> doorsA;
         private List<Door> doorsB;
 
+        public List<Goal> Goal
+        {
+            get { return goal; }
+        }
+
         // Constructor
-        public Tile(Texture2D tex_tiles, Texture2D tex_key, Player player)
+        public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal, Player player)
         {
             this.tex_tiles = tex_tiles;
             this.tex_key = tex_key;
+            this.tex_goal = tex_goal;
             this.player = player;
             windowTiles = new Platform[15, 25];
             platformTiles = new Platform[11, 19];
@@ -52,6 +60,7 @@ namespace Blood_of_Christ
             keyDoorPairs = new Dictionary<Key, List<Door>>();
             doorsA = new List<Door>();
             doorsB = new List<Door>();
+            goal = new List<Goal>();
         }
 
         // Methods
@@ -128,6 +137,11 @@ namespace Blood_of_Christ
                     door.Draw(sb);
                 }
                 entry.Key.Draw(sb);
+            }
+
+            for (int i = 0; i< goal.Count; i++) 
+            {
+                goal[i].Draw(sb);
             }
         }
 
@@ -252,6 +266,11 @@ namespace Blood_of_Christ
                         {
                             platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
                             doorsB.Add(new Door(tex_tiles, new Rectangle(144 + c * 48, 96 + r * 48, 48, 48)));
+                        }
+                        else if (tilesData[c] == "G")
+                        {
+                            platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
+                            goal.Add(new Goal(new Rectangle(144 + c * 48, 96 + r * 48, 48, 48), tex_goal));
                         }
                     }
                     r++;

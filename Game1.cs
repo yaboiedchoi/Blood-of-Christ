@@ -64,6 +64,10 @@ namespace Blood_of_Christ
         private Texture2D tex_tiles;
         private Tile tiles;
 
+        // Goal
+        private Goal goal;
+        private Texture2D tex_goal;
+
         // Window
         private int windowWidth;
         private int windowHeight;
@@ -119,9 +123,13 @@ namespace Blood_of_Christ
             tex_tiles = Content.Load<Texture2D>("tilesAssets");
             tex_detector = Content.Load<Texture2D>("detector");
             tex_light = Content.Load<Texture2D>("light");
+            tex_goal = Content.Load<Texture2D>("SolidWhite");
+
             // player
             player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
             rect_playerPrevPos = rect_player;        
+            rect_health = new Rectangle(10, 10, 100, 20);
+            rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //Attack system and Manager class for firballs
             rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 5, tex_fireball.Height / 5);
@@ -130,13 +138,6 @@ namespace Blood_of_Christ
 
             detector = new Detector(tex_detector, rect_detector, windowHeight, tex_light);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
-
-                       //for fireballs detection
-
-            // player
-            player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
-            rect_health = new Rectangle(10, 10, 100, 20);
-            rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //fireball
             fireballs = new Fireballs(tex_fireball,
@@ -153,7 +154,7 @@ namespace Blood_of_Christ
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
 
             // Tiles
-            tiles = new Tile(tex_tiles, tex_key, player);
+            tiles = new Tile(tex_tiles, tex_key, tex_goal, player);
             tiles.WindowTiles();
             tiles.LoadStage();
 
@@ -211,9 +212,7 @@ namespace Blood_of_Christ
                         {
                             fireballManager.Fireballs.RemoveAt(i);
                         }
-
                     }
-                        //player.TakeDamage(damage);
 
                     // IF player dies, change state to game over screen and removes fireballs
                     if (player.IsDead)
@@ -221,6 +220,15 @@ namespace Blood_of_Christ
                         fireballManager.Clear();
                         gs = GameState.GameOver;
                     }
+
+                    for (int i = 0; i < tiles.Goal.Count; i++)
+                    {
+                        if (tiles.Goal[i].CheckCollision(player))
+                        {
+                            gs = GameState.GameOver;
+                        }
+                    }
+                    
 
                     // I made some slight changes based on an idea I had
                     // player now has a timer that gives them 1 second of invulnerability when they're hit
@@ -289,6 +297,8 @@ namespace Blood_of_Christ
                     priest.Draw(_spriteBatch);
                     detector.Draw(_spriteBatch);                    
                     fireballManager.Draw(_spriteBatch);
+
+                    // Goal
 
                     break;
                 case GameState.Settings:
