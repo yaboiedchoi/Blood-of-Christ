@@ -208,8 +208,9 @@ namespace Blood_of_Christ
                     player.ResetX = 100;
                     player.ResetY = 100;
                     player.Update(gameTime);
-
                     priest.Update(gameTime);
+                    fireballManager.Update(gameTime);
+
                     if (detector.Detection.Intersects(player.PrevPos) &&
                         !detector.Detection.Intersects(player.Position))
                     {
@@ -217,13 +218,18 @@ namespace Blood_of_Christ
                         fireballManager.Add();
                     }
 
-                    //Checks if fireball is moving and then check for player collision
-                    //if (isMoving)
+                    // Player Takes Damage if colliding with fireballs
+                        
+                    for (int i = 0; i < fireballManager.Count; i++)
                     {
-                        fireballManager.Update(gameTime);
-                        int damage = fireballManager.TakeDamage(player.Position);
-                        player.TakeDamage(damage);
+                        player.TakeDamage(fireballManager.Fireballs[i]);
+                        if (fireballManager.Fireballs[i].Position.Intersects(player.Position))
+                        {
+                            fireballManager.Fireballs.RemoveAt(i);
+                        }
+
                     }
+                        //player.TakeDamage(damage);
 
                     // IF player dies, change state to game over screen and removes fireballs
                     if (player.IsDead)
@@ -239,9 +245,7 @@ namespace Blood_of_Christ
                     if (player.Position.Intersects(priest.Position) &&
                         player.HitTime <= 0)
                     {
-                        double healthLost = 20;
-                        //double healthLost = player.Health * 0.5;
-                        player.TakeDamage((int)healthLost);
+                        player.TakeDamage(priest);
                     }                    
 
                     rect_health.Width = (int)(player.Health * 2.5);
@@ -258,6 +262,7 @@ namespace Blood_of_Christ
 
                     //player.PrevPos = player.Position;
                     base.Update(gameTime);
+
                     //priestPrevPosition = priestCurrentPos;
                     player.PrevPos = player.Position;
                     break;
@@ -290,6 +295,8 @@ namespace Blood_of_Christ
                     break;
 
                 case GameState.Game: // game
+                    
+                    // health and ability bars
                     _spriteBatch.Draw(
                         tex_bar,
                         rect_health,
@@ -300,7 +307,7 @@ namespace Blood_of_Christ
                         Color.AliceBlue);
                     player.Draw(_spriteBatch);
 
-                    //enemy
+                    // Enemy
                     priest.Draw(_spriteBatch);
                     detector.Draw(_spriteBatch);                    
                     fireballManager.Draw(_spriteBatch);
@@ -313,6 +320,12 @@ namespace Blood_of_Christ
                             platformTiles[i, j].Draw(_spriteBatch);
                         }
                     }
+
+                    _spriteBatch.DrawString(
+                        debugFont,
+                        player.HitTime.ToString(),
+                        new Vector2(0, 0),
+                        Color.Black);
 
                     break;
                 case GameState.Settings:

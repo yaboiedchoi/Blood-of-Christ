@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Blood_of_Christ
 {
-    internal class Player : GameObject
+    public class Player : GameObject
     {
         // animation enumerator
         private enum animState
@@ -110,7 +110,7 @@ namespace Blood_of_Christ
             isBat = false;
             batTime = 3;
             playerSize = position.Width;
-            hitTime = 0;
+            hitTime = 1;
             anim = animState.standingRight;
         }
 
@@ -118,9 +118,14 @@ namespace Blood_of_Christ
 
         public override void Update(GameTime gameTime)
         {
+            hitTime -= gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState kbstate = Keyboard.GetState();
             // player can only take damage when hitTime = 0.
-            hitTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (hitTime < 0)
+            {
+                hitTime = 0;
+                
+            }
 
            // If player is dead, calls Reset
            // now no need, since there is a game over screen
@@ -479,16 +484,26 @@ namespace Blood_of_Christ
 
         /// <summary>
         /// Written by Sean
-        /// Allows the player to take a given amount of damage
+        /// Player loses health when colliding with certain gameObjects
         /// Checks
         /// </summary>
-        /// <param name="damage"></param>
-        public void TakeDamage(int damage)
+        /// <param name="other"> Whatever gameobject the player is colliding with </param>
+        public void TakeDamage(GameObject other)
         {
-            if (!godMode)
+            if (position.Intersects(other.Position))
             {
-                health -= damage;
-                hitTime = 1;
+                if (!godMode && hitTime == 0)
+                {
+                    if (other is Fireballs)
+                    {
+                        health -= 20;
+                    }
+                    if (other is Priest)
+                    {
+                        health -= 40;
+                    }    
+                    hitTime = 1;
+                }
             }
         }
 

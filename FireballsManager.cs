@@ -19,6 +19,10 @@ namespace Blood_of_Christ
         private Rectangle rect;
         private int count;
 
+        public List<Fireballs> Fireballs
+        {
+            get { return fireballsManager; }
+        }
         public FireballsManager(Texture2D asset, Rectangle rectangle)
         {
             this.asset = asset;
@@ -64,14 +68,13 @@ namespace Blood_of_Christ
         /// </summary>
         public void Remove()
         {
-            if(fireballsManager.Count >0)
+            if(fireballsManager.Count > 0)
             {
                 if (fireballsManager[0].Position.X < -asset.Width)
                 {
                     fireballsManager.RemoveAt(0);
                 }
-            }
-            
+            }            
         }
 
         /// <summary>
