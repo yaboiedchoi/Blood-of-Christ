@@ -23,6 +23,7 @@ namespace Blood_of_Christ
         public Door(Texture2D asset, Rectangle position)
             : base(asset, position)
         {
+            SpritePosition = new Rectangle(64, 256, 48, 48);
         }
     }
 }
