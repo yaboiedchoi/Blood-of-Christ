@@ -15,6 +15,15 @@ namespace Blood_of_Christ
     /// </summary>
     internal class Platform : GameObject
     {
+        // Field
+        private Rectangle spritePosition;
+
+        // Property
+        public Rectangle SpritePosition
+        {
+            set { spritePosition = value; }
+        }
+
         // Constructor
         /// <summary>
         /// Constructor to initiate asset and position of platform
@@ -42,8 +51,10 @@ namespace Blood_of_Christ
         /// <param name="sb">SpriteBatch</param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(base.texture,
+            sb.Draw(
+                texture,
                 position,
+                spritePosition,
                 Color.White);
         }
     }

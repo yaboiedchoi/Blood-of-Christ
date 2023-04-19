@@ -58,18 +58,15 @@ namespace Blood_of_Christ
         private Rectangle rect_batTimer;
         private Texture2D tex_bar;
         private Rectangle rect_playerPrevPos; //For detectors to set off the fireballs
-        //private Priest priest;
+                                              //private Priest priest;
+        // Tiling system
+        private Texture2D tex_key;
+        private Texture2D tex_tiles;
+        private Tile tiles;
 
-        // platforms
-        private List<Platform> platforms;
-        private List<Door> doors;
-        private Texture2D tex_platform;
+        // Window
         private int windowWidth;
         private int windowHeight;
-
-        // collectibles
-        private List<Key> keys;
-        private Texture2D tex_key;
 
         //attack system
         private Texture2D tex_detector;
@@ -89,13 +86,12 @@ namespace Blood_of_Christ
         // Controls button in main menu
         private Button controlsButton;
 
-        // Tiling system
-        private Platform[,] platformTiles;
-
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = 1200;
+            _graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -104,12 +100,8 @@ namespace Blood_of_Christ
         {
             // TODO: Add your initialization logic here
             prevKey = Keyboard.GetState();
-            platforms = new List<Platform>();
-            doors = new List<Door>();
-            keys = new List<Key>();
             windowWidth = GraphicsDevice.Viewport.Width;
             windowHeight = GraphicsDevice.Viewport.Height;
-            platformTiles = new Platform[12, 20];
             
             gs = GameState.Title;
             base.Initialize();
@@ -123,8 +115,8 @@ namespace Blood_of_Christ
             tex_fireball = Content.Load<Texture2D>("fireball");
             tex_priest = Content.Load<Texture2D>("back up priest");
             tex_bar = Content.Load<Texture2D>("health_bar_placeholder");
-            tex_platform = Content.Load<Texture2D>("platform");
             tex_key = Content.Load<Texture2D>("key");
+            tex_tiles = Content.Load<Texture2D>("tilesAssets");
             tex_detector = Content.Load<Texture2D>("detector");
             tex_light = Content.Load<Texture2D>("light");
 
@@ -140,25 +132,10 @@ namespace Blood_of_Christ
             player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
             rect_playerPrevPos = rect_player;                               //for fireballs detection
 
-            // doors[i] corresponds to keys[i]
-            // Ex) keys[3] will be used to open doors[3]
-            doors.Add(new Door(tex_platform, new Rectangle(300, 300, 100, 50)));
-            doors.Add(new Door(tex_platform, new Rectangle(500, 200, 50, 100)));
-            keys.Add(new Key(tex_key, new Rectangle(700, 400, 50, 50)));
-            keys.Add(new Key(tex_key, new Rectangle(600, 100, 50, 50)));
-
             // player
             player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
             rect_health = new Rectangle(10, 10, 100, 20);
             rect_batTimer = new Rectangle(10, 40, 100, 20);
-
-            //platforms
-            /*
-            platforms.Add(new Platform(tex_bar, new Rectangle(0, 300, 300, 50)));
-            platforms.Add(new Platform(tex_bar, new Rectangle(400, 300, 500, 50)));
-            platforms.Add(new Platform(tex_bar, new Rectangle(500, 27, 50, 173)));
-            */
-            LoadStage();
 
             //fireball
             fireballs = new Fireballs(tex_fireball,
@@ -173,6 +150,12 @@ namespace Blood_of_Christ
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
+
+            // Tiles
+            tiles = new Tile(tex_tiles, tex_key, player);
+            tiles.WindowTiles();
+            tiles.LoadStage();
+
             // All buttons
             startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), 
                                      Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
@@ -206,7 +189,7 @@ namespace Blood_of_Christ
                     break;
                 case GameState.Game: // game
                     player.ResetX = 100;
-                    player.ResetY = 100;
+                    player.ResetY = 0;
                     player.Update(gameTime);
 
                     priest.Update(gameTime);
@@ -247,14 +230,7 @@ namespace Blood_of_Christ
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
 
-                    // Make collision between player and platform tiles
-                    for (int i = 0; i < platformTiles.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < platformTiles.GetLength(1); j++)
-                        {
-                            player.Physics(platformTiles[i, j].Position, _graphics);
-                        }
-                    }
+                    tiles.Update(gameTime);
 
                     //player.PrevPos = player.Position;
                     base.Update(gameTime);
@@ -290,6 +266,7 @@ namespace Blood_of_Christ
                     break;
 
                 case GameState.Game: // game
+                    tiles.Draw(_spriteBatch);
                     _spriteBatch.Draw(
                         tex_bar,
                         rect_health,
@@ -304,15 +281,6 @@ namespace Blood_of_Christ
                     priest.Draw(_spriteBatch);
                     detector.Draw(_spriteBatch);                    
                     fireballManager.Draw(_spriteBatch);
-                                        
-                    // Draw platform tiles
-                    for (int i = 0; i < platformTiles.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < platformTiles.GetLength(1); j++)
-                        {
-                            platformTiles[i, j].Draw(_spriteBatch);
-                        }
-                    }
 
                     break;
                 case GameState.Settings:
@@ -352,55 +320,6 @@ namespace Blood_of_Christ
         protected void ControlsMenu()
         {
             gs = GameState.Controls;    
-        }
-
-        /// <summary>
-        /// Load Stage from text file
-        /// </summary>
-        public void LoadStage()
-        {
-            StreamReader reader = null;
-            try
-            {
-                reader = new StreamReader("../../../Stage1.txt");
-
-                string line = "";
-
-                int row = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    List<string> tilesData = new List<string>();
-                    foreach (char ch in line)
-                    {
-                        tilesData.Add(ch.ToString());
-                    }
-
-                    for (int c = 0; c < tilesData.Count; c++)
-                    {
-                        if (tilesData[c] == ".")
-                        {
-                            platformTiles[row, c] = new Platform(tex_platform, new Rectangle());
-                        }
-                        else if (tilesData[c] == "X")
-                        {
-                            platformTiles[row, c] = new Platform(tex_platform, new Rectangle(c * 40, row * 40, 40, 40));
-                        }
-                    }
-
-                    row++;
-                }
-            }
-            catch (Exception fileError)
-            {
-                System.Diagnostics.Debug.WriteLine(fileError.Message);
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
         }
     }
 }

@@ -420,12 +420,10 @@ namespace Blood_of_Christ
         /// Player physics to move on ground and collide to wall
         /// </summary>
         /// <param name="platform">Platform or door as obstacles</param>
-        /// <param name="_graphics">GraphicDeviceManager</param>
-        public void Physics(Rectangle platform, GraphicsDeviceManager _graphics)
+        public void Physics(Rectangle platform)
         {
-            while ((prevPos.X + prevPos.Width <= platform.X &&                                 // If player was left from the wall
-                    position.Intersects(platform)) ||                                          // and now intersects the wall
-                    position.X + position.Width >= _graphics.GraphicsDevice.Viewport.Width)    // Or, when player is getting out of screen
+            while ((prevPos.X + prevPos.Width <= platform.X &&    // If player was left from the wall
+                    position.Intersects(platform)))               // and now intersects the wall
             {
                 position.X--;
                 if (xVelocity > 0)
@@ -435,8 +433,7 @@ namespace Blood_of_Christ
             }
 
             while ((prevPos.X >= platform.X + platform.Width &&    // If player was right from the wall
-                    position.Intersects(platform)) ||              // and now intersects the wall
-                    position.X <= 0)                               // Or, when player is getting out of screen
+                    position.Intersects(platform)))                // and now intersects the wall
             {
                 position.X++;
                 if (xVelocity < 0)
@@ -445,9 +442,8 @@ namespace Blood_of_Christ
                 }
             }
 
-            while ((prevPos.Y + prevPos.Height <= platform.Y &&                                  // If player was up from the wall
-                    position.Intersects(platform)) ||                                            // and now intersects the wall
-                    position.Y + position.Height >= _graphics.GraphicsDevice.Viewport.Height)    // Or, when player is getting out of screen
+            while ((prevPos.Y + prevPos.Height <= platform.Y &&    // If player was up from the wall
+                    position.Intersects(platform)))                // and now intersects the wall
             {
                 position.Y--;
                 if (yVelocity > 0)
@@ -465,8 +461,7 @@ namespace Blood_of_Christ
             }
 
             while ((prevPos.Y >= platform.Y + platform.Height &&    // If player was down from the wall
-                    position.Intersects(platform)) ||               // and now intersects the wall
-                    position.Y <= 0)                                // Or, when player is getting out of screen
+                    position.Intersects(platform)))                 // and now intersects the wall
             {
                 position.Y++;
                 if (yVelocity < 0)
