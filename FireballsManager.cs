@@ -58,9 +58,9 @@ namespace Blood_of_Christ
         /// <summary>
         /// Adds a fireball
         /// </summary>
-        public void Add()
+        public void Add(Player player)
         {
-            fireballsManager.Add(new Fireballs(asset, rect));
+            fireballsManager.Add(new Fireballs(asset, new Rectangle(rect.X, player.Position.Y, rect.Width, rect.Height)));
         }
 
         /// <summary>

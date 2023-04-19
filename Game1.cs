@@ -119,18 +119,19 @@ namespace Blood_of_Christ
             tex_tiles = Content.Load<Texture2D>("tilesAssets");
             tex_detector = Content.Load<Texture2D>("detector");
             tex_light = Content.Load<Texture2D>("light");
+            // player
+            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
+            rect_playerPrevPos = rect_player;        
 
             //Attack system and Manager class for firballs
-            rect_fireball = new Rectangle(800, windowHeight/2, tex_fireball.Width / 5, tex_fireball.Height / 5);
-            rect_detector = new Rectangle(10, 0, tex_detector.Width, tex_detector.Height);
+            rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 5, tex_fireball.Height / 5);
+            rect_detector = new Rectangle(500, 100, tex_detector.Width, tex_detector.Height);
             fireballManager = new FireballsManager(tex_fireball, rect_fireball);
 
             detector = new Detector(tex_detector, rect_detector, windowHeight, tex_light);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
 
-            // player
-            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
-            rect_playerPrevPos = rect_player;                               //for fireballs detection
+                       //for fireballs detection
 
             // player
             player = new Player(tex_bar, new Rectangle(100, 0, 50, 50));
@@ -188,8 +189,8 @@ namespace Blood_of_Christ
 
                     break;
                 case GameState.Game: // game
-                    player.ResetX = 100;
-                    player.ResetY = 0;
+                    player.ResetX = 150;
+                    player.ResetY = 500;
                     player.Update(gameTime);
                     priest.Update(gameTime);
                     fireballManager.Update(gameTime);
@@ -198,7 +199,7 @@ namespace Blood_of_Christ
                         !detector.Detection.Intersects(player.Position))
                     {
                         isMoving = true;
-                        fireballManager.Add();
+                        fireballManager.Add(player);
                     }
 
                     // Player Takes Damage if colliding with fireballs
@@ -313,7 +314,7 @@ namespace Blood_of_Christ
         /// </summary>
         protected void StartGame()
         {
-            player.Reset(player.ResetX, player.ResetY);
+            player.Reset(150, 500);
             gs = GameState.Game;
         }
         protected void TitleScreen()

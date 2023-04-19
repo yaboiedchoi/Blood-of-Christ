@@ -166,6 +166,10 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.walkingRight;
                             }
+                            if (kbstate.IsKeyDown(Keys.Space))
+                            {
+                                anim = animState.fallingRight;
+                            }
                             break;
                         }
                     case animState.standingLeft:
@@ -180,7 +184,7 @@ namespace Blood_of_Christ
                             }
                             if (kbstate.IsKeyDown(Keys.Space))
                             {
-                                anim = animState.jumpingLeft;
+                                anim = animState.fallingLeft;
                             }
                             break;
                         }
@@ -236,10 +240,6 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.jumpingRight;
                             }
-                            if (yVelocity == 0 && kbstate.IsKeyDown(Keys.Right))
-                            {
-                                anim = animState.walkingRight;
-                            }
                             if (yVelocity == 0)
                             {
                                 anim = animState.standingLeft;
@@ -250,7 +250,6 @@ namespace Blood_of_Christ
                         }
                     case animState.jumpingRight:
                         {
-
                             if (kbstate.IsKeyUp(Keys.Right))
                             {
                                 anim = animState.fallingRight;
@@ -259,18 +258,12 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.jumpingLeft;
                             }
-                            if (yVelocity == 0 && kbstate.IsKeyDown(Keys.Left))
-                            {
-                                anim = animState.walkingLeft;
-                            }
                             if (yVelocity == 0)
                             {
                                 anim = animState.standingRight;
                             }
                             position.X += 5;
                             break;                            
-
-
                         }
                     case animState.fallingRight:
                         {
@@ -282,7 +275,7 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.jumpingLeft;
                             }
-                            if (yVelocity >= 0)
+                            if (yVelocity == 0)
                             {
                                 anim = animState.standingRight;
                             }
@@ -298,7 +291,7 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.jumpingLeft;
                             }
-                            if (yVelocity >= 0)
+                            if (yVelocity == 0)
                             {
                                 anim = animState.standingLeft;
                             }
@@ -325,6 +318,14 @@ namespace Blood_of_Christ
                 {
                     position.Y += 5;
                 }
+                if (kbstate.IsKeyDown(Keys.Left))
+                {
+                    position.X -= 5;
+                }
+                if (kbstate.IsKeyDown(Keys.Right))
+                {
+                    position.X += 5;
+                }
 
                 // transforming back into a player
                 if (kbstate.IsKeyDown(Keys.W) && kbstate.IsKeyUp(Keys.E))
@@ -336,22 +337,7 @@ namespace Blood_of_Christ
 
                 yVelocity = -5;
             }
-            /*
-            // basic
-            if (kbstate.IsKeyDown(Keys.Left))
-            {
-                position.X -= 5;
-                anim = animState.walkingLeft;
-            }
-            if (kbstate.IsKeyDown(Keys.Right))
-            {
-                position.X += 5;
-                anim = animState.walkingRight;
-            }
-            */
-
-
-            
+    
             // adds gravity to the y velocity
             yVelocity += gravity;  
 
@@ -417,6 +403,14 @@ namespace Blood_of_Christ
                             Color.Black);
                         break;
                     }
+                case animState.fallingLeft:
+                    {
+                        sb.Draw(
+                            base.texture,
+                            position,
+                            Color.White);
+                        break;
+                    }
             }
         }
 
@@ -461,7 +455,7 @@ namespace Blood_of_Christ
                 if (kbstate.IsKeyDown(Keys.Space) &&
                     yVelocity == 0)
                 {
-                    yVelocity = -15;
+                    yVelocity = -16;
                 }
             }
 

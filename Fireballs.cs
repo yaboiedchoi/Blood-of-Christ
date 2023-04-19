@@ -18,7 +18,7 @@ namespace Blood_of_Christ
         public Fireballs(Texture2D texture, Rectangle position):
             base(texture, position)
         {
-            xVelocity = 1;
+            xVelocity = 2;
             this.texture = texture;
             this.position = position;
         }
@@ -35,7 +35,7 @@ namespace Blood_of_Christ
             double deltaX;
             //time = gameTime.TotalGameTime.TotalSeconds;
             time += gameTime.ElapsedGameTime.TotalSeconds;
-            deltaX = xVelocity;
+            deltaX = xVelocity + time*2;
             position.X -= (int)deltaX;
             Position = position;
         }
