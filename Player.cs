@@ -225,7 +225,6 @@ namespace Blood_of_Christ
                         }
                     case animState.walkingRight:
                         {
-
                             if (!kbstate.IsKeyDown(Keys.Right))
                             {
                                 anim = animState.standingRight;
@@ -358,48 +357,55 @@ namespace Blood_of_Christ
 
         public override void Draw(SpriteBatch sb)
         {
-            switch(anim)
+            if (isBat)
             {
-                case animState.jumpingLeft:
-                    {
-                        DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
-                        break;
-                    }
-                case animState.walkingLeft: 
-                    {
-                        DrawPlayerWalking(SpriteEffects.FlipHorizontally, sb);
-                        break;
-                    }
-                case animState.walkingRight:
-                    {
-                        DrawPlayerWalking(SpriteEffects.None, sb);
-                        break;
-                    }
-                case animState.jumpingRight:
-                    {
-                        DrawPlayerJumping(SpriteEffects.None, sb);
-                        break;
-                    }
-                case animState.standingLeft:
-                    {
-                        DrawPlayerStanding(SpriteEffects.FlipHorizontally, sb);
-                        break;
-                    }
-                case animState.standingRight:
-                    {
-                        DrawPlayerStanding(SpriteEffects.None, sb);
-                        break;
-                    }
-                case animState.fallingRight:
-                    {
-                        DrawPlayerJumping(SpriteEffects.None, sb);
-                        break;
-                    }
-                case animState.fallingLeft:
-                    {
-                        DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
-                        break;
-                    }
+                DrawAsBat(SpriteEffects.None, sb);
+            }
+            else
+            {
+                switch (anim)
+                {
+                    case animState.jumpingLeft:
+                        {
+                            DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        }
+                    case animState.walkingLeft:
+                        {
+                            DrawPlayerWalking(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        }
+                    case animState.walkingRight:
+                        {
+                            DrawPlayerWalking(SpriteEffects.None, sb);
+                            break;
+                        }
+                    case animState.jumpingRight:
+                        {
+                            DrawPlayerJumping(SpriteEffects.None, sb);
+                            break;
+                        }
+                    case animState.standingLeft:
+                        {
+                            DrawPlayerStanding(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        }
+                    case animState.standingRight:
+                        {
+                            DrawPlayerStanding(SpriteEffects.None, sb);
+                            break;
+                        }
+                    case animState.fallingRight:
+                        {
+                            DrawPlayerJumping(SpriteEffects.None, sb);
+                            break;
+                        }
+                    case animState.fallingLeft:
+                        {
+                            DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        }
+                }
             }
         }
 
@@ -454,7 +460,7 @@ namespace Blood_of_Christ
                 position.Y++;
                 if (yVelocity < 0)
                 {
-                    yVelocity = 0;
+                    yVelocity = 1;
                 }
             }
         }
@@ -562,6 +568,23 @@ namespace Blood_of_Christ
                 new Vector2(position.X - 25, position.Y - 50),
                 new Rectangle(
                     100,
+                    100,
+                    spriteWidth,
+                    100),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                flip,
+                0.0f);
+        }
+        private void DrawAsBat(SpriteEffects flip, SpriteBatch sb)
+        {
+            sb.Draw(
+                texture,
+                new Vector2(position.X - 25, position.Y - 50),
+                new Rectangle(
+                    200,
                     100,
                     spriteWidth,
                     100),
