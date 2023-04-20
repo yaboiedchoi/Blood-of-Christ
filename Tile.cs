@@ -20,6 +20,7 @@ namespace Blood_of_Christ
         private Texture2D tex_goal;
         private Texture2D tex_detector;
         private Texture2D tex_light;
+        private Texture2D tex_priest;
         private Player player;
         private Platform[,] windowTiles;
         private Platform[,] platformTiles;
@@ -44,6 +45,7 @@ namespace Blood_of_Christ
         private List<Door> doorsA;
         private List<Door> doorsB;
         private List<Detector> detector;
+        private List<Priest> priests;
 
         public List<Goal> Goal
         {
@@ -59,15 +61,21 @@ namespace Blood_of_Christ
         {
             get { return platformTiles; }
         }
+        public List<Priest> Priests
+        {
+            get { return priests; }
+        }
 
         // Constructor
-        public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal, Texture2D tex_detector, Texture2D tex_light, Player player)
+        public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal,
+            Texture2D tex_detector, Texture2D tex_light, Texture2D tex_priest, Player player)
         {
             this.tex_tiles = tex_tiles;
             this.tex_key = tex_key;
             this.tex_goal = tex_goal;
             this.tex_detector = tex_detector;
             this.tex_light = tex_light;
+            this.tex_priest = tex_priest;
             this.player = player;
             windowTiles = new Platform[15, 25];
             platformTiles = new Platform[11, 19];
@@ -77,6 +85,7 @@ namespace Blood_of_Christ
             doorsB = new List<Door>();
             goal = new List<Goal>();
             detector = new List<Detector>();
+            priests = new List<Priest>();
         }
 
         // Methods
@@ -93,6 +102,10 @@ namespace Blood_of_Christ
                 for (int j = 0; j < windowTiles.GetLength(1); j++)
                 {
                     player.Physics(windowTiles[i, j].Position);
+                    for (int g = 0; g < priests.Count; g++)
+                    {
+                        priests[g].Physics(windowTiles[i, j].Position);
+                    }
                 }
             }
 
@@ -101,6 +114,10 @@ namespace Blood_of_Christ
                 for (int j = 0; j < platformTiles.GetLength(1); j++)
                 {
                     player.Physics(platformTiles[i, j].Position);
+                    for (int g = 0; g < priests.Count; g++)
+                    {
+                        priests[g].Physics(platformTiles[i, j].Position);
+                    }
                 }
             }
 
@@ -109,6 +126,10 @@ namespace Blood_of_Christ
                 foreach (Door door in entry.Value)
                 {
                     player.Physics(door.Position);
+                    for (int i = 0; i < priests.Count; i++)
+                    {
+                        priests[i].Physics(door.Position);
+                    }
                 }
                 if (entry.Key.CheckCollision(player))
                 {
@@ -117,23 +138,39 @@ namespace Blood_of_Christ
             }
             for (int i = 0; i < detector.Count; i++)
             {
-                if (doorsA.Count > 0)
+                detector[i].Update(gameTime);
+                for (int j = 0; j < doorsA.Count; j++)
                 {
-                    for (int j = 0; j < doorsA.Count; j++)
+                    if (doorsA.Count == 0)
+                    {
+                        detector[i].Height *= 2;
+                        detector[i].SetHeight(platformTiles);
+                        detector[i].SetHeight(windowTiles);
+                    }
+                    else
                     {
                         detector[i].SetHeight(doorsA[j]);
                     }
                 }
-                if (doorsB.Count > 0)
+                for (int j = 0; j < doorsB.Count; j++)
                 {
-                    for (int j = 0; j < doorsB.Count; j++)
+                    if (doorsB.Count == 0)
+                    {
+                        detector[i].Height = 500;
+                        detector[i].SetHeight(platformTiles);
+                        detector[i].SetHeight(windowTiles);
+                    }
+                    else
                     {
                         detector[i].SetHeight(doorsB[j]);
                     }
                 }
                 detector[i].SetHeight(platformTiles);
                 detector[i].SetHeight(windowTiles);
-
+            }
+            for (int i = 0; i < priests.Count; i++)
+            {
+                priests[i].Update(gameTime);
             }
         }
 
@@ -185,7 +222,10 @@ namespace Blood_of_Christ
                 goal[i].Draw(sb);
             }
 
-
+            for (int i = 0; i < priests.Count; i++)
+            {
+                priests[i].Draw(sb);
+            }
         }
 
         #region WindowTiles
@@ -258,12 +298,17 @@ namespace Blood_of_Christ
         /// <summary>
         /// Load stage from a text file
         /// </summary>
-        public void LoadStage()
+        public void LoadStage(int level)
         {
             StreamReader reader = null;
             try
             {
-                reader = new StreamReader("../../../Stage1.txt");
+                priests.Clear();
+                Goal.Clear();
+                doorsA.Clear();
+                doorsB.Clear();
+                detector.Clear();
+                reader = new StreamReader("../../../Stage" + level + ".txt");
 
                 string line = "";
 
@@ -319,6 +364,11 @@ namespace Blood_of_Christ
                         {
                             platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
                             detector.Add(new Detector(tex_detector, new Rectangle(144 + c * 48, 96 + r * 48, 48, 24), 500, tex_light));
+                        }
+                        else if (tilesData[c] == "0")
+                        {
+                            platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
+                            priests.Add(new Priest(0,0, tex_priest, new Rectangle(144 + c * 48, 96 + r * 48, 96, 96)));
                         }
                     }
                     r++;

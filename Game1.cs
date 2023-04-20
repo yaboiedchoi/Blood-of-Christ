@@ -46,7 +46,6 @@ namespace Blood_of_Christ
         //for priest and attack
         private Texture2D tex_priest;
         private Rectangle rect_priest;
-        private Priest priest;
         Rectangle priestPrevPosition;
         private bool isMoving = false;
 
@@ -65,6 +64,7 @@ namespace Blood_of_Christ
 
         // Goal
         private Texture2D tex_goal;
+        private int level;
 
         // Window
         private int windowWidth;
@@ -126,6 +126,7 @@ namespace Blood_of_Christ
 
             // player
             player = new Player(tex_player, new Rectangle(100, 400, 50, 50));
+            level = 1;
             rect_playerPrevPos = rect_player;        
             rect_health = new Rectangle(10, 10, 100, 20);
             rect_batTimer = new Rectangle(10, 40, 100, 20);
@@ -140,11 +141,7 @@ namespace Blood_of_Christ
             //fireball
             fireballs = new Fireballs(tex_fireball,
                                       rect_fireball);
-                                      
-            //Adding for priest
-            //demo_texPriest = Content.Load<Texture2D>("priest");
-            priest = new Priest(windowWidth, windowHeight, tex_priest, rect_priest);
-            priestPrevPosition = priest.Position;
+                                     
             //DEBUG PURPOSES
             rect_player = new Rectangle(100, 0, 50, 50);
 
@@ -152,9 +149,10 @@ namespace Blood_of_Christ
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
 
             // Tiles
-            tiles = new Tile(tex_tiles, tex_key, tex_goal, tex_detector, tex_light, player);
+            tiles = new Tile(tex_tiles, tex_key, tex_goal, 
+                tex_detector, tex_light, tex_priest, player);
             tiles.WindowTiles();
-            tiles.LoadStage();
+            tiles.LoadStage(level);
 
             // All buttons
             startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), 
@@ -191,7 +189,6 @@ namespace Blood_of_Christ
                     player.ResetX = 150;
                     player.ResetY = 500;
                     player.Update(gameTime);
-                    priest.Update(gameTime);
                     fireballManager.Update(gameTime);
 
                     for (int i = 0; i < tiles.Detector.Count; i++)
@@ -201,6 +198,14 @@ namespace Blood_of_Christ
                         {
                             isMoving = true;
                             fireballManager.Add(player);
+                        }
+                    }
+
+                    for (int i = 0; i < tiles.Priests.Count; i++)
+                    {
+                        if (player.Position.Intersects(tiles.Priests[i].Position))
+                        {
+                            player.TakeDamage(tiles.Priests[i]);
                         }
                     }
 
@@ -226,34 +231,25 @@ namespace Blood_of_Christ
                     {
                         if (tiles.Goal[i].CheckCollision(player))
                         {
-                            gs = GameState.GameOver;
+                            level++;
+                            player.Reset(150, 540);
+                            tiles.LoadStage(level);
+                            fireballManager.Clear();
                         }
                     }
-                    
-
-                    // I made some slight changes based on an idea I had
-                    // player now has a timer that gives them 1 second of invulnerability when they're hit
-                    // this means they won't immediately lose all their health
-                    // - Sean
-                    if (player.Position.Intersects(priest.Position) &&
-                        player.HitTime <= 0)
-                    {
-                        player.TakeDamage(priest);
-                    }                    
 
                     rect_health.Width = (int)(player.Health * 2.5);
                     rect_batTimer.Width = (int)(player.BatTime * 83.3);
 
                     tiles.Update(gameTime);
 
-                    //player.PrevPos = player.Position;
                     base.Update(gameTime);
 
-                    //priestPrevPosition = priestCurrentPos;
                     player.PrevPos = player.Position;
                     break;
                 case GameState.GameOver:
                     backButton.Update(gameTime);
+                    tiles.Priests.Clear();
                     break;
                 case GameState.Settings:
                     backButton.Update(gameTime);
@@ -293,9 +289,7 @@ namespace Blood_of_Christ
                         rect_batTimer,
                         Color.AliceBlue);
                     player.Draw(_spriteBatch);
-
-                    // Enemy
-                    priest.Draw(_spriteBatch);                  
+           
                     fireballManager.Draw(_spriteBatch);
 
                     // Goal
@@ -324,8 +318,8 @@ namespace Blood_of_Christ
         /// </summary>
         protected void StartGame()
         {
-            player.Reset(150, 500);
-            tiles.LoadStage();
+            player.Reset(150, 540);
+            tiles.LoadStage(level);
             gs = GameState.Game;
         }
         protected void TitleScreen()

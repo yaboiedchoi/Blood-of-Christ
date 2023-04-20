@@ -43,6 +43,12 @@ namespace Blood_of_Christ
             get { return rect_detection; }
         }
 
+        public int Height
+        {
+            get { return rect_detection.Height; }
+            set { rect_detection.Height = value; }
+        }
+
         public void SetHeight(Platform [,] platform)
         {
             for (int i = 0; i < platform.GetLength(0); i++)
@@ -70,6 +76,7 @@ namespace Blood_of_Christ
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            Height = rect_detection.Height;
             //throw new NotImplementedException();
             //As of now does nothing
         }
