@@ -14,10 +14,10 @@ namespace Blood_of_Christ
         //Holds fireball objects and removes them when they're offscreen from the list
         //private Fireballs fireballs;
         private List<Fireballs> fireballsManager;
-        private double windowWidth;
+        //private double windowWidth;
         private Texture2D asset;
         private Rectangle rect;
-        private int count;
+        //private int count;
 
         public List<Fireballs> Fireballs
         {
