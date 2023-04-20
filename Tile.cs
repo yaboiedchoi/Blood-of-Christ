@@ -61,6 +61,10 @@ namespace Blood_of_Christ
         {
             get { return platformTiles; }
         }
+        public List<Priest> Priests
+        {
+            get { return priests; }
+        }
 
         // Constructor
         public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal,
@@ -100,10 +104,7 @@ namespace Blood_of_Christ
                     player.Physics(windowTiles[i, j].Position);
                     for (int g = 0; g < priests.Count; g++)
                     {
-                        if (windowTiles[i, j].Position == bottom)
-                        {
-                            priests[g].Physics(windowTiles[i, j].Position);
-                        }
+                        priests[g].Physics(windowTiles[i, j].Position);
                     }
                 }
             }
@@ -297,12 +298,17 @@ namespace Blood_of_Christ
         /// <summary>
         /// Load stage from a text file
         /// </summary>
-        public void LoadStage()
+        public void LoadStage(int level)
         {
             StreamReader reader = null;
             try
             {
-                reader = new StreamReader("../../../Stage1.txt");
+                priests.Clear();
+                Goal.Clear();
+                doorsA.Clear();
+                doorsB.Clear();
+                detector.Clear();
+                reader = new StreamReader("../../../Stage" + level + ".txt");
 
                 string line = "";
 

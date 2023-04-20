@@ -19,12 +19,15 @@ namespace Blood_of_Christ
         private int windowHeight;
 
         //To ensure it moves back and forth
-        private double xVelocity = -1;
+        private float xVelocity = 1;
         private double time;
         private int direction = 1;
         private float yVelocity;
         private float gravity;
         private Rectangle prevPos;
+
+        //temporary for playtest
+        private double movetime;
 
         public Rectangle Position
         {
@@ -48,10 +51,10 @@ namespace Blood_of_Christ
             base(texture, position)
         {
             yVelocity = 0f;
-            gravity = .6f;
+            gravity = .61f;
+            movetime = 1;
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            //Position = position;
         }
 
         /// <summary>
@@ -62,22 +65,27 @@ namespace Blood_of_Christ
         {
             position.Y += (int)yVelocity;
             yVelocity += gravity;
-        }
 
-        // I had to add this to priest to test player code without build errors. Feel free to get rid of it - Sean.
-        public override void Draw(SpriteBatch sb)
-        {
-            sb.Draw(texture,
-                    position,
-                    Color.White);
-        }
+            if (xVelocity > 0)
+            {
+                movetime -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (movetime < 0)
+                {
+                    xVelocity = -xVelocity;
+                    movetime = 2;
+                }
+            }
+            else if (xVelocity < 0)
+            {
+                movetime -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (movetime < 0)
+                {
+                    xVelocity = -xVelocity;
+                    movetime = 2;
+                }
+            }
 
-        /// <summary>
-        /// To ensure priest bounces back in forth the screen
-        /// </summary>
-        /// <param name="gametime">Time param</param>
-        public void Movement(GameTime gametime)
-        {
+            position.X += (int)xVelocity;
         }
 
         public void Physics(Rectangle platform)
@@ -101,6 +109,13 @@ namespace Blood_of_Christ
                     yVelocity = 0;
                 }
             }
+        }
+        // I had to add this to priest to test player code without build errors. Feel free to get rid of it - Sean.
+        public override void Draw(SpriteBatch sb)
+        {
+            sb.Draw(texture,
+                    position,
+                    Color.White);
         }
     }
 }
