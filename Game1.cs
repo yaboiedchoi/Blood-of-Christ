@@ -54,6 +54,7 @@ namespace Blood_of_Christ
 
         // player
         private Player player;
+        private Texture2D tex_player;
         private Rectangle rect_health;
         private Rectangle rect_batTimer;
         private Texture2D tex_bar;
@@ -124,9 +125,10 @@ namespace Blood_of_Christ
             tex_detector = Content.Load<Texture2D>("detector");
             tex_light = Content.Load<Texture2D>("light");
             tex_goal = Content.Load<Texture2D>("SolidWhite");
+            tex_player = Content.Load<Texture2D>("player_sprites");
 
             // player
-            player = new Player(tex_bar, new Rectangle(100, 400, 50, 50));
+            player = new Player(tex_player, new Rectangle(100, 400, 50, 50));
             rect_playerPrevPos = rect_player;        
             rect_health = new Rectangle(10, 10, 100, 20);
             rect_batTimer = new Rectangle(10, 40, 100, 20);
@@ -325,6 +327,7 @@ namespace Blood_of_Christ
         protected void StartGame()
         {
             player.Reset(150, 500);
+            tiles.LoadStage();
             gs = GameState.Game;
         }
         protected void TitleScreen()

@@ -37,7 +37,15 @@ namespace Blood_of_Christ
         private double batTime;     // timer for how long bat can stay a bat
         private double hitTime;     // When player is hit, they will be invulnerable until this value == 0
         private bool godMode;       // Whether or not the player takes damage
-        private animState anim;     
+
+        // animation variables
+        private animState anim;
+        private int spritesPerRow;
+        private int spriteWidth;
+        private int currentFrame;
+        private double fps;
+        private double secondsPerFrame;
+        private double timeCounter;
 
         // Property
         public int Health
@@ -111,11 +119,18 @@ namespace Blood_of_Christ
             batTime = 3;
             playerSize = position.Width;
             hitTime = 1;
+
+            // animation data
             anim = animState.standingRight;
+            spritesPerRow = 8;
+            spriteWidth = texture.Width / 8;
+            fps = 12;
+            secondsPerFrame = 1.0 / fps;
+            timeCounter = 0;
+            currentFrame = 1;
         }
 
         // Methods
-
         public override void Update(GameTime gameTime)
         {
             hitTime -= gameTime.ElapsedGameTime.TotalSeconds;
@@ -123,8 +138,7 @@ namespace Blood_of_Christ
             // player can only take damage when hitTime = 0.
             if (hitTime < 0)
             {
-                hitTime = 0;
-                
+                hitTime = 0;                
             }
 
            // If player is dead, calls Reset
@@ -137,6 +151,7 @@ namespace Blood_of_Christ
             //if player is vampire
             if (!isBat)
             {
+                UpdateAnimation(gameTime);
                 position.Width = playerSize;
                 position.Height = playerSize;
 
@@ -191,7 +206,6 @@ namespace Blood_of_Christ
 
                     case animState.walkingLeft:
                         {
-
                             if (kbstate.IsKeyUp(Keys.Left))
                             {
                                 anim = animState.standingLeft;
@@ -208,7 +222,6 @@ namespace Blood_of_Christ
                             }
                             position.X -= 5;
                             break;
-
                         }
                     case animState.walkingRight:
                         {
@@ -349,66 +362,42 @@ namespace Blood_of_Christ
             {
                 case animState.jumpingLeft:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.Black);
+                        DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
                         break;
                     }
                 case animState.walkingLeft: 
                     {
-                        sb.Draw(
-                            base.texture,
-                            position, 
-                            Color.White); 
+                        DrawPlayerWalking(SpriteEffects.FlipHorizontally, sb);
                         break;
                     }
                 case animState.walkingRight:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.Black);
+                        DrawPlayerWalking(SpriteEffects.None, sb);
                         break;
                     }
                 case animState.jumpingRight:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.White);
+                        DrawPlayerJumping(SpriteEffects.None, sb);
                         break;
                     }
                 case animState.standingLeft:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.White);
+                        DrawPlayerStanding(SpriteEffects.FlipHorizontally, sb);
                         break;
                     }
                 case animState.standingRight:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.Black);
+                        DrawPlayerStanding(SpriteEffects.None, sb);
                         break;
                     }
                 case animState.fallingRight:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.Black);
+                        DrawPlayerJumping(SpriteEffects.None, sb);
                         break;
                     }
                 case animState.fallingLeft:
                     {
-                        sb.Draw(
-                            base.texture,
-                            position,
-                            Color.White);
+                        DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
                         break;
                     }
             }
@@ -511,6 +500,77 @@ namespace Blood_of_Christ
             isBat = false;
             batTime = 3;
             godMode = false;
+        }
+
+        private void UpdateAnimation(GameTime gameTime)
+        {
+            //Counts time before switching to next frame
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            //checks that enough time has passed
+            if (timeCounter >= secondsPerFrame) 
+            {
+                // changes the current frame as a loop
+                currentFrame++;
+                if (currentFrame >= 8)
+                {
+                    currentFrame = 1;
+                }
+
+                // resetting timer
+                timeCounter -= secondsPerFrame;
+            }
+        }
+        private void DrawPlayerWalking(SpriteEffects flip, SpriteBatch sb)
+        {
+            sb.Draw(
+                texture,
+                new Vector2(position.X-25, position.Y-50),
+                new Rectangle(
+                    currentFrame * spriteWidth,
+                    0,
+                    spriteWidth,
+                    100),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                flip,
+                0.0f);
+        }
+        private void DrawPlayerStanding(SpriteEffects flip, SpriteBatch sb) 
+        {
+            sb.Draw(
+                texture,
+                new Vector2(position.X - 25, position.Y - 50),
+                new Rectangle(
+                    0,
+                    100,
+                    spriteWidth,
+                    100),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                flip,
+                0.0f);
+        }
+        private void DrawPlayerJumping(SpriteEffects flip, SpriteBatch sb) 
+        {
+            sb.Draw(
+                texture,
+                new Vector2(position.X - 25, position.Y - 50),
+                new Rectangle(
+                    100,
+                    100,
+                    spriteWidth,
+                    100),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                flip,
+                0.0f);
         }
     }
 }
