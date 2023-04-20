@@ -270,7 +270,7 @@ namespace Blood_of_Christ
                         else if (tilesData[c] == "G")
                         {
                             platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
-                            goal.Add(new Goal(new Rectangle(144 + c * 48, 96 + r * 48, 48, 48), tex_goal));
+                            goal.Add(new Goal(tex_goal, new Rectangle(117 + c * 48, 32 + r * 48, 102, 112)));
                         }
                     }
                     r++;

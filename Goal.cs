@@ -11,7 +11,7 @@ namespace Blood_of_Christ
     internal class Goal : GameObject
     {
 
-        public Goal(Rectangle position, Texture2D texture)
+        public Goal(Texture2D texture, Rectangle position)
             : base(texture, position)
         {
             this.position = position;

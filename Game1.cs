@@ -66,7 +66,6 @@ namespace Blood_of_Christ
         private Tile tiles;
 
         // Goal
-        private Goal goal;
         private Texture2D tex_goal;
 
         // Window
@@ -124,7 +123,7 @@ namespace Blood_of_Christ
             tex_tiles = Content.Load<Texture2D>("tilesAssets");
             tex_detector = Content.Load<Texture2D>("detector");
             tex_light = Content.Load<Texture2D>("light");
-            tex_goal = Content.Load<Texture2D>("SolidWhite");
+            tex_goal = Content.Load<Texture2D>("goal");
             tex_player = Content.Load<Texture2D>("player_sprites");
 
             // player
