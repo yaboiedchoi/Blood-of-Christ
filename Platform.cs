@@ -13,7 +13,7 @@ namespace Blood_of_Christ
     /// Platform allows player to move on ground or collide on wall
     /// Constructor, Update, and Draw inherit from GameObject class
     /// </summary>
-    internal class Platform : GameObject
+    public class Platform : GameObject
     {
         // Field
         private Rectangle spritePosition;

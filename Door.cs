@@ -12,7 +12,7 @@ namespace Blood_of_Christ
     /// Door class has same physics as platforms but will open when key is collected
     /// Constructor inherit from GameObject class
     /// </summary>
-    internal class Door : Platform
+    public class Door : Platform
     {
         // Constructor
         /// <summary>

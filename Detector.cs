@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -42,6 +43,26 @@ namespace Blood_of_Christ
             get { return rect_detection; }
         }
 
+        public void SetHeight(Platform [,] platform)
+        {
+            for (int i = 0; i < platform.GetLength(0); i++)
+            {
+                for (int j = 0; j < platform.GetLength(1); j++)
+                {
+                    if (rect_detection.Intersects((platform[i, j].Position)))
+                    {
+                        rect_detection.Height = platform[i, j].Position.Y - rect_detection.Y;
+                    }
+                }
+            }
+        }
+        public void SetHeight(Door door)
+        {
+            if (rect_detection.Intersects((door.Position)))
+            {
+                rect_detection.Height = door.Position.Y - rect_detection.Y;
+            }
+        }
 
         /// <summary>
         /// No purpose as of now

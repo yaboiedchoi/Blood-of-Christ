@@ -32,7 +32,6 @@ namespace Blood_of_Christ
         private Texture2D tex_fireball;
         private Rectangle rect_fireball;
         private Fireballs fireballs;
-        private Detector detector;
         private FireballsManager fireballManager;
 
         //Keys
@@ -136,7 +135,6 @@ namespace Blood_of_Christ
             rect_detector = new Rectangle(500, 100, tex_detector.Width, tex_detector.Height);
             fireballManager = new FireballsManager(tex_fireball, rect_fireball);
 
-            detector = new Detector(tex_detector, rect_detector, windowHeight, tex_light);
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
 
             //fireball
@@ -196,11 +194,14 @@ namespace Blood_of_Christ
                     priest.Update(gameTime);
                     fireballManager.Update(gameTime);
 
-                    if (detector.Detection.Intersects(player.PrevPos) &&
-                        !detector.Detection.Intersects(player.Position))
+                    for (int i = 0; i < tiles.Detector.Count; i++)
                     {
-                        isMoving = true;
-                        fireballManager.Add(player);
+                        if (tiles.Detector[i].Detection.Intersects(player.PrevPos) &&
+                            !tiles.Detector[i].Detection.Intersects(player.Position))
+                        {
+                            isMoving = true;
+                            fireballManager.Add(player);
+                        }
                     }
 
                     // Player Takes Damage if colliding with fireballs
@@ -294,8 +295,7 @@ namespace Blood_of_Christ
                     player.Draw(_spriteBatch);
 
                     // Enemy
-                    priest.Draw(_spriteBatch);
-                    detector.Draw(_spriteBatch);                    
+                    priest.Draw(_spriteBatch);                  
                     fireballManager.Draw(_spriteBatch);
 
                     // Goal

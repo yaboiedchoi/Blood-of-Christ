@@ -55,6 +55,11 @@ namespace Blood_of_Christ
             get { return detector; }
         }
 
+        public Platform[,] Platforms
+        {
+            get { return platformTiles; }
+        }
+
         // Constructor
         public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal, Texture2D tex_detector, Texture2D tex_light, Player player)
         {
@@ -110,6 +115,26 @@ namespace Blood_of_Christ
                     keyDoorPairs.Remove(entry.Key);
                 }
             }
+            for (int i = 0; i < detector.Count; i++)
+            {
+                if (doorsA.Count > 0)
+                {
+                    for (int j = 0; j < doorsA.Count; j++)
+                    {
+                        detector[i].SetHeight(doorsA[j]);
+                    }
+                }
+                if (doorsB.Count > 0)
+                {
+                    for (int j = 0; j < doorsB.Count; j++)
+                    {
+                        detector[i].SetHeight(doorsB[j]);
+                    }
+                }
+                detector[i].SetHeight(platformTiles);
+                detector[i].SetHeight(windowTiles);
+
+            }
         }
 
         /// <summary>
@@ -131,6 +156,11 @@ namespace Blood_of_Christ
                 {
                     windowTiles[i, j].Draw(sb);
                 }
+            }
+
+            for (int i = 0; i < detector.Count; i++)
+            {
+                detector[i].Draw(sb);
             }
 
             for (int i = 0; i < platformTiles.GetLength(0); i++)
@@ -155,10 +185,7 @@ namespace Blood_of_Christ
                 goal[i].Draw(sb);
             }
 
-            for (int i = 0; i < detector.Count; i++)
-            {
-                detector[i].Draw(sb);
-            }
+
         }
 
         #region WindowTiles
