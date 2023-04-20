@@ -350,10 +350,9 @@ namespace Blood_of_Christ
 
                 yVelocity = -5;
             }
-    
-            // adds gravity to the y velocity
-            yVelocity += gravity;  
 
+            // adds gravity to the y velocity
+            yVelocity += gravity;
         }
 
         public override void Draw(SpriteBatch sb)
@@ -454,7 +453,7 @@ namespace Blood_of_Christ
                 position.Y++;
                 if (yVelocity < 0)
                 {
-                    yVelocity = 0;
+                    yVelocity = 1;
                 }
             }
         }

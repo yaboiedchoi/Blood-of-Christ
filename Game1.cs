@@ -152,7 +152,8 @@ namespace Blood_of_Christ
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
 
             // Tiles
-            tiles = new Tile(tex_tiles, tex_key, tex_goal, tex_detector, tex_light, player);
+            tiles = new Tile(tex_tiles, tex_key, tex_goal, 
+                tex_detector, tex_light, tex_priest, player);
             tiles.WindowTiles();
             tiles.LoadStage();
 
@@ -246,10 +247,9 @@ namespace Blood_of_Christ
 
                     tiles.Update(gameTime);
 
-                    //player.PrevPos = player.Position;
                     base.Update(gameTime);
 
-                    //priestPrevPosition = priestCurrentPos;
+                    priest.PrevPos = priest.Position;
                     player.PrevPos = player.Position;
                     break;
                 case GameState.GameOver:
