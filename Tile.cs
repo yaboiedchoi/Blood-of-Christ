@@ -18,6 +18,8 @@ namespace Blood_of_Christ
         private Texture2D tex_tiles;
         private Texture2D tex_key;
         private Texture2D tex_goal;
+        private Texture2D tex_detector;
+        private Texture2D tex_light;
         private Player player;
         private Platform[,] windowTiles;
         private Platform[,] platformTiles;
@@ -41,18 +43,26 @@ namespace Blood_of_Christ
         private List<Goal> goal;
         private List<Door> doorsA;
         private List<Door> doorsB;
+        private List<Detector> detector;
 
         public List<Goal> Goal
         {
             get { return goal; }
         }
 
+        public List<Detector> Detector
+        {
+            get { return detector; }
+        }
+
         // Constructor
-        public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal, Player player)
+        public Tile(Texture2D tex_tiles, Texture2D tex_key, Texture2D tex_goal, Texture2D tex_detector, Texture2D tex_light, Player player)
         {
             this.tex_tiles = tex_tiles;
             this.tex_key = tex_key;
             this.tex_goal = tex_goal;
+            this.tex_detector = tex_detector;
+            this.tex_light = tex_light;
             this.player = player;
             windowTiles = new Platform[15, 25];
             platformTiles = new Platform[11, 19];
@@ -61,6 +71,7 @@ namespace Blood_of_Christ
             doorsA = new List<Door>();
             doorsB = new List<Door>();
             goal = new List<Goal>();
+            detector = new List<Detector>();
         }
 
         // Methods
@@ -142,6 +153,11 @@ namespace Blood_of_Christ
             for (int i = 0; i< goal.Count; i++) 
             {
                 goal[i].Draw(sb);
+            }
+
+            for (int i = 0; i < detector.Count; i++)
+            {
+                detector[i].Draw(sb);
             }
         }
 
@@ -271,6 +287,11 @@ namespace Blood_of_Christ
                         {
                             platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
                             goal.Add(new Goal(tex_goal, new Rectangle(117 + c * 48, 32 + r * 48, 102, 112)));
+                        }
+                        else if (tilesData[c] == "D")
+                        {
+                            platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
+                            detector.Add(new Detector(tex_detector, new Rectangle(144 + c * 48, 96 + r * 48, 48, 24), 500, tex_light));
                         }
                     }
                     r++;

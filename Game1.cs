@@ -1,5 +1,4 @@
-﻿using Blood_of_Christ.Content;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -155,7 +154,7 @@ namespace Blood_of_Christ
             debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
 
             // Tiles
-            tiles = new Tile(tex_tiles, tex_key, tex_goal, player);
+            tiles = new Tile(tex_tiles, tex_key, tex_goal, tex_detector, tex_light, player);
             tiles.WindowTiles();
             tiles.LoadStage();
 

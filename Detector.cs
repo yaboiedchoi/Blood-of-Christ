@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Blood_of_Christ.Content
+namespace Blood_of_Christ
 {
     public delegate void DetectionCheck();
-    public class Detector: GameObject
+    public class Detector : GameObject
     {
         //calls the fireballs manager and and checks if anyone has entered or not.
         private Texture2D asset;
@@ -26,7 +26,7 @@ namespace Blood_of_Christ.Content
         /// <param name="asset"></param>
         /// <param name="position"></param>
         /// <param name="windowHeight"></param>
-        public Detector(Texture2D asset, Rectangle position,int windowHeight, Texture2D lightAsset) : base(asset, position)
+        public Detector(Texture2D asset, Rectangle position, int windowHeight, Texture2D lightAsset) : base(asset, position)
         {
             this.asset = asset;
             this.position = position;
