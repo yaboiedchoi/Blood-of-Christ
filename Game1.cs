@@ -19,7 +19,7 @@ namespace Blood_of_Christ
     public class Game1 : Game
     {
         // KNOWN BUGS:
-        // fireball does not reset location when restarting game
+        // player buffers a
         // TODO: Add a pause menu
         // NOTE: we should probably move all of these to manager classes later
         private GraphicsDeviceManager _graphics;
