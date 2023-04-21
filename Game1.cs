@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Blood_of_Christ
 {
@@ -15,7 +16,8 @@ namespace Blood_of_Christ
         Game,
         GameOver,
         Controls, 
-        Settings
+        Settings,
+        Victory
     }
     public class Game1 : Game
     {
@@ -99,6 +101,9 @@ namespace Blood_of_Christ
         // song
         private Song theme;
 
+        // title screen picture
+        private Texture2D titleScreen;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -133,6 +138,7 @@ namespace Blood_of_Christ
             tex_light = Content.Load<Texture2D>("light");
             tex_goal = Content.Load<Texture2D>("goal");
             tex_player = Content.Load<Texture2D>("player_sprites");
+            titleScreen = Content.Load<Texture2D>("title_screen");
 
             // player
             player = new Player(tex_player, new Rectangle(100, 400, 50, 50));
@@ -249,16 +255,22 @@ namespace Blood_of_Christ
                         fireballManager.Clear();
                         gs = GameState.GameOver;
                     }
-
-                    for (int i = 0; i < tiles.Goal.Count; i++)
+                    try
                     {
-                        if (tiles.Goal[i].CheckCollision(player))
+                        for (int i = 0; i < tiles.Goal.Count; i++)
                         {
-                            level++;
-                            player.Reset(150, 540);
-                            tiles.LoadStage(level);
-                            fireballManager.Clear();
+                            if (tiles.Goal[i].CheckCollision(player))
+                            {
+                                level++;
+                                player.Reset(150, 540);
+                                tiles.LoadStage(level);
+                                fireballManager.Clear();
+                            }
                         }
+                    }
+                    catch(Exception e)
+                    {
+                        gs = GameState.Victory;
                     }
 
                     rect_health.Width = (int)(player.Health * 2.5);
@@ -281,6 +293,9 @@ namespace Blood_of_Christ
                 case GameState.Controls:
                     backButton.Update(gameTime);
                     break;
+                case GameState.Victory:
+                    backButton.Update(gameTime);
+                    break;
             }
 
         }
@@ -293,6 +308,7 @@ namespace Blood_of_Christ
             switch (gs)
             {
                 case GameState.Title: // title
+                    _spriteBatch.Draw(titleScreen, new Vector2(0, 0), Color.White);
                     _spriteBatch.DrawString(header,
                                             "The Blood of Christ",
                                             new Vector2(10, 10),
@@ -347,13 +363,19 @@ namespace Blood_of_Christ
                                             "Left and Right Arrow keys for movement\n" +
                                             "Spacebar for Jump \n" +
                                             "E for turning into a bat\n\n" +
-                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free",
+                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free" +
+                                            "Title screen credit: https://www.samsonhistorical.com/products/wooden-wine-chalice",
                                             new Vector2(10, 100),
                                             Color.DarkRed);
                     break;
 
                 case GameState.GameOver:
                     _spriteBatch.DrawString(debugFont, "game over", new Vector2(20, 50), Color.Black);
+                    backButton.Draw(_spriteBatch);
+                    break;
+                case GameState.Victory:
+                    string victory = "You win!";
+                    _spriteBatch.DrawString(header, "You win!", new Vector2(100, 10), Color.DarkRed);
                     backButton.Draw(_spriteBatch);
                     break;
             }

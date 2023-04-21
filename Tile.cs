@@ -390,6 +390,7 @@ namespace Blood_of_Christ
             catch (Exception fileError)
             {
                 System.Diagnostics.Debug.WriteLine(fileError.Message);
+                throw new Exception("Error: " + fileError.Message + ". Showing victory screen...");
             }
             finally
             {
