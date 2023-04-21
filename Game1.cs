@@ -297,15 +297,6 @@ namespace Blood_of_Christ
                                             "The Blood of Christ",
                                             new Vector2(10, 10),
                                             Color.DarkRed);
-                    _spriteBatch.DrawString(body,
-                                            "Avoid the priest and fireballs to get out of the church! \n" +
-                                            "Instructions: \n" +
-                                            "Left and Right Arrow keys for movement\n" +
-                                            "Spacebar for Jump \n" +
-                                            "E for turning into a bat\n\n" +
-                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free",
-                                            new Vector2(10,windowHeight/2),
-                                            Color.DarkRed);
 
                     //button test
                     startButton.Draw(_spriteBatch);
@@ -350,6 +341,15 @@ namespace Blood_of_Christ
 
                 case GameState.Controls:
                     backButton.Draw(_spriteBatch);
+                    _spriteBatch.DrawString(body,
+                                            "Avoid the priest and fireballs to get out of the church! \n" +
+                                            "Instructions: \n" +
+                                            "Left and Right Arrow keys for movement\n" +
+                                            "Spacebar for Jump \n" +
+                                            "E for turning into a bat\n\n" +
+                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free",
+                                            new Vector2(10, 100),
+                                            Color.DarkRed);
                     break;
 
                 case GameState.GameOver:
