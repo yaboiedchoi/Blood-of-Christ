@@ -325,13 +325,13 @@ namespace Blood_of_Christ
 
                     _spriteBatch.DrawString(
                         body,
-                        "Health Bar",
-                        new Vector2(rect_health.Width + 40, rect_health.Y),
+                        "Health",
+                        new Vector2(250 + 40, rect_health.Y),
                         Color.White);
                     _spriteBatch.DrawString(
                         body,
                         "Bat Timer",
-                        new Vector2(rect_batTimer.Width + 40, rect_batTimer.Y),
+                        new Vector2(250 + 40, rect_batTimer.Y),
                         Color.White);
 
                     // health and ability bars
@@ -360,10 +360,10 @@ namespace Blood_of_Christ
                     _spriteBatch.DrawString(body,
                                             "Avoid the priest and fireballs to get out of the church! \n" +
                                             "Instructions: \n" +
-                                            "Left and Right Arrow keys for movement\n" +
+                                            "WASD keys for movement\n" +
                                             "Spacebar for Jump \n" +
                                             "E for turning into a bat\n\n" +
-                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free" +
+                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free\n" +
                                             "Title screen credit: https://www.samsonhistorical.com/products/wooden-wine-chalice",
                                             new Vector2(10, 100),
                                             Color.DarkRed);

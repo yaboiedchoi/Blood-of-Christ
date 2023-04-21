@@ -18,7 +18,7 @@ namespace Blood_of_Christ
         public Fireballs(Texture2D texture, Rectangle position):
             base(texture, position)
         {
-            xVelocity = 0.25;
+            xVelocity = 7;
             this.texture = texture;
             this.position = position;
         }

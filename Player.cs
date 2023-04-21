@@ -170,11 +170,11 @@ namespace Blood_of_Christ
                 {
                     case animState.standingRight:
                         {
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.walkingLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.walkingRight;
                             }
@@ -186,11 +186,11 @@ namespace Blood_of_Christ
                         }
                     case animState.standingLeft:
                         {
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.walkingLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.walkingRight;
                             }
@@ -203,12 +203,12 @@ namespace Blood_of_Christ
 
                     case animState.walkingLeft:
                         {
-                            if (kbState.IsKeyUp(Keys.Left))
+                            if (kbState.IsKeyUp(Keys.A))
                             {
                                 anim = animState.standingLeft;
                             }
 
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.walkingRight;
                             }
@@ -222,11 +222,11 @@ namespace Blood_of_Christ
                         }
                     case animState.walkingRight:
                         {
-                            if (!kbState.IsKeyDown(Keys.Right))
+                            if (!kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.standingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.walkingLeft;
                             }
@@ -241,11 +241,11 @@ namespace Blood_of_Christ
                     case animState.jumpingLeft:
                         {
 
-                            if (kbState.IsKeyUp(Keys.Left))
+                            if (kbState.IsKeyUp(Keys.A))
                             {
                                 anim = animState.fallingLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.jumpingRight;
                             }
@@ -259,11 +259,11 @@ namespace Blood_of_Christ
                         }
                     case animState.jumpingRight:
                         {
-                            if (kbState.IsKeyUp(Keys.Right))
+                            if (kbState.IsKeyUp(Keys.D))
                             {
                                 anim = animState.fallingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.jumpingLeft;
                             }
@@ -276,11 +276,11 @@ namespace Blood_of_Christ
                         }
                     case animState.fallingRight:
                         {
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.jumpingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.jumpingLeft;
                             }
@@ -292,11 +292,11 @@ namespace Blood_of_Christ
                         }
                     case animState.fallingLeft:
                         {
-                            if (kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D))
                             {
                                 anim = animState.jumpingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A))
                             {
                                 anim = animState.jumpingLeft;
                             }
@@ -319,19 +319,19 @@ namespace Blood_of_Christ
                     isBat = false;
                 }
 
-                if (kbState.IsKeyDown(Keys.Up))
+                if (kbState.IsKeyDown(Keys.W))
                 {
                     position.Y -= 5;
                 }
-                if (kbState.IsKeyDown(Keys.Down))
+                if (kbState.IsKeyDown(Keys.S))
                 {
                     position.Y += 5;
                 }
-                if (kbState.IsKeyDown(Keys.Left))
+                if (kbState.IsKeyDown(Keys.A))
                 {
                     position.X -= 5;
                 }
-                if (kbState.IsKeyDown(Keys.Right))
+                if (kbState.IsKeyDown(Keys.D))
                 {
                     position.X += 5;
                 }
