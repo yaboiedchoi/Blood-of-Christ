@@ -285,7 +285,8 @@ namespace Blood_of_Christ
                                             "Instructions: \n" +
                                             "Left and Right Arrow keys for movement\n" +
                                             "Spacebar for Jump \n" +
-                                            "E for turning into a bat",
+                                            "E for turning into a bat\n\n" +
+                                            "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free",
                                             new Vector2(10,windowHeight/2),
                                             Color.DarkRed);
 
