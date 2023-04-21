@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Tile assets are came from:
+// https://blackspirestudio.itch.io/medieval-pixel-art-asset-free
+
 namespace Blood_of_Christ
 {
     /// <summary>
