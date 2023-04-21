@@ -390,6 +390,7 @@ namespace Blood_of_Christ
         protected void StartGame()
         {
             player.Reset(150, 540);
+            level = 1;
             tiles.LoadStage(level);
             gs = GameState.Game;
         }
