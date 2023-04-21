@@ -88,6 +88,9 @@ namespace Blood_of_Christ
         // Controls button in main menu
         private Button controlsButton;
 
+        //fonts
+        private SpriteFont header;
+        private SpriteFont body;
 
         public Game1()
         {
@@ -141,6 +144,10 @@ namespace Blood_of_Christ
             //fireball
             fireballs = new Fireballs(tex_fireball,
                                       rect_fireball);
+
+            //fonts
+            header = Content.Load<SpriteFont>("Header");
+            body = Content.Load<SpriteFont>("BodyFont");
                                      
             //DEBUG PURPOSES
             rect_player = new Rectangle(100, 0, 50, 50);
@@ -269,6 +276,18 @@ namespace Blood_of_Christ
             switch (gs)
             {
                 case GameState.Title: // title
+                    _spriteBatch.DrawString(header,
+                                            "The Blood of Christ",
+                                            new Vector2(10, 10),
+                                            Color.DarkRed);
+                    _spriteBatch.DrawString(body,
+                                            "Avoid the priest and fireballs to get out of the church! \n" +
+                                            "Instructions: \n" +
+                                            "Left and Right Arrow keys for movement\n" +
+                                            "Spacebar for Jump \n" +
+                                            "E for turning into a bat",
+                                            new Vector2(10,windowHeight/2),
+                                            Color.DarkRed);
 
                     //button test
                     startButton.Draw(_spriteBatch);
@@ -278,7 +297,18 @@ namespace Blood_of_Christ
 
                 case GameState.Game: // game
                     tiles.Draw(_spriteBatch);
-                    
+
+                    _spriteBatch.DrawString(
+                        body,
+                        "Health Bar",
+                        new Vector2(rect_health.Width + 40, rect_health.Y),
+                        Color.White);
+                    _spriteBatch.DrawString(
+                        body,
+                        "Bat Timer",
+                        new Vector2(rect_batTimer.Width + 40, rect_batTimer.Y),
+                        Color.White);
+
                     // health and ability bars
                     _spriteBatch.Draw(
                         tex_bar,

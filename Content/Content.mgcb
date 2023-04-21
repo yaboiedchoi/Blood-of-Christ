@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:back up priest.png
 
+#begin BodyFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:BodyFont.spritefont
+
 #begin debugFont2.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -67,6 +74,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:goal.png
+
+#begin Header.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Header.spritefont
 
 #begin health_bar_placeholder.png
 /importer:TextureImporter
