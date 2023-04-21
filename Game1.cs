@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,6 +83,9 @@ namespace Blood_of_Christ
         // Settings button in main menu
         private Button settingsButton;
 
+        // mute song button
+        private Button muteButton;
+
         // Back button, goes back to the main menu
         private Button backButton;
 
@@ -91,6 +95,9 @@ namespace Blood_of_Christ
         //fonts
         private SpriteFont header;
         private SpriteFont body;
+
+        // song
+        private Song theme;
 
         public Game1()
         {
@@ -161,20 +168,29 @@ namespace Blood_of_Christ
             tiles.WindowTiles();
             tiles.LoadStage(level);
 
+            // song
+            theme = Content.Load<Song>("blood_of_christ_theme");
+            MediaPlayer.Play(theme);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.25f;
+
             // All buttons
-            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 50, 20), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "play game", debugFont, Color.Black);
-            settingsButton = new Button(debugButtonTexture, new Rectangle(150, 150, 50, 20), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "settings", debugFont, Color.Black);
-            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 50, 20), Color.Red, 
-                                     Color.Orange, Color.DarkRed, "back", debugFont, Color.Black);
-            controlsButton = new Button(debugButtonTexture, new Rectangle(250, 150, 50, 20), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "controls", debugFont, Color.Black);
+            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 150, 50), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "play game", body, Color.Black);
+            settingsButton = new Button(debugButtonTexture, new Rectangle(350, 150, 150, 50), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "settings", body, Color.Black);
+            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 70, 30), Color.Red, 
+                                     Color.Orange, Color.DarkRed, "back", body, Color.Black);
+            controlsButton = new Button(debugButtonTexture, new Rectangle(650, 150, 150, 50), 
+                                     Color.Red, Color.Orange, Color.DarkRed, "controls", body, Color.Black);
+            muteButton = new Button(debugButtonTexture, new Rectangle(20, 100, 150, 30), Color.Red,
+                                     Color.Orange, Color.DarkRed, "Mute Audio", body, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
             backButton.OnButtonClick += this.TitleScreen;
             controlsButton.OnButtonClick += this.ControlsMenu;
+            muteButton.OnButtonClick += this.MuteMusic;
         }
 
         protected override void Update(GameTime gameTime)
@@ -260,6 +276,7 @@ namespace Blood_of_Christ
                     break;
                 case GameState.Settings:
                     backButton.Update(gameTime);
+                    muteButton.Update(gameTime);
                     break;
                 case GameState.Controls:
                     backButton.Update(gameTime);
@@ -328,6 +345,7 @@ namespace Blood_of_Christ
                     break;
                 case GameState.Settings:
                     backButton.Draw(_spriteBatch);
+                    muteButton.Draw(_spriteBatch);
                     break;
 
                 case GameState.Controls:
@@ -364,6 +382,13 @@ namespace Blood_of_Christ
         protected void ControlsMenu()
         {
             gs = GameState.Controls;    
+        }
+        protected void MuteMusic()
+        {
+            if (MediaPlayer.IsMuted)
+                MediaPlayer.IsMuted = false;
+            else
+                MediaPlayer.IsMuted = true;
         }
     }
 }

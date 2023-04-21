@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:back up priest.png
 
+#begin blood_of_christ_theme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:blood_of_christ_theme.mp3
+
 #begin BodyFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
