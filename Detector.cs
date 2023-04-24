@@ -20,6 +20,13 @@ namespace Blood_of_Christ
         private Rectangle rect_detection;
         private int windowHeight;
         private Rectangle prevPos;
+        private bool collided;
+
+        public bool Collided
+        {
+            get { return collided; } 
+            set { collided = value; }
+        }
 
         /// <summary>
         /// Based on the data given it makes a new rectangle which will check if user crosses through it
@@ -66,7 +73,11 @@ namespace Blood_of_Christ
         {
             if (rect_detection.Intersects((door.Position)))
             {
-                rect_detection.Height = door.Position.Y - rect_detection.Y;
+                rect_detection.Height = 1 + (door.Position.Y - rect_detection.Y);
+            }
+            else
+            {
+                rect_detection.Height++;
             }
         }
 
@@ -76,7 +87,7 @@ namespace Blood_of_Christ
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            Height = rect_detection.Height;
+            Height += 500;
             //throw new NotImplementedException();
             //As of now does nothing
         }
@@ -87,12 +98,24 @@ namespace Blood_of_Christ
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(asset,
-                    position,
-                    Color.White);
-            sb.Draw(lightAsset,
-                    Detection,
-                    Color.White);
+            if (!collided)
+            {
+                sb.Draw(asset,
+                        position,
+                        Color.White);
+                sb.Draw(lightAsset,
+                        Detection,
+                        Color.White);
+            }
+            else
+            {
+                sb.Draw(asset,
+                        position,
+                        Color.White);
+                sb.Draw(lightAsset,
+                        Detection,
+                        Color.Red);
+            }
         }
     }
 }

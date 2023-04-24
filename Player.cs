@@ -30,7 +30,7 @@ namespace Blood_of_Christ
         private float xVelocity;    // player's current horizontal speed
         private float yVelocity;    // player's current vertical speed
         private float gravity;      // how fast the player will begin to fall.
-        private int health;         // total player health. Starts at 100.
+        private float health;         // total player health. Starts at 100.
         private int resetX;         // X coordinate for the current level start
         private int resetY;         // Y coordinate for the current level start
         private bool isBat;         // if the player is in a bat form
@@ -52,7 +52,7 @@ namespace Blood_of_Christ
         private KeyboardState prevKbState;
 
         // Property
-        public int Health
+        public float Health
         {
             get { return health; }
             set { health = value; }

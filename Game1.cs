@@ -148,7 +148,7 @@ namespace Blood_of_Christ
             rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //Attack system and Manager class for firballs
-            rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 5, tex_fireball.Height / 5);
+            rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 7, tex_fireball.Height / 7);
             rect_detector = new Rectangle(500, 100, tex_detector.Width, tex_detector.Height);
             fireballManager = new FireballsManager(tex_fireball, rect_fireball);
 
@@ -222,11 +222,23 @@ namespace Blood_of_Christ
 
                     for (int i = 0; i < tiles.Detector.Count; i++)
                     {
-                        if (tiles.Detector[i].Detection.Intersects(player.PrevPos) &&
-                            !tiles.Detector[i].Detection.Intersects(player.Position))
+                        if (tiles.Detector[i].Detection.Intersects(player.Position) &&
+                            !tiles.Detector[i].Detection.Intersects(player.PrevPos))
                         {
                             isMoving = true;
-                            fireballManager.Add(player);
+                            for (int j = 0; j < 3; j++)
+                            {
+                                fireballManager.Add(player);
+                            }
+                        }
+                        if (tiles.Detector[i].Detection.Intersects(player.Position))
+                        {
+                            tiles.Detector[i].Collided = true;
+                            player.Health -= .2f;
+                        }
+                        else
+                        {
+                            tiles.Detector[i].Collided = false;
                         }
                     }
 
