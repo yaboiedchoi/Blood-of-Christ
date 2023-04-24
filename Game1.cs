@@ -131,7 +131,7 @@ namespace Blood_of_Christ
             // TODO: use this.Content to load your game content here
             tex_fireball = Content.Load<Texture2D>("fireball");
             tex_priest = Content.Load<Texture2D>("back up priest");
-            tex_bar = Content.Load<Texture2D>("health_bar_placeholder");
+            tex_bar = Content.Load<Texture2D>("SolidWhite");
             tex_key = Content.Load<Texture2D>("key");
             tex_tiles = Content.Load<Texture2D>("tilesAssets");
             tex_detector = Content.Load<Texture2D>("detector");
@@ -338,11 +338,11 @@ namespace Blood_of_Christ
                     _spriteBatch.Draw(
                         tex_bar,
                         rect_health,
-                        Color.White);
+                        Color.DeepPink);
                     _spriteBatch.Draw(
                         tex_bar,
                         rect_batTimer,
-                        Color.AliceBlue);
+                        Color.BlueViolet);
                     player.Draw(_spriteBatch);
            
                     fireballManager.Draw(_spriteBatch);
