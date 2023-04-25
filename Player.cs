@@ -122,7 +122,7 @@ namespace Blood_of_Christ
             isBat = false;
             batTime = 3;
             playerSize = position.Width;
-            hitTime = 1;
+            hitTime = .5;
 
             // animation data
             anim = animState.standingRight;

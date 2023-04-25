@@ -234,7 +234,7 @@ namespace Blood_of_Christ
                         if (tiles.Detector[i].Detection.Intersects(player.Position))
                         {
                             tiles.Detector[i].Collided = true;
-                            player.Health -= .2f;
+                            player.Health -= .15f;
                         }
                         else
                         {
