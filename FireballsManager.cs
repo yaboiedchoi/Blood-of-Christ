@@ -70,7 +70,7 @@ namespace Blood_of_Christ
         {
             if(fireballsManager.Count > 0)
             {
-                if (fireballsManager[0].Position.X < -asset.Width)
+                if (fireballsManager[0].Position.X < 85)
                 {
                     fireballsManager.RemoveAt(0);
                 }
@@ -86,7 +86,6 @@ namespace Blood_of_Christ
             foreach(Fireballs fireball in fireballsManager)
             {
                 if (fireball.Position.Intersects(rect) )
-                    //fireball.Position.Intersects(rectPrev))
                 {
                     fireballsManager.Remove(fireball);
                     return 5;
