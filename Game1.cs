@@ -104,6 +104,9 @@ namespace Blood_of_Christ
         // title screen picture
         private Texture2D titleScreen;
 
+        // god mode button
+        private Button godModeButton;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -182,21 +185,24 @@ namespace Blood_of_Christ
 
             // All buttons
             startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 150, 50), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "play game", body, Color.Black);
+                                     Color.Red, Color.Orange, Color.DarkRed, "Play Game", body, Color.Black);
             settingsButton = new Button(debugButtonTexture, new Rectangle(350, 150, 150, 50), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "settings", body, Color.Black);
+                                     Color.Red, Color.Orange, Color.DarkRed, "Settings", body, Color.Black);
             backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 70, 30), Color.Red, 
-                                     Color.Orange, Color.DarkRed, "back", body, Color.Black);
+                                     Color.Orange, Color.DarkRed, "Back", body, Color.Black);
             controlsButton = new Button(debugButtonTexture, new Rectangle(650, 150, 150, 50), 
-                                     Color.Red, Color.Orange, Color.DarkRed, "controls", body, Color.Black);
+                                     Color.Red, Color.Orange, Color.DarkRed, "Controls", body, Color.Black);
             muteButton = new Button(debugButtonTexture, new Rectangle(20, 100, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "Mute Audio: False", body, Color.Black);
+            godModeButton = new Button(debugButtonTexture, new Rectangle(20, 150, 200, 30), Color.Red,
+                                     Color.Orange, Color.DarkRed, "God Mode: False", body, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
             backButton.OnButtonClick += this.TitleScreen;
             controlsButton.OnButtonClick += this.ControlsMenu;
             muteButton.OnButtonClick += this.MuteMusic;
+            godModeButton.OnButtonClick += this.ToggleGodMode;
         }
 
         protected override void Update(GameTime gameTime)
@@ -309,8 +315,20 @@ namespace Blood_of_Christ
                         muteButton.Text = "Mute Audio: False";
                         muteButton.ButtonColor = Color.Red;
                     }
+
+                    if (player.GodMode)
+                    {
+                        godModeButton.Text = "God Mode: True";
+                        godModeButton.ButtonColor = Color.DarkOrange;
+                    }
+                    else if (!player.GodMode)
+                    {
+                        godModeButton.Text = "God Mode: False";
+                        godModeButton.ButtonColor = Color.Red;
+                    }
                     backButton.Update(gameTime);
                     muteButton.Update(gameTime);
+                    godModeButton.Update(gameTime);
                     break;
                 case GameState.Controls:
                     backButton.Update(gameTime);
@@ -375,6 +393,7 @@ namespace Blood_of_Christ
                 case GameState.Settings:
                     backButton.Draw(_spriteBatch);
                     muteButton.Draw(_spriteBatch);
+                    godModeButton.Draw(_spriteBatch);
                     break;
 
                 case GameState.Controls:
@@ -434,6 +453,17 @@ namespace Blood_of_Christ
                 MediaPlayer.IsMuted = false;
             else
                 MediaPlayer.IsMuted = true;
+        }
+        protected void ToggleGodMode()
+        {
+            if (player.GodMode)
+            {
+                player.GodMode = false;
+            }
+            else
+            {
+                player.GodMode = true;
+            }
         }
     }
 }

@@ -55,7 +55,17 @@ namespace Blood_of_Christ
         public float Health
         {
             get { return health; }
-            set { health = value; }
+            set
+            {
+                if (godMode)
+                {
+                    health = health;
+                }
+                else if (!godMode)
+                {
+                    health = value;
+                }
+            }
         }
         public bool IsDead
         {
@@ -65,7 +75,6 @@ namespace Blood_of_Christ
                 else return false;
             }
         }
-
         public double BatTime
         {
             get { return batTime; }
@@ -514,7 +523,6 @@ namespace Blood_of_Christ
             position.Y = (int)y;
             isBat = false;
             batTime = 3;
-            godMode = false;
         }
 
         private void UpdateAnimation(GameTime gameTime)
