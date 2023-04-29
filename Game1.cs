@@ -189,8 +189,8 @@ namespace Blood_of_Christ
                                      Color.Orange, Color.DarkRed, "back", body, Color.Black);
             controlsButton = new Button(debugButtonTexture, new Rectangle(650, 150, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "controls", body, Color.Black);
-            muteButton = new Button(debugButtonTexture, new Rectangle(20, 100, 150, 30), Color.Red,
-                                     Color.Orange, Color.DarkRed, "Mute Audio", body, Color.Black);
+            muteButton = new Button(debugButtonTexture, new Rectangle(20, 100, 200, 30), Color.Red,
+                                     Color.Orange, Color.DarkRed, "Mute Audio: False", body, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
@@ -234,7 +234,7 @@ namespace Blood_of_Christ
                         if (tiles.Detector[i].Detection.Intersects(player.Position))
                         {
                             tiles.Detector[i].Collided = true;
-                            player.Health -= .15f;
+                            player.Health -= 10;
                         }
                         else
                         {
@@ -299,6 +299,16 @@ namespace Blood_of_Christ
                     tiles.Priests.Clear();
                     break;
                 case GameState.Settings:
+                    if (MediaPlayer.IsMuted)
+                    {
+                        muteButton.Text = "Mute Audio: True";
+                        muteButton.ButtonColor = Color.DarkOrange;
+                    }
+                    else if (!MediaPlayer.IsMuted)
+                    {
+                        muteButton.Text = "Mute Audio: False";
+                        muteButton.ButtonColor = Color.Red;
+                    }
                     backButton.Update(gameTime);
                     muteButton.Update(gameTime);
                     break;

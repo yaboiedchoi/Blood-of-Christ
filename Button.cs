@@ -35,7 +35,22 @@ namespace Blood_of_Christ
         /// On button click event
         /// </summary>
         public event OnButtonClickDelegate OnButtonClick;
-
+        /// <summary>
+        /// Lets the static button color be edited
+        /// </summary>
+        public Color ButtonColor
+        {
+            get { return buttonColor; }
+            set { buttonColor = value; }
+        }
+        /// <summary>
+        /// Lets the text be edited
+        /// </summary>
+        public string Text
+        {
+            get { return text; }
+            set { text = value; }
+        }
         /// <summary>
         /// Button perameterized constructor
         /// </summary>
