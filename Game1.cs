@@ -226,6 +226,7 @@ namespace Blood_of_Christ
                     player.Update(gameTime);
                     fireballManager.Update(gameTime);
 
+                    // detectors will summon fireballs when player walks under them
                     for (int i = 0; i < tiles.Detector.Count; i++)
                     {
                         if (tiles.Detector[i].Detection.Intersects(player.Position) &&
@@ -237,10 +238,11 @@ namespace Blood_of_Christ
                                 fireballManager.Add(player);
                             }
                         }
+                        // detector also turns red and slowly drains the player health
                         if (tiles.Detector[i].Detection.Intersects(player.Position))
                         {
                             tiles.Detector[i].Collided = true;
-                            player.Health -= 10;
+                            player.Health -= .1f;
                         }
                         else
                         {
@@ -248,6 +250,7 @@ namespace Blood_of_Christ
                         }
                     }
 
+                    // player takes damage when colliding with the priest.
                     for (int i = 0; i < tiles.Priests.Count; i++)
                     {
                         if (player.Position.Intersects(tiles.Priests[i].Position))
