@@ -377,6 +377,18 @@ namespace Blood_of_Christ
                         new Vector2(250 + 40, rect_batTimer.Y),
                         Color.White);
 
+                    // Draw a string if it is level 1.
+                    if (level == 1)
+                    {
+                        _spriteBatch.DrawString(
+                            body,
+                            "Press AD for horizontal movement and space for jump\n" +
+                            "Press E to toggle bat mode and fly with WASD.\n" +
+                            "Light detects you to give damage and shoot a fireball.",
+                            new Vector2(300, 240),
+                            Color.Black);
+                    }
+
                     // health and ability bars
                     _spriteBatch.Draw(
                         tex_bar,
