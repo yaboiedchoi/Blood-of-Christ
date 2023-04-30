@@ -247,9 +247,10 @@ namespace Blood_of_Christ
                     for (int i = 0; i < tiles.Priests.Count; i++)
                     {
                         if (player.Position.Intersects(tiles.Priests[i].Position))
-                        {                            
+                        {
                             player.TakeDamage(tiles.Priests[i]);
                         }
+                        
                     }
 
                     // Player Takes Damage if colliding with fireballs
@@ -422,10 +423,10 @@ namespace Blood_of_Christ
                         rect_batTimer,
                         Color.BlueViolet);
                     player.Draw(_spriteBatch);
-           
+
                     fireballManager.Draw(_spriteBatch);
 
-                    // Goal
+                  
 
                     break;
                 case GameState.Settings: // settings menu
