@@ -270,7 +270,10 @@ namespace Blood_of_Christ
                         player.TakeDamage(fireballManager.Fireballs[i]);
                         if (fireballManager.Fireballs[i].Position.Intersects(player.Position))
                         {
-                            hitSound.Play();
+                            if (!MediaPlayer.IsMuted)
+                            {
+                                hitSound.Play(.05f, 0, 0);
+                            }
                             fireballManager.Fireballs.RemoveAt(i);
                         }
                     }

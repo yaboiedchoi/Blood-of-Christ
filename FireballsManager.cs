@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Blood_of_Christ
 {
@@ -89,7 +90,10 @@ namespace Blood_of_Christ
             {
                 if (fireball.Position.Intersects(rect) )
                 {
-                    sound.Play();
+                    if (!MediaPlayer.IsMuted)
+                    {
+                        sound.Play();
+                    }
                     fireballsManager.Remove(fireball);
                     return 5;
                 }
