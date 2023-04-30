@@ -190,17 +190,17 @@ namespace Blood_of_Christ
             MediaPlayer.Volume = 0.25f;
 
             // All buttons
-            startButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(50, 150, 150, 50), 
+            startButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle((windowWidth / 2) - 75, 400, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Play Game", body, Color.Black);
-            settingsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(350, 150, 150, 50), 
+            settingsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle((windowWidth / 2) - 300, 400, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Settings", body, Color.Black);
-            backButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 20, 70, 30), Color.Red, 
+            backButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(150, 100, 70, 30), Color.Red, 
                                      Color.Orange, Color.DarkRed, "Back", body, Color.Black);
-            controlsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(650, 150, 150, 50), 
+            controlsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle((windowWidth / 2) + 150, 400, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Controls", body, Color.Black);
-            muteButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 100, 200, 30), Color.Red,
+            muteButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(150, 150, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "Mute Audio: False", body, Color.Black);
-            godModeButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 150, 200, 30), Color.Red,
+            godModeButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(150, 200, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "God Mode: False", body, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
@@ -221,6 +221,7 @@ namespace Blood_of_Christ
             {
                 case GameState.Title: // title
                     // button test
+                    tiles.LoadStage(0);
                     startButton.Update(gameTime);
                     controlsButton.Update(gameTime);
                     settingsButton.Update(gameTime);
@@ -314,10 +315,12 @@ namespace Blood_of_Christ
                     player.PrevPos = player.Position;
                     break;
                 case GameState.GameOver:
+                    tiles.LoadStage(0);
                     backButton.Update(gameTime);
                     tiles.Priests.Clear();
                     break;
                 case GameState.Settings:
+                    tiles.LoadStage(0);
                     if (MediaPlayer.IsMuted)
                     {
                         muteButton.Text = "Mute Audio: True";
@@ -344,9 +347,11 @@ namespace Blood_of_Christ
                     godModeButton.Update(gameTime);
                     break;
                 case GameState.Controls:
+                    tiles.LoadStage(0);
                     backButton.Update(gameTime);
                     break;
                 case GameState.Victory:
+                    tiles.LoadStage(0);
                     backButton.Update(gameTime);
                     break;
             }
@@ -361,10 +366,12 @@ namespace Blood_of_Christ
             switch (gs)
             {
                 case GameState.Title: // title
-                    _spriteBatch.Draw(titleScreen, new Vector2(0, 0), Color.White);
+                    tiles.Draw(_spriteBatch);
+                    //_spriteBatch.Draw(titleScreen, new Vector2(0, 0), Color.White);
+                    Vector2 textSize = header.MeasureString("The Blood of Christ");
                     _spriteBatch.DrawString(header,
                                             "The Blood of Christ",
-                                            new Vector2(10, 10),
+                                            new Vector2((windowWidth / 2) - (textSize.X / 2), 100),
                                             Color.DarkRed);
 
                     //button test
@@ -416,12 +423,14 @@ namespace Blood_of_Christ
 
                     break;
                 case GameState.Settings:
+                    tiles.Draw(_spriteBatch);
                     backButton.Draw(_spriteBatch);
                     muteButton.Draw(_spriteBatch);
                     godModeButton.Draw(_spriteBatch);
                     break;
 
                 case GameState.Controls:
+                    tiles.Draw(_spriteBatch);
                     backButton.Draw(_spriteBatch);
                     _spriteBatch.DrawString(body,
                                             "Avoid the priest and fireballs to get out of the church! \n" +
@@ -431,23 +440,25 @@ namespace Blood_of_Christ
                                             "E for turning into a bat\n\n" +
                                             "CREDITS--- \n" +
                                             "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free\n" +
-                                            "Title screen credit: https://www.samsonhistorical.com/products/wooden-wine-chalice \n" +
                                             "Vampire and Bat made by Sean Bethel \n" +
-                                            "Music by Edward Choi" +
+                                            "Music by Edward Choi\n" +
                                             "Sound Effect: https://freesound.org/people/leviclaassen/sounds/107788/\n" +
                                             "Fireball : https://www.freeiconspng.com/img/46732\n" +
                                             "Priest: https://en.wikipedia.org/wiki/File:Coptic_Orthodox_Priest.png",
-                                            new Vector2(10, 100),
-                                            Color.DarkRed);
+                                            new Vector2(150, 150),
+                                            Color.Red);
                     break;
 
                 case GameState.GameOver:
-                    _spriteBatch.DrawString(debugFont, "game over", new Vector2(20, 50), Color.Black);
+                    tiles.Draw(_spriteBatch);
+                    Vector2 textSize2 = header.MeasureString("You Died!");
+                    _spriteBatch.DrawString(header, "You Died!", new Vector2((windowWidth/2) - (textSize2.X /2 ), 300), Color.DarkRed);
                     backButton.Draw(_spriteBatch);
                     break;
                 case GameState.Victory:
-                    string victory = "You win!";
-                    _spriteBatch.DrawString(header, "You win!", new Vector2(100, 10), Color.DarkRed);
+                    tiles.Draw(_spriteBatch);
+                    Vector2 textSize3 = header.MeasureString("You Win!");
+                    _spriteBatch.DrawString(header, "You win!", new Vector2((windowWidth/2) - (textSize3.X / 2), 300), Color.DarkRed);
                     backButton.Draw(_spriteBatch);
                     break;
             }
