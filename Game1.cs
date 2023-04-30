@@ -372,7 +372,7 @@ namespace Blood_of_Christ
                     _spriteBatch.DrawString(header,
                                             "The Blood of Christ",
                                             new Vector2((windowWidth / 2) - (textSize.X / 2), 100),
-                                            Color.DarkRed);
+                                            Color.Red);
 
                     //button test
                     startButton.Draw(_spriteBatch);
