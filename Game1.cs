@@ -173,7 +173,7 @@ namespace Blood_of_Christ
             rect_player = new Rectangle(100, 0, 50, 50);
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
-            debugButtonTexture = Content.Load<Texture2D>("SolidWhite");
+            debugButtonTexture = Content.Load<Texture2D>("buttonTexture");
 
             // Tiles
             tiles = new Tile(tex_tiles, tex_key, tex_goal, 
