@@ -468,6 +468,10 @@ namespace Blood_of_Christ
         {
             gs = GameState.Controls;    
         }
+
+        /// <summary>
+        /// Mutes music
+        /// </summary>
         protected void MuteMusic()
         {
             if (MediaPlayer.IsMuted)
@@ -475,6 +479,10 @@ namespace Blood_of_Christ
             else
                 MediaPlayer.IsMuted = true;
         }
+
+        /// <summary>
+        /// Disables damage
+        /// </summary>
         protected void ToggleGodMode()
         {
             if (player.GodMode)
