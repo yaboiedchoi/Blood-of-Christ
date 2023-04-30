@@ -29,7 +29,12 @@ namespace Blood_of_Christ
         private Vector2 textLocation;
 
         // Input
+        private MouseState mState;
         private MouseState prevMState;
+
+        // pressed texture
+        private Texture2D pressedTexture;
+
 
         /// <summary>
         /// On button click event
@@ -61,11 +66,12 @@ namespace Blood_of_Christ
         /// <param name="text">text on button</param>
         /// <param name="font">font of button</param>
         /// <param name="textColor">color of text</param>
-        public Button(Texture2D texture, Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
+        public Button(Texture2D texture, Texture2D texture2, Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
             : base (texture, rect)
         {
             this.buttonColor = buttonColor;
             this.hoveredColor = hoveredColor;
+            pressedTexture = texture2;
             this.pressedColor = pressedColor;
             this.text = text;
             this.font = font;
@@ -88,20 +94,26 @@ namespace Blood_of_Christ
         public override void Update(GameTime gameTime)
         {
             // grabs mouse current state
-            MouseState mState = Mouse.GetState();
+            mState = Mouse.GetState();
 
             if (Position.Contains(mState.Position))
             {
-                if ((mState.LeftButton == ButtonState.Released && prevMState.LeftButton == ButtonState.Pressed) || // if button is released after being pressed
-                    (mState.RightButton == ButtonState.Released && prevMState.RightButton == ButtonState.Pressed))
+                // if button is released after being pressed
+                if ((mState.LeftButton == ButtonState.Released && 
+                     prevMState.LeftButton == ButtonState.Pressed) || 
+                    (mState.RightButton == ButtonState.Released && 
+                     prevMState.RightButton == ButtonState.Pressed))
                 {
                     if (OnButtonClick != null)
                     {
                         OnButtonClick();
                     }
                 }
-                else if ((mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Pressed) || // if button is being held
-                         (mState.RightButton == ButtonState.Pressed && prevMState.RightButton == ButtonState.Pressed))
+                // if button is being held
+                else if ((mState.LeftButton == ButtonState.Pressed && 
+                          prevMState.LeftButton == ButtonState.Pressed) || 
+                         (mState.RightButton == ButtonState.Pressed && 
+                          prevMState.RightButton == ButtonState.Pressed))
                 {
                     currentColor = pressedColor;
                 }
@@ -124,8 +136,21 @@ namespace Blood_of_Christ
         /// <param name="sb">spritebatch</param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, Position, currentColor);
-            sb.DrawString(font, text, textLocation, textColor);
+            // while held
+            if (((mState.LeftButton == ButtonState.Pressed &&
+                 prevMState.LeftButton == ButtonState.Pressed) ||
+                (mState.RightButton == ButtonState.Pressed &&
+                 prevMState.RightButton == ButtonState.Pressed)) &&
+                 Position.Contains(mState.Position))
+            {
+                sb.Draw(pressedTexture, Position, currentColor);
+                sb.DrawString(font, text, textLocation, textColor);
+            }
+            else
+            {
+                sb.Draw(texture, Position, currentColor);
+                sb.DrawString(font, text, textLocation, textColor);
+            }
         }
     }
 }

@@ -82,6 +82,7 @@ namespace Blood_of_Christ
         // Play Game button in main menu
         private Button startButton;
         private Texture2D debugButtonTexture;
+        private Texture2D pressedButtonTexture;
 
         // Settings button in main menu
         private Button settingsButton;
@@ -174,6 +175,7 @@ namespace Blood_of_Christ
 
             debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("buttonTexture");
+            pressedButtonTexture = Content.Load<Texture2D>("pressedButtonTexture");
 
             // Tiles
             tiles = new Tile(tex_tiles, tex_key, tex_goal, 
@@ -188,17 +190,17 @@ namespace Blood_of_Christ
             MediaPlayer.Volume = 0.25f;
 
             // All buttons
-            startButton = new Button(debugButtonTexture, new Rectangle(50, 150, 150, 50), 
+            startButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(50, 150, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Play Game", body, Color.Black);
-            settingsButton = new Button(debugButtonTexture, new Rectangle(350, 150, 150, 50), 
+            settingsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(350, 150, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Settings", body, Color.Black);
-            backButton = new Button(debugButtonTexture, new Rectangle(20, 20, 70, 30), Color.Red, 
+            backButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 20, 70, 30), Color.Red, 
                                      Color.Orange, Color.DarkRed, "Back", body, Color.Black);
-            controlsButton = new Button(debugButtonTexture, new Rectangle(650, 150, 150, 50), 
+            controlsButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(650, 150, 150, 50), 
                                      Color.Red, Color.Orange, Color.DarkRed, "Controls", body, Color.Black);
-            muteButton = new Button(debugButtonTexture, new Rectangle(20, 100, 200, 30), Color.Red,
+            muteButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 100, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "Mute Audio: False", body, Color.Black);
-            godModeButton = new Button(debugButtonTexture, new Rectangle(20, 150, 200, 30), Color.Red,
+            godModeButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(20, 150, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "God Mode: False", body, Color.Black);
             // hooking up
             startButton.OnButtonClick += this.StartGame;
