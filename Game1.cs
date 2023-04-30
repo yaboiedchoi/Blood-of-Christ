@@ -258,8 +258,7 @@ namespace Blood_of_Christ
                     for (int i = 0; i < tiles.Priests.Count; i++)
                     {
                         if (player.Position.Intersects(tiles.Priests[i].Position))
-                        {
-                            
+                        {                            
                             player.TakeDamage(tiles.Priests[i]);
                         }
                     }
@@ -392,7 +391,7 @@ namespace Blood_of_Christ
                             "Press E to toggle bat mode and fly with WASD.\n" +
                             "Light detects you to give damage and shoot a fireball.",
                             new Vector2(300, 240),
-                            Color.Black);
+                            Color.White);
                     }
 
                     // health and ability bars
@@ -425,8 +424,14 @@ namespace Blood_of_Christ
                                             "WASD keys for movement\n" +
                                             "Spacebar for Jump \n" +
                                             "E for turning into a bat\n\n" +
+                                            "CREDITS--- \n" +
                                             "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free\n" +
-                                            "Title screen credit: https://www.samsonhistorical.com/products/wooden-wine-chalice",
+                                            "Title screen credit: https://www.samsonhistorical.com/products/wooden-wine-chalice \n" +
+                                            "Vampire and Bat made by Sean Bethel \n" +
+                                            "Music by Edward Choi" +
+                                            "Sound Effect: https://freesound.org/people/leviclaassen/sounds/107788/\n" +
+                                            "Fireball : https://www.freeiconspng.com/img/46732\n" +
+                                            "Priest: https://en.wikipedia.org/wiki/File:Coptic_Orthodox_Priest.png",
                                             new Vector2(10, 100),
                                             Color.DarkRed);
                     break;
