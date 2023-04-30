@@ -175,6 +175,8 @@ namespace Blood_of_Christ
                 }
 
                 // changes the player position by the Y velocity
+
+                // switch statement for anim states and player movement
                 switch (anim)
                 {
                     case animState.standingRight:
@@ -187,7 +189,7 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.walkingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Space))
+                            if (kbState.IsKeyDown(Keys.W))
                             {
                                 anim = animState.fallingRight;
                             }
@@ -203,7 +205,7 @@ namespace Blood_of_Christ
                             {
                                 anim = animState.walkingRight;
                             }
-                            if (kbState.IsKeyDown(Keys.Space))
+                            if (kbState.IsKeyDown(Keys.W))
                             {
                                 anim = animState.fallingLeft;
                             }
@@ -222,7 +224,7 @@ namespace Blood_of_Christ
                                 anim = animState.walkingRight;
                             }
 
-                            if (kbState.IsKeyDown(Keys.Space))
+                            if (kbState.IsKeyDown(Keys.W))
                             {
                                 anim = animState.jumpingLeft;
                             }
@@ -240,7 +242,7 @@ namespace Blood_of_Christ
                                 anim = animState.walkingLeft;
                             }
 
-                            if (kbState.IsKeyDown(Keys.Space))
+                            if (kbState.IsKeyDown(Keys.W))
                             {
                                 anim = animState.jumpingRight;
                             }
@@ -465,7 +467,7 @@ namespace Blood_of_Christ
 
                 // The player can jump only if they are on the ground as a vampire
                 KeyboardState kbstate = Keyboard.GetState();
-                if (kbstate.IsKeyDown(Keys.Space) &&
+                if (kbstate.IsKeyDown(Keys.W) &&
                     yVelocity == 0)
                 {
                     yVelocity = -16;

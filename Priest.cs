@@ -20,8 +20,6 @@ namespace Blood_of_Christ
 
         //To ensure it moves back and forth
         private float xVelocity = 1;
-        private double time;
-        private int direction = 1;
         private float yVelocity;
         private float gravity;
         private Rectangle prevPos;
@@ -110,12 +108,29 @@ namespace Blood_of_Christ
                 }
             }
         }
-        // I had to add this to priest to test player code without build errors. Feel free to get rid of it - Sean.
+
+        // Draws the priest facing left or right based on a certain xvelocity
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture,
+            // if going right, face right
+            if (xVelocity > 0)
+            {
+                sb.Draw(texture,
                     position,
                     Color.White);
+            }
+            // otherwise face left
+            else
+            {
+                sb.Draw(texture,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    new Vector2(0, 0),
+                    SpriteEffects.FlipHorizontally,
+                    1f);
+            }
         }
     }
 }

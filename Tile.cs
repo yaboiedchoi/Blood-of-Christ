@@ -366,7 +366,7 @@ namespace Blood_of_Christ
                         else if (tilesData[c] == "D")
                         {
                             platformTiles[r, c] = new Platform(tex_tiles, new Rectangle());
-                            detector.Add(new Detector(tex_detector, new Rectangle(144 + c * 48, 96 + r * 48, 48, 24), 500, tex_light));
+                            detector.Add(new Detector(tex_detector, new Rectangle(144 + c * 48, 96 + r * 48, 48, 48), 500, tex_light));
                         }
                         else if (tilesData[c] == "0")
                         {
