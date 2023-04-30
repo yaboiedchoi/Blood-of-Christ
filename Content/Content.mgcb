@@ -100,6 +100,12 @@
 /processorParam:TextureFormat=Color
 /build:health_bar_placeholder.png
 
+#begin hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hit.wav
+
 #begin key.png
 /importer:TextureImporter
 /processor:TextureProcessor

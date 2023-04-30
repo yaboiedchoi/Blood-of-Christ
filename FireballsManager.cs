@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Blood_of_Christ
 {
@@ -17,16 +18,17 @@ namespace Blood_of_Christ
         //private double windowWidth;
         private Texture2D asset;
         private Rectangle rect;
-        //private int count;
+        private SoundEffect sound;
 
         public List<Fireballs> Fireballs
         {
             get { return fireballsManager; }
         }
-        public FireballsManager(Texture2D asset, Rectangle rectangle)
+        public FireballsManager(Texture2D asset, Rectangle rectangle, SoundEffect sound)
         {
             this.asset = asset;
             this.rect = rectangle;
+            this.sound = sound; 
             fireballsManager = new List<Fireballs>();
         }
 
@@ -87,6 +89,7 @@ namespace Blood_of_Christ
             {
                 if (fireball.Position.Intersects(rect) )
                 {
+                    sound.Play();
                     fireballsManager.Remove(fireball);
                     return 5;
                 }

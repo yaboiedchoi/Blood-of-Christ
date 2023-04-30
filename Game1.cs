@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -100,6 +101,8 @@ namespace Blood_of_Christ
 
         // song
         private Song theme;
+        //Sound effect for hit
+        private SoundEffect hitSound;
 
         // title screen picture
         private Texture2D titleScreen;
@@ -142,6 +145,7 @@ namespace Blood_of_Christ
             tex_goal = Content.Load<Texture2D>("goal");
             tex_player = Content.Load<Texture2D>("player_sprites");
             titleScreen = Content.Load<Texture2D>("title_screen");
+            hitSound = Content.Load<SoundEffect>("hit");
 
             // player
             player = new Player(tex_player, new Rectangle(100, 400, 50, 50));
@@ -153,7 +157,7 @@ namespace Blood_of_Christ
             //Attack system and Manager class for firballs
             rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 7, tex_fireball.Height / 7);
             rect_detector = new Rectangle(500, 100, tex_detector.Width, tex_detector.Height);
-            fireballManager = new FireballsManager(tex_fireball, rect_fireball);
+            fireballManager = new FireballsManager(tex_fireball, rect_fireball, hitSound);
 
             rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
 
@@ -255,6 +259,7 @@ namespace Blood_of_Christ
                     {
                         if (player.Position.Intersects(tiles.Priests[i].Position))
                         {
+                            
                             player.TakeDamage(tiles.Priests[i]);
                         }
                     }
@@ -266,6 +271,7 @@ namespace Blood_of_Christ
                         player.TakeDamage(fireballManager.Fireballs[i]);
                         if (fireballManager.Fireballs[i].Position.Intersects(player.Position))
                         {
+                            hitSound.Play();
                             fireballManager.Fireballs.RemoveAt(i);
                         }
                     }
