@@ -112,7 +112,6 @@ namespace Blood_of_Christ
 
             return 0;
         }
-
         
         /// <summary>
         /// Clears everything

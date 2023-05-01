@@ -72,6 +72,7 @@ namespace Blood_of_Christ
             }
         }
 
+        ///<summary>
         /// checks if light is colliding with a door
         /// if so, allows the door to stop the light from continuing downward
         /// </summary>

@@ -29,9 +29,6 @@ namespace Blood_of_Christ
         /// <param name="gameTime">takes time param</param>
         public override void Update(GameTime gameTime)
         {
-            //So, if I use time it will move at an accelerated speed
-            //Without time, it moves at constant speed
-
             double deltaX;
             //time = gameTime.TotalGameTime.TotalSeconds;
             time += gameTime.ElapsedGameTime.TotalSeconds;
