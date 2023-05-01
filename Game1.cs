@@ -195,8 +195,6 @@ namespace Blood_of_Christ
 
         protected override void Update(GameTime gameTime)
         {
-            currentKey = Keyboard.GetState();
-
             // TODO: Add your update logic here
             switch (gs)
             {
@@ -359,7 +357,6 @@ namespace Blood_of_Christ
                     backButton.Update(gameTime);
                     break;
             }
-            prevKey = currentKey;
         }
 
         protected override void Draw(GameTime gameTime)
