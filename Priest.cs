@@ -27,6 +27,9 @@ namespace Blood_of_Christ
         //temporary for playtest
         private double movetime;
 
+        /// <summary>
+        /// To access prev position
+        /// </summary>
         public Rectangle PrevPos
         {
             get
@@ -49,21 +52,22 @@ namespace Blood_of_Christ
         }
 
         /// <summary>
-        /// If 
+        /// Pathfinding for priest
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime"> Takes in time for movement</param>
         public override void Update(GameTime gameTime)
         {
             position.Y += (int)yVelocity;
             yVelocity += gravity;
 
+            //The priest moves opposite direction once movetime is 0
             if (xVelocity > 0)
             {
                 movetime -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (movetime < 0)
                 {
                     xVelocity = -xVelocity;
-                    movetime = 2;
+                    movetime = 2;   
                 }
             }
             else if (xVelocity < 0)
@@ -79,6 +83,10 @@ namespace Blood_of_Christ
             position.X += (int)xVelocity;
         }
 
+        /// <summary>
+        /// Priest physics to ensure it interacts with the environment
+        /// </summary>
+        /// <param name="platform">Takes in the rectangle that it will collide with</param>
         public void Physics(Rectangle platform)
         {
             while ((prevPos.Y + prevPos.Height <= platform.Y &&    // If player was up from the wall
@@ -102,7 +110,10 @@ namespace Blood_of_Christ
             }
         }
 
-        // Draws the priest facing left or right based on a certain xvelocity
+        /// <summary>
+        /// Draws the priest facing left or right based on a certain xvelocity
+        /// </summary>
+        /// <param name="sb">Takes in spritebatch</param>
         public override void Draw(SpriteBatch sb)
         {
             // if going right, face right
