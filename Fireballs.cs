@@ -26,7 +26,7 @@ namespace Blood_of_Christ
         /// <summary>
         /// Bullets movve at an accelerated speed
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">takes time param</param>
         public override void Update(GameTime gameTime)
         {
             //So, if I use time it will move at an accelerated speed
@@ -43,7 +43,7 @@ namespace Blood_of_Christ
         /// <summary>
         /// Draws the bullets onto the screen
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb">takes in spritebatch</param>
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(texture,

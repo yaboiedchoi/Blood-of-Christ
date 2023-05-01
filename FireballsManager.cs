@@ -36,6 +36,10 @@ namespace Blood_of_Christ
             fireballsManager = new List<Fireballs>();
         }
 
+        /// <summary>
+        /// To run the fireballs and check when it removes
+        /// </summary>
+        /// <param name="gametime">time param</param>
         public void Update(GameTime gametime)
         {
             foreach(Fireballs fireball in fireballsManager)
@@ -45,6 +49,10 @@ namespace Blood_of_Christ
             Remove();
         }
 
+        /// <summary>
+        /// Draws fireballs from the list
+        /// </summary>
+        /// <param name="sb">Takes in the spritebatch</param>
         public void Draw(SpriteBatch sb)
         {
             foreach(Fireballs fireball in fireballsManager)
@@ -86,7 +94,7 @@ namespace Blood_of_Christ
         /// <summary>
         /// If player collides with the fireball, he takes damage and fireball is removed
         /// </summary>
-        /// <param name="rect"></param>
+        /// <param name="rect">Takes in the player rect</param>
         public int TakeDamage(Rectangle rect)
         {
             foreach(Fireballs fireball in fireballsManager)
