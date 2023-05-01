@@ -66,7 +66,8 @@ namespace Blood_of_Christ
         /// <param name="text">text on button</param>
         /// <param name="font">font of button</param>
         /// <param name="textColor">color of text</param>
-        public Button(Texture2D texture, Texture2D texture2, Rectangle rect, Color buttonColor, Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
+        public Button(Texture2D texture, Texture2D texture2, Rectangle rect, Color buttonColor, 
+            Color hoveredColor, Color pressedColor, string text, SpriteFont font, Color textColor)
             : base (texture, rect)
         {
             this.buttonColor = buttonColor;
