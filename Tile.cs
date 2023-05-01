@@ -302,6 +302,8 @@ namespace Blood_of_Christ
         /// </summary>
         public void LoadStage(int level)
         {
+            keyDoorPairs.Clear();
+
             StreamReader reader = null;
             try
             {
