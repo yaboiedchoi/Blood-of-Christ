@@ -18,7 +18,9 @@ namespace Blood_of_Christ
         // Field
         private Rectangle spritePosition;
 
-        // Property
+        /// <summary>
+        /// Read only sprite's position
+        /// </summary>
         public Rectangle SpritePosition
         {
             set { spritePosition = value; }
@@ -33,6 +35,7 @@ namespace Blood_of_Christ
         public Platform(Texture2D asset, Rectangle position)
             : base(asset, position)
         {
+            //Intentionally empty
         }
 
         // Methods
@@ -43,6 +46,7 @@ namespace Blood_of_Christ
         /// <param name="gameTime">The current snapshot of the game time</param>
         public override void Update(GameTime gameTime)
         {
+            //Nothing to add
         }
 
         /// <summary>

@@ -345,12 +345,14 @@ namespace Blood_of_Christ
                     muteButton.Update(gameTime);
                     godModeButton.Update(gameTime);
                     break;
+
                 case GameState.Controls: // controls menu
                     // loads the background
                     tiles.LoadStage(0);
                     // buttons
                     backButton.Update(gameTime);
                     break;
+
                 case GameState.Victory: // if the player goes through all levels
                     // load background
                     tiles.LoadStage(0);
