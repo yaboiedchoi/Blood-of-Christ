@@ -21,6 +21,9 @@ namespace Blood_of_Christ
         private Rectangle rect;
         private SoundEffect sound;
 
+        /// <summary>
+        /// Allows us to access fireballs inside the fireball manager
+        /// </summary>
         public List<Fireballs> Fireballs
         {
             get { return fireballsManager; }
