@@ -40,7 +40,6 @@ namespace Blood_of_Christ
 
         // animation variables
         private animState anim;
-        private int spritesPerRow;
         private int spriteWidth;
         private int currentFrame;
         private double fps;
@@ -57,11 +56,7 @@ namespace Blood_of_Christ
             get { return health; }
             set
             {
-                if (godMode)
-                {
-                    health = health;
-                }
-                else if (!godMode)
+                if (!godMode)
                 {
                     health = value;
                 }
@@ -135,7 +130,6 @@ namespace Blood_of_Christ
 
             // animation data
             anim = animState.standingRight;
-            spritesPerRow = 8;
             spriteWidth = texture.Width / 8;
             fps = 12;
             secondsPerFrame = 1.0 / fps;
@@ -154,13 +148,6 @@ namespace Blood_of_Christ
                 hitTime = 0;                
             }
 
-           // If player is dead, calls Reset
-           // now no need, since there is a game over screen
-            //if (isDead)
-            //{
-            //    Reset(ResetX, ResetY);
-            //}
-
             //if player is vampire
             if (!isBat)
             {
@@ -174,11 +161,10 @@ namespace Blood_of_Christ
                     batTime += gameTime.ElapsedGameTime.TotalSeconds/2;
                 }
 
-                // changes the player position by the Y velocity
-
                 // switch statement for anim states and player movement
                 switch (anim)
                 {
+                    // standing
                     case animState.standingRight:
                         {
                             if (kbState.IsKeyDown(Keys.A))
@@ -212,6 +198,7 @@ namespace Blood_of_Christ
                             break;
                         }
 
+                    // walking
                     case animState.walkingLeft:
                         {
                             if (kbState.IsKeyUp(Keys.A))
@@ -249,6 +236,8 @@ namespace Blood_of_Christ
                             position.X += 5;
                             break;
                         }
+
+                    // jumping (moving left/right while in the air)
                     case animState.jumpingLeft:
                         {
 
@@ -285,6 +274,8 @@ namespace Blood_of_Christ
                             position.X += 5;
                             break;                            
                         }
+
+                    // falling (midjump but no horizontal movement)
                     case animState.fallingRight:
                         {
                             if (kbState.IsKeyDown(Keys.D))
@@ -325,6 +316,7 @@ namespace Blood_of_Christ
             if (isBat)
             {
                 batTime -= gameTime.ElapsedGameTime.TotalSeconds;
+                // transforms back into a player when timer runs out
                 if (batTime <= 0)
                 {
                     isBat = false;
@@ -347,13 +339,13 @@ namespace Blood_of_Christ
                     position.X += 5;
                 }
 
-                // transforming back into a player
-
+                // transforming out of bat causes player to be bounced into the air slightly
                 yVelocity = -5;
             }
 
             // adds gravity to the y velocity
             yVelocity += gravity;
+
             // transforming into bat
             if (kbState.IsKeyDown(Keys.E) && prevKbState.IsKeyUp(Keys.E))
             {
@@ -375,21 +367,36 @@ namespace Blood_of_Christ
             prevKbState = kbState;
         }
 
+        /// <summary>
+        ///  Draws the player differently depending on what anim state they're in
+        /// </summary>
+        /// <param name="sb"> spritebatch </param>
         public override void Draw(SpriteBatch sb)
         {
+            // drawing as bat
             if (isBat)
             {
                 DrawAsBat(SpriteEffects.None, sb);
             }
+
+            // drawing as vampire
             else
             {
                 switch (anim)
                 {
+                    // drawing player jumping
                     case animState.jumpingLeft:
                         {
                             DrawPlayerJumping(SpriteEffects.FlipHorizontally, sb);
                             break;
                         }
+                    case animState.jumpingRight:
+                        {
+                            DrawPlayerJumping(SpriteEffects.None, sb);
+                            break;
+                        }
+
+                    // drawing player walking
                     case animState.walkingLeft:
                         {
                             DrawPlayerWalking(SpriteEffects.FlipHorizontally, sb);
@@ -400,21 +407,21 @@ namespace Blood_of_Christ
                             DrawPlayerWalking(SpriteEffects.None, sb);
                             break;
                         }
-                    case animState.jumpingRight:
-                        {
-                            DrawPlayerJumping(SpriteEffects.None, sb);
-                            break;
-                        }
+
+                    // drawing player standing
                     case animState.standingLeft:
                         {
                             DrawPlayerStanding(SpriteEffects.FlipHorizontally, sb);
                             break;
                         }
+
                     case animState.standingRight:
                         {
                             DrawPlayerStanding(SpriteEffects.None, sb);
                             break;
                         }
+
+                    // drawing player falling
                     case animState.fallingRight:
                         {
                             DrawPlayerJumping(SpriteEffects.None, sb);
@@ -487,7 +494,6 @@ namespace Blood_of_Christ
         #endregion
 
         /// <summary>
-        /// Written by Sean
         /// Player loses health when colliding with certain gameObjects
         /// Checks
         /// </summary>
@@ -512,7 +518,6 @@ namespace Blood_of_Christ
         }
 
         /// <summary>
-        /// Written by Sean
         /// Resets the players health to 100
         /// Then returns the player to the level's start
         /// </summary>
@@ -527,6 +532,10 @@ namespace Blood_of_Christ
             batTime = 3;
         }
 
+        /// <summary>
+        /// Animates the player by changing the current frame over time
+        /// </summary>
+        /// <param name="gameTime"> elapsed time </param>
         private void UpdateAnimation(GameTime gameTime)
         {
             //Counts time before switching to next frame
@@ -546,6 +555,12 @@ namespace Blood_of_Christ
                 timeCounter -= secondsPerFrame;
             }
         }
+
+        /// <summary>
+        /// Draws player with an animated walk cylce
+        /// </summary>
+        /// <param name="flip"> whether it will face left or not </param>
+        /// <param name="sb"> drawn with spritebatch </param>
         private void DrawPlayerWalking(SpriteEffects flip, SpriteBatch sb)
         {
             sb.Draw(
@@ -563,6 +578,12 @@ namespace Blood_of_Christ
                 flip,
                 0.0f);
         }
+
+        /// <summary>
+        /// Draws the player standing
+        /// </summary>
+        /// <param name="flip"> whether it will face left or not </param>
+        /// <param name="sb"> drawn with spritebatch </param>
         private void DrawPlayerStanding(SpriteEffects flip, SpriteBatch sb) 
         {
             sb.Draw(
@@ -580,6 +601,12 @@ namespace Blood_of_Christ
                 flip,
                 0.0f);
         }
+
+        /// <summary>
+        /// Draws the player jumping
+        /// </summary>
+        /// <param name="flip"> whether it will face left or not </param>
+        /// <param name="sb"> drawn with spritebatch </param>
         private void DrawPlayerJumping(SpriteEffects flip, SpriteBatch sb) 
         {
             sb.Draw(
@@ -597,6 +624,12 @@ namespace Blood_of_Christ
                 flip,
                 0.0f);
         }
+
+        /// <summary>
+        /// draws the player as a bat
+        /// </summary>
+        /// <param name="flip"> whether it will face left or not </param>
+        /// <param name="sb"> drawn with spritebatch </param>
         private void DrawAsBat(SpriteEffects flip, SpriteBatch sb)
         {
             sb.Draw(

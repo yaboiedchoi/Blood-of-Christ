@@ -35,23 +35,10 @@ namespace Blood_of_Christ
         //for fireballs
         private Texture2D tex_fireball;
         private Rectangle rect_fireball;
-        private Fireballs fireballs;
         private FireballsManager fireballManager;
 
-        //Keys
-        private KeyboardState prevKey;
-        private KeyboardState currentKey;
-
-        //for debug ONLY
-        private SpriteFont debugFont;
-        private double playerHealth;
-        private Rectangle rect_player;
-
-        //for priest and attack
+        //for priest
         private Texture2D tex_priest;
-        private Rectangle rect_priest;
-        Rectangle priestPrevPosition;
-        private bool isMoving = false;
 
         // player
         private Player player;
@@ -59,8 +46,7 @@ namespace Blood_of_Christ
         private Rectangle rect_health;
         private Rectangle rect_batTimer;
         private Texture2D tex_bar;
-        private Rectangle rect_playerPrevPos; //For detectors to set off the fireballs
-                                              //private Priest priest;
+
         // Tiling system
         private Texture2D tex_key;
         private Texture2D tex_tiles;
@@ -72,11 +58,9 @@ namespace Blood_of_Christ
 
         // Window
         private int windowWidth;
-        private int windowHeight;
 
         //attack system
         private Texture2D tex_detector;
-        private Rectangle rect_detector;
         private Texture2D tex_light;
 
         // Play Game button in main menu
@@ -123,9 +107,7 @@ namespace Blood_of_Christ
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            prevKey = Keyboard.GetState();
             windowWidth = GraphicsDevice.Viewport.Width;
-            windowHeight = GraphicsDevice.Viewport.Height;
             
             gs = GameState.Title;
             base.Initialize();
@@ -137,11 +119,11 @@ namespace Blood_of_Christ
 
             // TODO: use this.Content to load your game content here
             tex_fireball = Content.Load<Texture2D>("fireball");
-            tex_priest = Content.Load<Texture2D>("back up priest");
+            tex_priest = Content.Load<Texture2D>("priest");
             tex_bar = Content.Load<Texture2D>("SolidWhite");
             tex_key = Content.Load<Texture2D>("key");
             tex_tiles = Content.Load<Texture2D>("tilesAssets");
-            tex_detector = Content.Load<Texture2D>("detector");
+            tex_detector = Content.Load<Texture2D>("lamp");
             tex_light = Content.Load<Texture2D>("light");
             tex_goal = Content.Load<Texture2D>("goal");
             tex_player = Content.Load<Texture2D>("player_sprites");
@@ -150,30 +132,19 @@ namespace Blood_of_Christ
 
             // player
             player = new Player(tex_player, new Rectangle(100, 400, 50, 50));
-            level = 1;
-            rect_playerPrevPos = rect_player;        
+            level = 1;       
             rect_health = new Rectangle(10, 10, 100, 20);
             rect_batTimer = new Rectangle(10, 40, 100, 20);
 
             //Attack system and Manager class for firballs
             rect_fireball = new Rectangle(windowWidth + 100, player.Position.Y, tex_fireball.Width / 7, tex_fireball.Height / 7);
-            rect_detector = new Rectangle(500, 100, tex_detector.Width, tex_detector.Height);
             fireballManager = new FireballsManager(tex_fireball, rect_fireball, hitSound);
-
-            rect_priest = new Rectangle(0, 100, tex_priest.Width / 5, tex_priest.Height / 5);
-
-            //fireball
-            fireballs = new Fireballs(tex_fireball,
-                                      rect_fireball);
 
             //fonts
             header = Content.Load<SpriteFont>("Header");
             body = Content.Load<SpriteFont>("BodyFont");
                                      
             //DEBUG PURPOSES
-            rect_player = new Rectangle(100, 0, 50, 50);
-
-            debugFont = Content.Load<SpriteFont>("debugFont2");
             debugButtonTexture = Content.Load<Texture2D>("buttonTexture");
             pressedButtonTexture = Content.Load<Texture2D>("pressedButtonTexture");
 
@@ -241,7 +212,6 @@ namespace Blood_of_Christ
                         if (tiles.Detector[i].Detection.Intersects(player.Position) &&
                             !tiles.Detector[i].Detection.Intersects(player.PrevPos))
                         {
-                            isMoving = true;
                             for (int j = 0; j < 3; j++)
                             {
                                 fireballManager.Add(player);
@@ -259,7 +229,7 @@ namespace Blood_of_Christ
                         }
                     }
 
-                    // player takes damage when colliding with the priest.
+                    // player takes damage when colliding with a priest.
                     for (int i = 0; i < tiles.Priests.Count; i++)
                     {
                         if (player.Position.Intersects(tiles.Priests[i].Position))
@@ -302,7 +272,7 @@ namespace Blood_of_Christ
                             }
                         }
                     }
-                    catch(Exception e)
+                    catch
                     {
                         gs = GameState.Victory;
                     }
@@ -420,9 +390,10 @@ namespace Blood_of_Christ
                     {
                         _spriteBatch.DrawString(
                             body,
-                            "Press AD for horizontal movement and space for jump\n" +
-                            "Press E to toggle bat mode and fly with WASD.\n" +
-                            "Light detects you to give damage and shoot a fireball.",
+                            "Press WASD to move around\n" +
+                            "Press E to toggle bat mode and fly. Watch the timer!\n" +
+                            "Stay out of the light, it will burn you.\n" +
+                            "The light will also trigger a trap, be ready to jump.",
                             new Vector2(300, 240),
                             Color.White);
                     }
@@ -461,17 +432,15 @@ namespace Blood_of_Christ
                                             "Avoid the priest and fireballs to get out of the church! \n" +
                                             "Instructions: \n" +
                                             "WASD keys for movement\n" +
-                                            "Spacebar for Jump \n" +
                                             "E for turning into a bat\n\n" +
                                             "CREDITS--- \n" +
                                             "Tile assets credit: https://blackspirestudio.itch.io/medieval-pixel-art-asset-free\n" +
-                                            "Vampire and Bat made by Sean Bethel \n" +
+                                            "Vampire, bat, light, and priest textures made by Sean Bethel\n" +
                                             "Music by Edward Choi\n" +
                                             "Sound Effect: https://freesound.org/people/leviclaassen/sounds/107788/\n" +
-                                            "Fireball : https://www.freeiconspng.com/img/46732\n" +
-                                            "Priest: https://en.wikipedia.org/wiki/File:Coptic_Orthodox_Priest.png",
+                                            "Fireball : https://www.freeiconspng.com/img/46732\n",
                                             new Vector2(150, 150),
-                                            Color.Red);
+                                            Color.White);
                     break;
 
                 case GameState.GameOver: // ifplayer dies
