@@ -16,10 +16,7 @@ namespace Blood_of_Christ
         //calls the fireballs manager and and checks if anyone has entered or not.
         private Texture2D asset;
         private Texture2D lightAsset;
-        private Rectangle position;
         private Rectangle rect_detection;
-        private int windowHeight;
-        private Rectangle prevPos;
         private bool collided;
 
         public bool Collided
@@ -31,9 +28,9 @@ namespace Blood_of_Christ
         /// <summary>
         /// Based on the data given it makes a new rectangle which will check if user crosses through it
         /// </summary>
-        /// <param name="asset"></param>
-        /// <param name="position"></param>
-        /// <param name="windowHeight"></param>
+        /// <param name="asset"> texture given </param>
+        /// <param name="position"> where the detector is located </param>
+        /// <param name="windowHeight"> the length of the light beam </param>
         public Detector(Texture2D asset, Rectangle position, int windowHeight, Texture2D lightAsset) : base(asset, position)
         {
             this.asset = asset;
@@ -56,6 +53,11 @@ namespace Blood_of_Christ
             set { rect_detection.Height = value; }
         }
 
+        /// <summary>
+        /// checks if light is colliding with a platform
+        /// if so, allows the platform to stop the light from continuing downward
+        /// </summary>
+        /// <param name="platform"> platform to check against </param>
         public void SetHeight(Platform [,] platform)
         {
             for (int i = 0; i < platform.GetLength(0); i++)
@@ -69,6 +71,11 @@ namespace Blood_of_Christ
                 }
             }
         }
+
+        /// checks if light is colliding with a door
+        /// if so, allows the door to stop the light from continuing downward
+        /// </summary>
+        /// <param name="door"> door to check against </param>
         public void SetHeight(Door door)
         {
             if (rect_detection.Intersects((door.Position)))
@@ -87,7 +94,6 @@ namespace Blood_of_Christ
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            Height += 500;
             //throw new NotImplementedException();
             //As of now does nothing
         }
@@ -95,26 +101,26 @@ namespace Blood_of_Christ
         /// <summary>
         /// Prints texture as intended
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb"> spritebatch </param>
         public override void Draw(SpriteBatch sb)
         {
             if (!collided)
             {
-                sb.Draw(asset,
-                        position,
-                        Color.White);
                 sb.Draw(lightAsset,
                         Detection,
+                        Color.White);
+                sb.Draw(asset,
+                        position,
                         Color.White);
             }
             else
             {
-                sb.Draw(asset,
-                        position,
-                        Color.White);
                 sb.Draw(lightAsset,
                         Detection,
                         Color.Red);
+                sb.Draw(asset,
+                        position,
+                        Color.White);
             }
         }
     }

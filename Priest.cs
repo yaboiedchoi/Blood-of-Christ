@@ -27,13 +27,6 @@ namespace Blood_of_Christ
         //temporary for playtest
         private double movetime;
 
-        public Rectangle Position
-        {
-            get
-            {
-                return position;
-            }
-        }
         public Rectangle PrevPos
         {
             get
