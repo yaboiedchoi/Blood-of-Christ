@@ -439,8 +439,7 @@ namespace Blood_of_Christ
                             body,
                             "Press AD for horizontal movement and W for jump\n" +
                             "Press E to toggle bat mode and fly with WASD.\n" +
-                            "Light detects you to give damage and shoot a fireball.\n" +
-                            "Press ESC to return to title.",
+                            "Light detects you to give damage and shoot a fireball.",
                             new Vector2(300, 240),
                             Color.White);
                     }
