@@ -100,6 +100,11 @@ namespace Blood_of_Christ
 
         // return to game button
         private Button returnButton;
+
+        // keyboard states
+        private KeyboardState currentKbState;
+        private KeyboardState previousKbState;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -214,12 +219,16 @@ namespace Blood_of_Christ
                     player.Update(gameTime);
                     fireballManager.Update(gameTime);
 
-                    // return to title
-                    /*
-                    if (currentKey.IsKeyDown(Keys.Escape) && prevKey.IsKeyUp(Keys.Escape))
+                    // pause menu
+                    // keyboard state for only pause menu
+
+                    currentKbState = Keyboard.GetState();
+                    if (currentKbState.IsKeyDown(Keys.Escape) && previousKbState.IsKeyUp(Keys.Escape))
                     {
                         gs = GameState.Title;
-                    }*/
+                    }
+                    // previous
+                    previousKbState = currentKbState;
                     // detectors will summon fireballs when player walks under them
                     for (int i = 0; i < tiles.Detector.Count; i++)
                     {
@@ -404,6 +413,7 @@ namespace Blood_of_Christ
                     {
                         _spriteBatch.DrawString(
                             body,
+                            "Press ESC to return to title screen\n" +
                             "Press WASD to move around\n" +
                             "Press E to toggle bat mode and fly. Watch the timer!\n" +
                             "Stay out of the light, it will burn you.\n" +
@@ -426,6 +436,7 @@ namespace Blood_of_Christ
                     fireballManager.Draw(_spriteBatch);
 
                     // Goal
+
 
                     break;
                 case GameState.Settings: // settings menu
