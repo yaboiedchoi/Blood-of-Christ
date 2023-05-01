@@ -19,6 +19,9 @@ namespace Blood_of_Christ
         private Rectangle rect_detection;
         private bool collided;
 
+        /// <summary>
+        /// Checks if player has collided
+        /// </summary>
         public bool Collided
         {
             get { return collided; } 
@@ -72,6 +75,7 @@ namespace Blood_of_Christ
             }
         }
 
+        ///<summary>
         /// checks if light is colliding with a door
         /// if so, allows the door to stop the light from continuing downward
         /// </summary>
