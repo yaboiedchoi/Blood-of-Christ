@@ -19,6 +19,9 @@ namespace Blood_of_Christ
         private Rectangle rect_detection;
         private bool collided;
 
+        /// <summary>
+        /// Checks if player has collided
+        /// </summary>
         public bool Collided
         {
             get { return collided; } 
