@@ -219,7 +219,6 @@ namespace Blood_of_Christ
                 }
                 entry.Key.Draw(sb);
             }
-
             for (int i = 0; i< goal.Count; i++) 
             {
                 goal[i].Draw(sb);

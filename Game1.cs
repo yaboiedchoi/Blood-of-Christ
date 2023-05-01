@@ -95,6 +95,11 @@ namespace Blood_of_Christ
         // god mode button
         private Button godModeButton;
 
+        // quit button
+        private Button quitButton;
+
+        // return to game button
+        private Button returnButton;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -173,19 +178,24 @@ namespace Blood_of_Christ
                                      Color.Orange, Color.DarkRed, "Mute Audio: False", body, Color.Black);
             godModeButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle(150, 200, 200, 30), Color.Red,
                                      Color.Orange, Color.DarkRed, "God Mode: False", body, Color.Black);
+            quitButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle((windowWidth / 2) - 75, 500, 150, 50),
+                                    Color.Red, Color.Orange, Color.DarkRed, "Quit", body, Color.Black);
+            returnButton = new Button(debugButtonTexture, pressedButtonTexture, new Rectangle((windowWidth / 2) - 100, 400, 200, 50),
+                                     Color.Red, Color.Orange, Color.DarkRed, "Return to Game", body, Color.Black);
             // hooking up
+            returnButton.OnButtonClick += this.StartGame;
             startButton.OnButtonClick += this.StartGame;
             settingsButton.OnButtonClick += this.SettingsMenu;
             backButton.OnButtonClick += this.TitleScreen;
             controlsButton.OnButtonClick += this.ControlsMenu;
             muteButton.OnButtonClick += this.MuteMusic;
             godModeButton.OnButtonClick += this.ToggleGodMode;
+            quitButton.OnButtonClick += this.Exit;
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            currentKey = Keyboard.GetState();
 
             // TODO: Add your update logic here
             switch (gs)
@@ -198,7 +208,7 @@ namespace Blood_of_Christ
                     startButton.Update(gameTime);
                     controlsButton.Update(gameTime);
                     settingsButton.Update(gameTime);
-
+                    quitButton.Update(gameTime);
                     break;
                 case GameState.Game: // game
                     player.ResetX = 150;
@@ -206,6 +216,12 @@ namespace Blood_of_Christ
                     player.Update(gameTime);
                     fireballManager.Update(gameTime);
 
+                    // return to title
+                    /*
+                    if (currentKey.IsKeyDown(Keys.Escape) && prevKey.IsKeyUp(Keys.Escape))
+                    {
+                        gs = GameState.Title;
+                    }*/
                     // detectors will summon fireballs when player walks under them
                     for (int i = 0; i < tiles.Detector.Count; i++)
                     {
@@ -221,7 +237,7 @@ namespace Blood_of_Christ
                         if (tiles.Detector[i].Detection.Intersects(player.Position))
                         {
                             tiles.Detector[i].Collided = true;
-                            player.Health -= .1f;
+                            player.Health -= .3f;
                         }
                         else
                         {
@@ -343,7 +359,7 @@ namespace Blood_of_Christ
                     backButton.Update(gameTime);
                     break;
             }
-
+            prevKey = currentKey;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -369,6 +385,7 @@ namespace Blood_of_Christ
                     startButton.Draw(_spriteBatch);
                     controlsButton.Draw(_spriteBatch);
                     settingsButton.Draw(_spriteBatch);
+                    quitButton.Draw(_spriteBatch);
                     break;
 
                 case GameState.Game: // game
@@ -466,13 +483,18 @@ namespace Blood_of_Christ
             base.Draw(gameTime);
         }
         /// <summary>
-        /// resets the game so it starts from the beginning everytime
+        /// resets the game so it starts from the beginning if from title screen
         /// </summary>
         protected void StartGame()
         {
-            player.Reset(150, 540);
-            level = 1;
-            tiles.LoadStage(level);
+            // if coming from title screen, reset levels
+            if(gs == GameState.Title)
+            {
+                player.Reset(150, 540);
+                level = 1;
+                tiles.LoadStage(level);
+            }
+            // if not, just return to game
             gs = GameState.Game;
         }
         /// <summary>
